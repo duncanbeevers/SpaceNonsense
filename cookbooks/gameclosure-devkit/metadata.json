@@ -1,0 +1,37 @@
+{
+  "name": "gameclosure-devkit",
+  "description": "Installs GameClosure DevKit",
+  "long_description": "Installs GameClosure DevKit",
+  "maintainer": "Duncan Beevers",
+  "maintainer_email": "duncan@dweebd.com",
+  "license": "WTFPL",
+  "platforms": {
+    "ubuntu": ">= 9.10",
+    "debian": ">= 5.0",
+    "openbsd": ">= 0.0.0",
+    "freebsd": ">= 0.0.0"
+  },
+  "dependencies": {
+    "apt": ">= 0.0.0",
+    "build-essential": ">= 0.0.0",
+    "nodejs": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "gameclosure-devkit": "Installs Meteor",
+  },
+  "version": "0.1.4"
+}
