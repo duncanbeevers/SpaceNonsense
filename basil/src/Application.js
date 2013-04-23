@@ -11,13 +11,6 @@ exports = Class(GC.Application, function () {
 	this.initUI = function () {
 		// View stack for main screens
 		this.setupViews();
-
-		// var textview = new ui.TextView({
-		// 	superview: this.view,
-		// 	layout: "box",
-		// 	text: "Hello, world!",
-		// 	color: "white"
-		// });
 	};
 
 	this.setupViews = function() {
