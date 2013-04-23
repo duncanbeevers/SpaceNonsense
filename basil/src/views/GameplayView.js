@@ -73,13 +73,21 @@ exports = Class(ui.StackView, function(supr) {
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
     player = merge(player, {
-      shooting: false,
-      r: null,
-      bullet001: 500 // ms cooldown
+      shooting  : false,
+      r         : null,
+      bullet001 : 500 // ms cooldown
     });
 
 
     playerImageView = new PlayerView(this.world, { superview: this });
+
+    this.on("InputSelect", function() {
+      player.shooting = false;
+    });
+
+    this.on("DragStop", function() {
+      player.shooting = false;
+    });
 
     this.on("InputStart", function(event, point) {
       player.shooting = 'bullet001';
@@ -95,6 +103,7 @@ exports = Class(ui.StackView, function(supr) {
       player.r = pointAt;
       playerImageView.style.update({ r: pointAt });
     });
+
 
 
   };
