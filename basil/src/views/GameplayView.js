@@ -20,18 +20,35 @@ exports = Class(ui.StackView, function(supr) {
   this.setupBackground = function() {
     new FillScreenImageView({
       superview: this,
-      image: "resources/images/reference_128x128_thumb.png"
+      image: "resources/images/bg001.png"
     });
   }
 
   this.setupPlayer = function() {
-    new ui.ImageView({
+    var playerImageView = new ui.ImageView({
       superview: this,
       autoSize: true,
       layout: "box",
+      centerAnchor: true,
       centerX: true,
       centerY: true,
       image: "resources/images/reference_25x25_compass.png"
+    });
+
+    // this.on("InputStart", function(event, point) {
+
+    // });
+
+    this.on("InputMove", function(event, point) {
+      // playerImageView;
+      // this;
+      // event;
+      // point;
+      // debugger;
+      var pointAt = Math.atan2(point.y - playerImageView.style.y, point.x - playerImageView.style.x);
+      playerImageView.style.update({
+        r: pointAt
+      });
     });
   };
 });
