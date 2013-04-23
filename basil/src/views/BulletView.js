@@ -12,10 +12,10 @@ exports = Class(ui.ImageView, function(supr) {
 
     // this.trajectory = opts.trajectory;
     var trajectory = opts.trajectory;
-    this.dx = Math.cos(trajectory) * 0.1;
-    this.dy = Math.sin(trajectory) * 0.1;
+    this.dx = Math.cos(trajectory) * 0.4;
+    this.dy = Math.sin(trajectory) * 0.4;
 
-    this.lifespan = 1000;
+    this.lifespan = 10000;
 
     supr(this, "init", [opts]);
   };
