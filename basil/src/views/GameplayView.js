@@ -127,6 +127,6 @@ exports = Class(ui.StackView, function(supr) {
       player[nextShotInKey] = nextShotIn;
     }
 
-    this.world.Step(dt, 10, 10)
+    this.world.Step(dt, 10, 10);
   };
 });

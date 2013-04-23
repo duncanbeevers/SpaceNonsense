@@ -20,6 +20,19 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.lifespan = 10000;
 
+    this.world = world;
+    this.setupPhysics();
+
+    // Apply initial impulse to get the bullet going in the right direction
+    var impulseForce = Math.random() * 5 + 2;
+    this.fixture.GetBody().ApplyImpulse(
+      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
+      new Box2D.Common.Math.b2Vec2(0, 0)
+    );
+  };
+
+  this.setupPhysics = function() {
+    var world = this.world;
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
     fixtureDef.density = 1;
@@ -33,12 +46,6 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
-
-    var impulseForce = Math.random() * 5 + 2;
-    this.fixture.GetBody().ApplyImpulse(
-      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(0, 0)
-    );
   };
 
   this.removeFromPhysics = function() {
