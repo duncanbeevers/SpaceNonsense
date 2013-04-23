@@ -1,5 +1,8 @@
 import ui.ImageView;
+import ui.resource.Image;
 import ui.StackView;
+
+import src.views.FillScreenImageView as FillScreenImageView;
 
 exports = Class(ui.StackView, function(supr) {
   this.init = function(opts) {
@@ -9,13 +12,8 @@ exports = Class(ui.StackView, function(supr) {
   };
 
   this.setupBackground = function() {
-    var backgroundImageView = new ui.ImageView({
-      superview: this,
-      x: 0,
-      y: 0,
-      width: 1,
-      height: 1,
-      image: "resources/images/128x128_thumb.png"
+    var backgroundImageView = new FillScreenImageView({
+      image: "resources/images/reference_128x128_thumb.png",
     });
   }
 });
