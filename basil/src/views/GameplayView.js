@@ -22,16 +22,17 @@ exports = Class(ui.StackView, function(supr) {
       superview: this,
       image: "resources/images/bg001.png"
     });
-  }
+  };
 
+  var player, playerImageView;
   this.setupPlayer = function() {
-    var player = {
+    player = merge(player, {
       shooting: false,
       r: null,
-      bullet001: 300 // 300ms cooldown
-    };
+      bullet001: 5000 // ms cooldown
+    });
 
-    var playerImageView = new ui.ImageView({
+    playerImageView = new ui.ImageView({
       superview: this,
       autoSize: true,
       layout: "box",
@@ -42,7 +43,7 @@ exports = Class(ui.StackView, function(supr) {
     });
 
     this.on("InputStart", function(event, point) {
-      player.shooting = true;
+      player.shooting = 'bullet001';
     });
 
     this.on("InputOver", function(event, point) {
@@ -60,5 +61,37 @@ exports = Class(ui.StackView, function(supr) {
       player.r = pointAt;
       playerImageView.style.update({ r: pointAt });
     });
+  };
+
+  this.fireBullet = function(bulletName) {
+    new ui.ImageView({
+      superview: this,
+      image: "resources/images/" + bulletName + ".png",
+      autoSize: true,
+      layout: "box",
+      centerX: true,
+      centerY: true,
+      x: playerImageView.style.x,
+      y: playerImageView.style.y
+    });
+  };
+
+  this.tick = function(dt) {
+    // TODO: Cooldown all weapons
+    var shooting = player.shooting;
+
+    if (shooting) {
+      var cooldown = player[shooting],
+          nextShotInKey = shooting + '_nextShotIn',
+          nextShotIn = player[nextShotInKey] || 0;
+
+      nextShotIn -= dt;
+
+      if (nextShotIn <= 0) {
+        nextShotIn = cooldown;
+        this.fireBullet(shooting);
+      }
+      player[nextShotInKey] = nextShotIn;
+    }
   };
 });
