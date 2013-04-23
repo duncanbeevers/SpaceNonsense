@@ -6,6 +6,8 @@ import src.views.FillScreenImageView as FillScreenImageView;
 import src.views.BulletView as BulletView;
 import src.views.PlayerView as PlayerView;
 
+import src.lib.Box2dWeb_2_1_a_3 as Box2D;
+
 exports = Class(ui.StackView, function(supr) {
   this.init = function(opts) {
     opts = merge(opts, {
@@ -15,9 +17,48 @@ exports = Class(ui.StackView, function(supr) {
 
     supr(this, "init", [opts]);
 
+    // Pretty background, TODO: Change this, parallax or something
     this.setupBackground();
-    this.setupPlayer();
+
+    // Set up the world of the physics simulation
+    var world = this.setupPhysics();
+
+    // Add the player to the scene graph and physics simulation
+    this.setupPlayer(world);
   };
+
+
+
+
+
+
+
+
+
+  this.setupPhysics = function() {
+    // var contactListener = new FW.NamedContactListener();
+
+    var world = new Box2D.Dynamics.b2World(
+      new Box2D.Common.Math.b2Vec2(0, 0), // no gravity
+      true // allow sleep
+    );
+
+    // world.SetContactListener(contactListener);
+
+    // contactListener.registerContactListener(
+    //   "bullet001", "asteroid",
+    //   function(impact, bulletFixture, asteroidFixture) {
+    //   });
+
+    return world;
+  };
+
+
+
+
+
+
+
 
   this.setupBackground = function() {
     new FillScreenImageView({
@@ -27,14 +68,18 @@ exports = Class(ui.StackView, function(supr) {
   };
 
   var player, playerImageView;
-  this.setupPlayer = function() {
+  this.setupPlayer = function(world) {
+
+    // Create a placeholder for the player data
+    // TODO: Move all this functionality into a Player class
     player = merge(player, {
       shooting: false,
       r: null,
-      bullet001: 5000 // ms cooldown
+      bullet001: 300 // ms cooldown
     });
 
-    playerImageView = new PlayerView({ superview: this });
+
+    playerImageView = new PlayerView(world, { superview: this });
 
     this.on("InputStart", function(event, point) {
       player.shooting = 'bullet001';
@@ -45,16 +90,13 @@ exports = Class(ui.StackView, function(supr) {
     });
 
     this.on("InputMove", function(event, point) {
-      // playerImageView;
-      // this;
-      // event;
-      // point;
-      // debugger;
       var pointAt = Math.atan2(point.y - playerImageView.style.y, point.x - playerImageView.style.x);
 
       player.r = pointAt;
       playerImageView.style.update({ r: pointAt });
     });
+
+
   };
 
   this.fireBullet = function(bulletName) {
