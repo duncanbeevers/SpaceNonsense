@@ -36,8 +36,8 @@ exports = Class(GC.Application, function () {
       });
 
       gameplayView.style.update({
-        x : w / 2,
-        y : h / 2
+        width: w,
+        height: h
       });
     }
 

@@ -4,10 +4,9 @@ import ui.ImageView;
 exports = Class(ui.ImageView, function(supr) {
   this.init = function(opts) {
     opts = merge(opts, {
-      layout    : "box",
-      centerX   : true,
-      centerY   : true,
-      superview : GC.app.view
+      layout  : "box",
+      centerX : true,
+      centerY : true
     });
 
     supr(this, "init", [opts]);
@@ -15,10 +14,14 @@ exports = Class(ui.ImageView, function(supr) {
     var image       = this.getImage(),
         imageStyle  = this.style,
         imageWidth  = image.getWidth(),
-        imageHeight = image.getHeight();
+        imageHeight = image.getHeight(),
+        superview   = this.getSuperview();
 
     function rescaleFillScreenImage() {
-      var scale = Math.max(device.width / imageWidth, device.height / imageHeight);
+      var superviewStyle  = superview.style,
+          superviewWidth  = superview.style.width,
+          superviewHeight = superview.style.height,
+          scale           = Math.max(superviewWidth / imageWidth, superviewHeight / imageHeight);
 
       imageStyle.update({
         width  : imageWidth,
@@ -29,6 +32,6 @@ exports = Class(ui.ImageView, function(supr) {
 
     device.screen.subscribe("Resize", rescaleFillScreenImage);
 
-    rescaleFillScreenImage();
+    setTimeout(rescaleFillScreenImage);
   };
 });
