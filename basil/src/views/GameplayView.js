@@ -4,6 +4,7 @@ import ui.StackView;
 
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.views.BulletView as BulletView;
+import src.views.PlayerView as PlayerView;
 
 exports = Class(ui.StackView, function(supr) {
   this.init = function(opts) {
@@ -33,15 +34,7 @@ exports = Class(ui.StackView, function(supr) {
       bullet001: 5000 // ms cooldown
     });
 
-    playerImageView = new ui.ImageView({
-      superview: this,
-      autoSize: true,
-      layout: "box",
-      centerAnchor: true,
-      centerX: true,
-      centerY: true,
-      image: "resources/images/reference_25x25_compass.png"
-    });
+    playerImageView = new PlayerView({ superview: this });
 
     this.on("InputStart", function(event, point) {
       player.shooting = 'bullet001';
