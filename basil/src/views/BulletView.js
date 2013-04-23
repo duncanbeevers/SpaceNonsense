@@ -12,14 +12,13 @@ exports = Class(ui.ImageView, function(supr) {
       centerY: true
     });
 
+    supr(this, "init", [opts]);
+
+
     // this.trajectory = opts.trajectory;
     var trajectory = opts.trajectory;
-    this.dx = Math.cos(trajectory) * 0.4;
-    this.dy = Math.sin(trajectory) * 0.4;
 
     this.lifespan = 10000;
-
-    supr(this, "init", [opts]);
 
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
@@ -35,7 +34,7 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.y = this.style.y;
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
 
-    var impulseForce = 1;
+    var impulseForce = Math.random() * 5 + 2;
     this.fixture.GetBody().ApplyImpulse(
       new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
       new Box2D.Common.Math.b2Vec2(0, 0)
@@ -55,9 +54,6 @@ exports = Class(ui.ImageView, function(supr) {
     this.style.x = position.x;
     this.style.y = position.y;
 
-    console.log("position: %o %o", position.x, position.y);
-    // this.style.x += this.dx * dt;
-    // this.style.y += this.dy * dt;
     this.lifespan -= dt;
 
     // Remove self when lifespan is up,

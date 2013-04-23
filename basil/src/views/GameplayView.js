@@ -75,7 +75,7 @@ exports = Class(ui.StackView, function(supr) {
     player = merge(player, {
       shooting: false,
       r: null,
-      bullet001: 1000 // ms cooldown
+      bullet001: 500 // ms cooldown
     });
 
 
