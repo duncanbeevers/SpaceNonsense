@@ -25,6 +25,12 @@ exports = Class(ui.StackView, function(supr) {
   }
 
   this.setupPlayer = function() {
+    var player = {
+      shooting: false,
+      r: null,
+      bullet001: 300 // 300ms cooldown
+    };
+
     var playerImageView = new ui.ImageView({
       superview: this,
       autoSize: true,
@@ -35,9 +41,13 @@ exports = Class(ui.StackView, function(supr) {
       image: "resources/images/reference_25x25_compass.png"
     });
 
-    // this.on("InputStart", function(event, point) {
+    this.on("InputStart", function(event, point) {
+      player.shooting = true;
+    });
 
-    // });
+    this.on("InputOver", function(event, point) {
+      player.shooting = false;
+    });
 
     this.on("InputMove", function(event, point) {
       // playerImageView;
@@ -46,9 +56,9 @@ exports = Class(ui.StackView, function(supr) {
       // point;
       // debugger;
       var pointAt = Math.atan2(point.y - playerImageView.style.y, point.x - playerImageView.style.x);
-      playerImageView.style.update({
-        r: pointAt
-      });
+
+      player.r = pointAt;
+      playerImageView.style.update({ r: pointAt });
     });
   };
 });
