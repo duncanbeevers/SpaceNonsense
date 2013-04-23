@@ -10896,4 +10896,5 @@ var i;
 for (i = 0; i < Box2D.postDefs.length; ++i) Box2D.postDefs[i]();
 delete Box2D.postDefs;
 
+// Added to export Box2D namespace as jsio module
 exports = Box2D;
