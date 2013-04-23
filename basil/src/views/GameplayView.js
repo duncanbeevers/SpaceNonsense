@@ -3,6 +3,7 @@ import ui.resource.Image;
 import ui.StackView;
 
 import src.views.FillScreenImageView as FillScreenImageView;
+import src.views.BulletView as BulletView;
 
 exports = Class(ui.StackView, function(supr) {
   this.init = function(opts) {
@@ -64,15 +65,12 @@ exports = Class(ui.StackView, function(supr) {
   };
 
   this.fireBullet = function(bulletName) {
-    new ui.ImageView({
+    new BulletView(bulletName, {
       superview: this,
-      image: "resources/images/" + bulletName + ".png",
-      autoSize: true,
-      layout: "box",
-      centerX: true,
-      centerY: true,
+      bullet: bulletName,
       x: playerImageView.style.x,
-      y: playerImageView.style.y
+      y: playerImageView.style.y,
+      trajectory: player.r
     });
   };
 
