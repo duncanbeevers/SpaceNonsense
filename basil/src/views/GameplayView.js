@@ -21,10 +21,10 @@ exports = Class(ui.StackView, function(supr) {
     this.setupBackground();
 
     // Set up the world of the physics simulation
-    var world = this.setupPhysics();
+    this.setupPhysics();
 
     // Add the player to the scene graph and physics simulation
-    this.setupPlayer(world);
+    this.setupPlayer();
   };
 
 
@@ -43,14 +43,14 @@ exports = Class(ui.StackView, function(supr) {
       true // allow sleep
     );
 
+    this.world = world;
+
     // world.SetContactListener(contactListener);
 
     // contactListener.registerContactListener(
     //   "bullet001", "asteroid",
     //   function(impact, bulletFixture, asteroidFixture) {
     //   });
-
-    return world;
   };
 
 
@@ -68,18 +68,18 @@ exports = Class(ui.StackView, function(supr) {
   };
 
   var player, playerImageView;
-  this.setupPlayer = function(world) {
+  this.setupPlayer = function() {
 
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
     player = merge(player, {
       shooting: false,
       r: null,
-      bullet001: 300 // ms cooldown
+      bullet001: 1000 // ms cooldown
     });
 
 
-    playerImageView = new PlayerView(world, { superview: this });
+    playerImageView = new PlayerView(this.world, { superview: this });
 
     this.on("InputStart", function(event, point) {
       player.shooting = 'bullet001';
@@ -99,8 +99,8 @@ exports = Class(ui.StackView, function(supr) {
 
   };
 
-  this.fireBullet = function(bulletName) {
-    new BulletView(bulletName, {
+  this.fireBullet = function(bulletName, world) {
+    new BulletView(bulletName, world, {
       superview: this,
       bullet: bulletName,
       x: playerImageView.style.x,
@@ -122,9 +122,11 @@ exports = Class(ui.StackView, function(supr) {
 
       if (nextShotIn <= 0) {
         nextShotIn = cooldown;
-        this.fireBullet(shooting);
+        this.fireBullet(shooting, this.world);
       }
       player[nextShotInKey] = nextShotIn;
     }
+
+    this.world.Step(dt, 10, 10)
   };
 });
