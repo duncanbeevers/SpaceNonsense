@@ -5,6 +5,7 @@ import ui.StackView;
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.views.BulletView as BulletView;
 import src.views.PlayerView as PlayerView;
+import src.AsteroidGenerator as AsteroidGenerator;
 
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -25,6 +26,9 @@ exports = Class(ui.StackView, function(supr) {
 
     // Add the player to the scene graph and physics simulation
     this.setupPlayer();
+
+    // Make the Asteroid Generator
+    this.setupAsteroidGenerator();
   };
 
 
@@ -117,6 +121,15 @@ exports = Class(ui.StackView, function(supr) {
     });
   };
 
+
+
+  this.setupAsteroidGenerator = function() {
+    var asteroidGenerator = new AsteroidGenerator(this, this.player, this.world);
+    this.asteroidGenerator = asteroidGenerator;
+  };
+
+
+
   this.tick = function(dt) {
     // TODO: Cooldown all weapons
     var player = this.player,
@@ -137,5 +150,7 @@ exports = Class(ui.StackView, function(supr) {
     }
 
     this.world.Step(dt, 10, 10);
+    this.asteroidGenerator.processTime(dt);
   };
+
 });
