@@ -6,10 +6,7 @@ exports = Class(ui.ImageView, function(supr) {
   this.init = function(bulletName, world, opts) {
     opts = merge(opts, {
       image: "resources/images/" + bulletName + ".png",
-      autoSize: true,
-      layout: "box",
-      centerX: true,
-      centerY: true
+      autoSize: true
     });
 
     supr(this, "init", [opts]);
