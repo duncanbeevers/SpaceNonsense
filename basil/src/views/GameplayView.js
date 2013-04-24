@@ -69,32 +69,32 @@ exports = Class(ui.StackView, function(supr) {
 
   var player, playerImageView;
   this.setupPlayer = function() {
-
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
-    player = merge(player, {
+    var playerImageView = new PlayerView(this.world, { superview: this });
+    var player = merge(player, {
       shooting  : false,
       r         : null,
-      bullet001 : 500 // ms cooldown
+      bullet001 : 500, // ms cooldown
+      imageView: playerImageView
     });
 
-
-    playerImageView = new PlayerView(this.world, { superview: this });
+    this.player = player;
 
     this.on("InputSelect", function() {
-      player.shooting = false;
+      this.player.shooting = false;
     });
 
     this.on("DragStop", function() {
-      player.shooting = false;
+      this.player.shooting = false;
     });
 
     this.on("InputStart", function(event, point) {
-      player.shooting = 'bullet001';
+      this.player.shooting = 'bullet001';
     });
 
     this.on("InputOver", function(event, point) {
-      player.shooting = false;
+      this.player.shooting = false;
     });
 
     this.on("InputMove", function(event, point) {
@@ -103,24 +103,24 @@ exports = Class(ui.StackView, function(supr) {
       player.r = pointAt;
       playerImageView.style.update({ r: pointAt });
     });
-
-
-
   };
 
   this.fireBullet = function(bulletName, world) {
-    new BulletView(bulletName, world, {
+    var playerImageView = this.player.imageView,
+        trajectory = this.player.r;
+
+    new BulletView(bulletName, trajectory, world, {
       superview: this,
       bullet: bulletName,
       x: playerImageView.style.x,
       y: playerImageView.style.y,
-      trajectory: player.r
     });
   };
 
   this.tick = function(dt) {
     // TODO: Cooldown all weapons
-    var shooting = player.shooting;
+    var player = this.player,
+        shooting = player.shooting;
 
     if (shooting) {
       var cooldown = player[shooting],

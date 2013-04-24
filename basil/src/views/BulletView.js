@@ -3,17 +3,13 @@ import ui.ImageView;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.ImageView, function(supr) {
-  this.init = function(bulletName, world, opts) {
+  this.init = function(bulletName, trajectory, world, opts) {
     opts = merge(opts, {
       image: "resources/images/" + bulletName + ".png",
       autoSize: true
     });
 
     supr(this, "init", [opts]);
-
-
-    // this.trajectory = opts.trajectory;
-    var trajectory = opts.trajectory;
 
     this.lifespan = 10000;
 
