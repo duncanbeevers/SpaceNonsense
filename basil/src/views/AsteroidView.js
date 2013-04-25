@@ -38,15 +38,16 @@ exports = Class(ui.ImageView, function(supr) {
         radius = this.radius;
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
-    fixtureDef.density = 1;
+    fixtureDef.density = 0.1;
     fixtureDef.friction = 0.6;
-    fixtureDef.restitution = 0.1;
+    fixtureDef.restitution = 0.4;
 
     fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
     var bodyDef = new Box2D.Dynamics.b2BodyDef();
     bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
+
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.style.width = radius * 2;
     this.style.height = radius * 2;
