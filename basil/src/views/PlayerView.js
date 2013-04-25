@@ -26,4 +26,9 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.y = this.style.y;
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
   };
+
+  this.tick = function(dt) {
+    this.style.offsetX = -this.style.width / 2;
+    this.style.offsetY = -this.style.height / 2;
+  };
 });
