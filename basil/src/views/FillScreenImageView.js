@@ -19,13 +19,17 @@ exports = Class(ui.ImageView, function(supr) {
 
     function rescaleFillScreenImage() {
       var superviewStyle  = superview.style,
-          superviewWidth  = superview.style.width,
-          superviewHeight = superview.style.height,
+          superviewWidth  = superviewStyle.width,
+          superviewHeight = superviewStyle.height,
+          superviewOffsetX = superviewStyle.offsetX,
+          superviewOffsetY = superviewStyle.offsetY,
           scale           = Math.max(superviewWidth / imageWidth, superviewHeight / imageHeight);
 
       imageStyle.update({
         width  : imageWidth,
         height : imageHeight,
+        offsetX : -superviewOffsetX,
+        offsetY : -superviewOffsetY,
         scale  : scale
       });
     };
