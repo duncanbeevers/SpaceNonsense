@@ -13,6 +13,7 @@ exports = Class(ui.ImageView, function(supr) {
 
     supr(this, "init", [opts]);
 
+    this.name = "Asteroid";
     this.player = player;
     this.world = world;
 
@@ -49,6 +50,8 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.y = this.style.y;
 
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
+    this.fixture.SetUserData(this);
+
     this.style.width = radius * 2;
     this.style.height = radius * 2;
   };

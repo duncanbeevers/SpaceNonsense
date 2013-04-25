@@ -5,6 +5,7 @@ import src.views.BulletView as BulletView;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.ImageView, function(supr) {
+  // Collision name
   this.init = function(world, opts) {
     opts = merge(opts, {
       layout: "box",
@@ -13,6 +14,8 @@ exports = Class(ui.ImageView, function(supr) {
     });
 
     supr(this, "init", [opts]);
+
+    this.name = "Player";
 
     this.radius = 1; // meters radius
     this.weapons = [

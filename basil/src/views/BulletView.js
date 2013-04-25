@@ -12,6 +12,7 @@ exports = Class(ui.ImageView, function(supr) {
 
     supr(this, "init", [opts]);
 
+    this.name = bulletName;
     this.radius = 0.3;
     this.lifespan = 10000;
 
@@ -40,6 +41,7 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
+    this.fixture.SetUserData(this);
   };
 
   this.removeFromPhysics = function() {
