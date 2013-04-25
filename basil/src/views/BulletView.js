@@ -15,16 +15,10 @@ exports = Class(ui.ImageView, function(supr) {
     this.name = bulletName;
     this.radius = 0.3;
     this.lifespan = 10000;
+    this.trajectory = trajectory;
 
     this.world = world;
     this.setupPhysics();
-
-    // Apply initial impulse to get the bullet going in the right direction
-    var impulseForce = 10; // Math.random() * 5 + 30;
-    this.fixture.GetBody().ApplyImpulse(
-      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(0, 0)
-    );
   };
 
   this.setupPhysics = function() {
@@ -53,6 +47,16 @@ exports = Class(ui.ImageView, function(supr) {
   this.tick = function(dt) {
     var body = this.fixture.GetBody(),
         position = body.GetPosition();
+
+
+    // Apply initial impulse to get the bullet going in the right direction
+    var impulseForce = 1, // Math.random() * 5 + 30;
+        trajectory = this.trajectory;
+    body.ClearForces();
+    body.ApplyForce(
+      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
+      new Box2D.Common.Math.b2Vec2(position.x, position.y)
+    );
 
     this.style.x = position.x;
     this.style.y = position.y;
