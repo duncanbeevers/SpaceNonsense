@@ -48,6 +48,8 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
+    this.style.width = radius * 2;
+    this.style.height = radius * 2;
   };
 
   this.tick = function(dt) {
