@@ -24,8 +24,8 @@ exports = Class(GC.Application, function () {
           h = device.height;
 
       rootView.style.update({
-        width  : w,
-        height : h
+        width: w,
+        height: h
       });
 
       gameplayView.style.update({

@@ -3,7 +3,6 @@ import ui.resource.Image;
 import ui.View;
 
 import src.views.FillScreenImageView as FillScreenImageView;
-import src.views.BulletView as BulletView;
 import src.views.PlayerView as PlayerView;
 import src.AsteroidGenerator as AsteroidGenerator;
 
@@ -24,7 +23,8 @@ exports = Class(ui.View, function(supr) {
     // Panning surface for graphics
     this.playfield = new ui.View({
       superview: this,
-      layout: "box"
+      layout: "box",
+      scale: 10
     });
 
     // Set up the world of the physics simulation
@@ -36,9 +36,6 @@ exports = Class(ui.View, function(supr) {
     // Make the Asteroid Generator
     this.setupAsteroidGenerator();
   };
-
-
-
 
 
 
@@ -82,53 +79,35 @@ exports = Class(ui.View, function(supr) {
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
     var playerImageView = new PlayerView(this.world, { superview: this.playfield });
-    var player = merge(player, {
-      shooting  : false,
-      r         : null,
-      bullet001 : 100, // ms cooldown
-      imageView: playerImageView
-    });
 
-    this.player = player;
+    this.player = playerImageView;
 
     this.on("InputSelect", function() {
-      this.player.shooting = false;
+      this.playerShooting = false;
     });
 
     this.on("DragStop", function() {
-      this.player.shooting = false;
+      this.playerShooting = false;
     });
 
     this.on("InputStart", function(event, point) {
-      this.player.shooting = 'bullet001';
+      this.playerShooting = 'bullet001';
     });
 
     this.on("InputOver", function(event, point) {
-      this.player.shooting = false;
+      this.playerShooting = false;
     });
 
     this.on("InputMove", function(event, point) {
       var pointAt = Math.atan2(
-        point.y - playerImageView.style.y - this.playfield.style.y,
-        point.x - playerImageView.style.x - this.playfield.style.x
+        point.y - this.player.style.y - this.playfield.style.y,
+        point.x - this.player.style.x - this.playfield.style.x
       );
 
-      player.r = pointAt;
-      playerImageView.style.update({ r: pointAt });
+      this.player.style.r = pointAt;
     });
-  };
 
-  this.fireBullet = function(bulletName, world) {
-    var playerImageView = this.player.imageView,
-        trajectory = this.player.r;
 
-    var bulletDistance = playerImageView.style.width;
-    new BulletView(bulletName, trajectory, world, {
-      superview: this.playfield,
-      bullet: bulletName,
-      x: playerImageView.style.x + Math.cos(trajectory) * bulletDistance,
-      y: playerImageView.style.y + Math.sin(trajectory) * bulletDistance
-    });
   };
 
 
@@ -142,30 +121,35 @@ exports = Class(ui.View, function(supr) {
 
   this.tick = function(dt) {
     // TODO: Cooldown all weapons
-    var player = this.player,
-        shooting = player.shooting;
+    // var player = this.player,
+    //     shooting = player.shooting;
 
-    if (shooting) {
-      var cooldown = player[shooting],
-          nextShotInKey = shooting + '_nextShotIn',
-          nextShotIn = player[nextShotInKey] || 0;
+    // if (shooting) {
+    //   var cooldown = player[shooting],
+    //       nextShotInKey = shooting + '_nextShotIn',
+    //       nextShotIn = player[nextShotInKey] || 0;
 
-      nextShotIn -= dt;
+    //   nextShotIn -= dt;
 
-      if (nextShotIn <= 0) {
-        nextShotIn = cooldown;
-        this.fireBullet(shooting, this.world);
-      }
-      player[nextShotInKey] = nextShotIn;
-    }
+    //   if (nextShotIn <= 0) {
+    //     nextShotIn = cooldown;
+    //     this.fireBullet(shooting, this.world);
+    //   }
+    //   player[nextShotInKey] = nextShotIn;
+    // }
 
-    this.world.Step(dt, 10, 10);
     this.asteroidGenerator.processTime(dt);
 
     this.playfield.style.update({
       x: this.style.width / 2,
       y: this.style.height / 2
     });
+
+    if (this.playerShooting) {
+      this.player.shoot();
+    }
+
+    this.world.Step(dt, 10, 10);
   };
 
 });

@@ -15,7 +15,7 @@ exports = Class(function(supr) {
   this.processTime = function(dt) {
     this.nextAsteroidIn -= dt;
     if (this.nextAsteroidIn <= 0) {
-      this.nextAsteroidIn = 200; // ms
+      this.nextAsteroidIn = 5000; // ms
       this.spawnAsteroid();
     }
   };

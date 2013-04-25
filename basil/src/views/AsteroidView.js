@@ -21,11 +21,11 @@ exports = Class(ui.ImageView, function(supr) {
   };
 
   this.setupAsteroid = function() {
-    var radius = FW.Math.random(10, 20),
-        distanceFromPlayer = FW.Math.random(100, 200),
+    var radius = FW.Math.random(3, 5),
+        distanceFromPlayer = FW.Math.random(5, 10),
         approachAngle = FW.Math.random(FW.Math.TWO_PI),
-        playerX = this.player.imageView.style.x,
-        playerY = this.player.imageView.style.x;
+        playerX = this.player.style.x,
+        playerY = this.player.style.x;
 
     this.style.x = Math.cos(approachAngle) * distanceFromPlayer + playerX;
     this.style.y = Math.sin(approachAngle) * distanceFromPlayer + playerY;
@@ -38,9 +38,9 @@ exports = Class(ui.ImageView, function(supr) {
         radius = this.radius;
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
-    fixtureDef.density = 0.1;
-    fixtureDef.friction = 0.6;
-    fixtureDef.restitution = 0.4;
+    fixtureDef.density = 20;
+    fixtureDef.friction = 0.2;
+    fixtureDef.restitution = 1;
 
     fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
     var bodyDef = new Box2D.Dynamics.b2BodyDef();

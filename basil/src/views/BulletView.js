@@ -6,20 +6,20 @@ exports = Class(ui.ImageView, function(supr) {
   this.init = function(bulletName, trajectory, world, opts) {
     opts = merge(opts, {
       image: "resources/images/" + bulletName + ".png",
-      autoSize: true,
       centerAnchor: true,
       layout: "box"
     });
 
     supr(this, "init", [opts]);
 
+    this.radius = 0.3;
     this.lifespan = 10000;
 
     this.world = world;
     this.setupPhysics();
 
     // Apply initial impulse to get the bullet going in the right direction
-    var impulseForce = Math.random() * 5 + 2;
+    var impulseForce = 10; // Math.random() * 5 + 30;
     this.fixture.GetBody().ApplyImpulse(
       new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
       new Box2D.Common.Math.b2Vec2(0, 0)
@@ -30,12 +30,11 @@ exports = Class(ui.ImageView, function(supr) {
     var world = this.world;
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
-    fixtureDef.density = 1;
-    fixtureDef.friction = 0.6;
-    fixtureDef.restitution = 0.8;
+    fixtureDef.density = 0.1;
+    fixtureDef.friction = 0.2;
+    fixtureDef.restitution = 1;
 
-    // TODO: Make the shape match the graphic size?
-    fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(4);
+    fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(this.radius);
     var bodyDef = new Box2D.Dynamics.b2BodyDef();
     bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
     bodyDef.position.x = this.style.x;
@@ -54,8 +53,10 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.style.x = position.x;
     this.style.y = position.y;
-    this.style.offsetX = -this.style.width / 2;
-    this.style.offsetY = -this.style.height / 2;
+    this.style.width = this.radius * 2;
+    this.style.height = this.radius * 2;
+    this.style.offsetX = -this.radius;
+    this.style.offsetY = -this.radius;
 
     this.lifespan -= dt;
 
