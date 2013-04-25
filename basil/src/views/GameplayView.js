@@ -122,11 +122,12 @@ exports = Class(ui.View, function(supr) {
     var playerImageView = this.player.imageView,
         trajectory = this.player.r;
 
+    var bulletDistance = playerImageView.style.width;
     new BulletView(bulletName, trajectory, world, {
       superview: this.playfield,
       bullet: bulletName,
-      x: playerImageView.style.x,
-      y: playerImageView.style.y,
+      x: playerImageView.style.x + Math.cos(trajectory) * bulletDistance,
+      y: playerImageView.style.y + Math.sin(trajectory) * bulletDistance
     });
   };
 
