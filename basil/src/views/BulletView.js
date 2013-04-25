@@ -32,7 +32,7 @@ exports = Class(ui.ImageView, function(supr) {
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
     fixtureDef.density = 1;
     fixtureDef.friction = 0.6;
-    fixtureDef.restitution = 0.1;
+    fixtureDef.restitution = 0.8;
 
     // TODO: Make the shape match the graphic size?
     fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(4);
