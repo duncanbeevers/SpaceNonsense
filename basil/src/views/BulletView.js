@@ -46,7 +46,6 @@ exports = Class(ui.ImageView, function(supr) {
   this.removeFromPhysics = function() {
     var body = this.fixture.GetBody();
     body.GetWorld().DestroyBody(body);
-    // TODO: Remove dead physics bodies from simulation
   }
 
   this.tick = function(dt) {
