@@ -6,7 +6,9 @@ exports = Class(ui.ImageView, function(supr) {
   this.init = function(bulletName, trajectory, world, opts) {
     opts = merge(opts, {
       image: "resources/images/" + bulletName + ".png",
-      autoSize: true
+      autoSize: true,
+      centerAnchor: true,
+      layout: "box"
     });
 
     supr(this, "init", [opts]);
@@ -53,6 +55,8 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.style.x = position.x;
     this.style.y = position.y;
+    this.style.offsetX = -this.style.width / 2;
+    this.style.offsetY = -this.style.height / 2;
 
     this.lifespan -= dt;
 

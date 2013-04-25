@@ -5,16 +5,13 @@ import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 exports = Class(ui.ImageView, function(supr) {
   this.init = function(world, opts) {
     opts = merge(opts, {
-      autoSize: true,
       layout: "box",
+      autoSize: true,
       centerAnchor: true,
-      centerX: true,
-      centerY: true,
       image: "resources/images/reference_25x25_compass.png"
     });
 
     supr(this, "init", [opts]);
-
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
     fixtureDef.density = 1;

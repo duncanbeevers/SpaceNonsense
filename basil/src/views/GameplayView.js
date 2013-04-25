@@ -1,6 +1,6 @@
 import ui.ImageView;
 import ui.resource.Image;
-import ui.StackView;
+import ui.View;
 
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.views.BulletView as BulletView;
@@ -9,7 +9,7 @@ import src.AsteroidGenerator as AsteroidGenerator;
 
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
-exports = Class(ui.StackView, function(supr) {
+exports = Class(ui.View, function(supr) {
   this.init = function(opts) {
     opts = merge(opts, {
       width: 576,
@@ -20,6 +20,12 @@ exports = Class(ui.StackView, function(supr) {
 
     // Pretty background, TODO: Change this, parallax or something
     this.setupBackground();
+
+    // Panning surface for graphics
+    this.playfield = new ui.View({
+      superview: this,
+      layout: "box"
+    });
 
     // Set up the world of the physics simulation
     this.setupPhysics();
@@ -75,7 +81,7 @@ exports = Class(ui.StackView, function(supr) {
   this.setupPlayer = function() {
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
-    var playerImageView = new PlayerView(this.world, { superview: this });
+    var playerImageView = new PlayerView(this.world, { superview: this.playfield });
     var player = merge(player, {
       shooting  : false,
       r         : null,
@@ -102,7 +108,10 @@ exports = Class(ui.StackView, function(supr) {
     });
 
     this.on("InputMove", function(event, point) {
-      var pointAt = Math.atan2(point.y - playerImageView.style.y, point.x - playerImageView.style.x);
+      var pointAt = Math.atan2(
+        point.y - playerImageView.style.y - this.playfield.style.y,
+        point.x - playerImageView.style.x - this.playfield.style.x
+      );
 
       player.r = pointAt;
       playerImageView.style.update({ r: pointAt });
@@ -114,7 +123,7 @@ exports = Class(ui.StackView, function(supr) {
         trajectory = this.player.r;
 
     new BulletView(bulletName, trajectory, world, {
-      superview: this,
+      superview: this.playfield,
       bullet: bulletName,
       x: playerImageView.style.x,
       y: playerImageView.style.y,
@@ -124,7 +133,7 @@ exports = Class(ui.StackView, function(supr) {
 
 
   this.setupAsteroidGenerator = function() {
-    var asteroidGenerator = new AsteroidGenerator(this, this.player, this.world);
+    var asteroidGenerator = new AsteroidGenerator(this.playfield, this.player, this.world);
     this.asteroidGenerator = asteroidGenerator;
   };
 
@@ -151,6 +160,11 @@ exports = Class(ui.StackView, function(supr) {
 
     this.world.Step(dt, 10, 10);
     this.asteroidGenerator.processTime(dt);
+
+    this.playfield.style.update({
+      x: this.style.width / 2,
+      y: this.style.height / 2
+    });
   };
 
 });

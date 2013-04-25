@@ -7,7 +7,8 @@ exports = Class(ui.ImageView, function(supr) {
   this.init = function(player, world, opts) {
     opts = merge(opts, {
       image: "resources/images/asteroid001.png",
-      autoSize: true
+      layout: "box",
+      centerAnchor: true
     });
 
     supr(this, "init", [opts]);
@@ -55,5 +56,7 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.style.x = position.x;
     this.style.y = position.y;
+    this.style.offsetX = -this.style.width / 2;
+    this.style.offsetY = -this.style.height / 2;
   };
 });
