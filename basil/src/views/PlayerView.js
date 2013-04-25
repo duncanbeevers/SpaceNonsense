@@ -30,7 +30,7 @@ exports = Class(ui.ImageView, function(supr) {
 
   this.setupPhysics = function() {
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
-    fixtureDef.density = 1;
+    fixtureDef.density = 50;
     fixtureDef.friction = 0.6;
     fixtureDef.restitution = 0.1;
 

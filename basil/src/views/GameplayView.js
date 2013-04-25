@@ -102,8 +102,8 @@ exports = Class(ui.View, function(supr) {
 
     this.on("InputMove", function(event, point) {
       var pointAt = Math.atan2(
-        point.y - this.player.style.y - this.playfield.style.y,
-        point.x - this.player.style.x - this.playfield.style.x
+        point.y - this.player.style.y * this.playfield.style.scale - this.playfield.style.y,
+        point.x - this.player.style.x * this.playfield.style.scale - this.playfield.style.x
       );
 
       this.player.style.r = pointAt;
@@ -143,8 +143,8 @@ exports = Class(ui.View, function(supr) {
     this.asteroidGenerator.processTime(dt);
 
     this.playfield.style.update({
-      x: this.style.width / 2,
-      y: this.style.height / 2
+      x: this.style.width / 2 - this.player.style.x * this.playfield.style.scale,
+      y: this.style.height / 2 - this.player.style.y * this.playfield.style.scale
     });
 
     if (this.playerShooting) {
