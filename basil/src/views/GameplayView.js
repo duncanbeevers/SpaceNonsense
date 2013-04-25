@@ -6,6 +6,7 @@ import src.views.FillScreenImageView as FillScreenImageView;
 import src.views.PlayerView as PlayerView;
 import src.AsteroidGenerator as AsteroidGenerator;
 
+import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.View, function(supr) {
@@ -43,7 +44,7 @@ exports = Class(ui.View, function(supr) {
 
 
   this.setupPhysics = function() {
-    // var contactListener = new FW.NamedContactListener();
+    var contactListener = new FW.NamedContactListener();
 
     var world = new Box2D.Dynamics.b2World(
       new Box2D.Common.Math.b2Vec2(0, 0), // no gravity
@@ -52,12 +53,13 @@ exports = Class(ui.View, function(supr) {
 
     this.world = world;
 
-    // world.SetContactListener(contactListener);
+    world.SetContactListener(contactListener);
 
-    // contactListener.registerContactListener(
-    //   "bullet001", "asteroid",
-    //   function(impact, bulletFixture, asteroidFixture) {
-    //   });
+    contactListener.registerContactListener(
+      "bullet001", "Asteroid",
+      function(impact, bulletFixture, asteroidFixture) {
+        // Handle impact
+      });
   };
 
 
