@@ -85,7 +85,7 @@ exports = Class(ui.View, function(supr) {
     var player = merge(player, {
       shooting  : false,
       r         : null,
-      bullet001 : 500, // ms cooldown
+      bullet001 : 100, // ms cooldown
       imageView: playerImageView
     });
 
