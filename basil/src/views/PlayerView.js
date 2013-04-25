@@ -39,6 +39,7 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
+    bodyDef.linearDamping = 0.1;
     this.fixture = this.world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.fixture.SetUserData(this);
   };
