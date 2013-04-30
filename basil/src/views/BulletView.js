@@ -13,7 +13,7 @@ exports = Class(ui.ImageView, function(supr) {
     supr(this, "init", [opts]);
 
     this.name = bulletName;
-    this.radius = 0.3;
+    this.radius = 0.6;
     this.lifespan = 10000;
     this.trajectory = trajectory;
 
@@ -42,7 +42,7 @@ exports = Class(ui.ImageView, function(supr) {
   this.removeFromPhysics = function() {
     var body = this.fixture.GetBody();
     body.GetWorld().DestroyBody(body);
-  }
+  };
 
   this.tick = function(dt) {
     var body = this.fixture.GetBody(),

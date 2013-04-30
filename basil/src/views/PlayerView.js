@@ -1,6 +1,6 @@
 import ui.ImageView;
 
-import src.views.BulletView as BulletView;
+import src.models.Bullet as Bullet;
 
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -16,14 +16,7 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.name = "Player";
 
-    this.radius = 3; // meters radius
-    this.weapons = [
-      { image: 'bullet001',
-        cooldown: 200
-      }
-    ];
-    this.currentWeaponIndex = 0;
-
+    this.radius = 2; // meters radius
     this.world = world;
     this.setupPhysics();
   };
@@ -44,19 +37,7 @@ exports = Class(ui.ImageView, function(supr) {
     this.fixture.SetUserData(this);
   };
 
-  this.cooldownWeapons = function(dt) {
-    var weapon;
-    for (var i = this.weapons.length - 1; i >= 0; i--) {
-      weapon = this.weapons[i];
-      if (weapon.cooldownRemaining) {
-        weapon.cooldownRemaining -= Math.min(weapon.cooldownRemaining, dt);
-      }
-    }
-  };
-
   this.tick = function(dt) {
-    this.cooldownWeapons(dt);
-
     var body = this.fixture.GetBody(),
         position = body.GetPosition();
 
@@ -69,20 +50,14 @@ exports = Class(ui.ImageView, function(supr) {
     this.style.offsetY = -this.radius;
   };
 
+  this.shoot = function(weapon) {
+    var trajectory = this.style.r,
+        bulletDistance = this.radius * 1.1;
 
-  this.shoot = function() {
-    var weapon = this.weapons[this.currentWeaponIndex];
-    if (!weapon.cooldownRemaining) {
-      weapon.cooldownRemaining = weapon.cooldown;
-
-      var trajectory = this.style.r,
-          bulletDistance = this.radius * 1.1;
-
-      new BulletView(weapon.image, trajectory, this.world, {
-        superview: this.getSuperview(),
-        x: this.style.x + Math.cos(trajectory) * bulletDistance,
-        y: this.style.y + Math.sin(trajectory) * bulletDistance
-      });
-    }
+    // TODO: Recycle Bullet objects
+    new Bullet(weapon.image, trajectory, this.world, this.getSuperview(),
+      this.style.x + Math.cos(trajectory) * bulletDistance,
+      this.style.y + Math.sin(trajectory) * bulletDistance
+    );
   };
 });

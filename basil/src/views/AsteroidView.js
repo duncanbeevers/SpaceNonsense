@@ -35,11 +35,10 @@ exports = Class(ui.ImageView, function(supr) {
     var radius = FW.Math.random(3, 5),
         distanceFromPlayer = FW.Math.random(10, 20),
         approachAngle = FW.Math.random(FW.Math.TWO_PI),
-        playerX = this.player.style.x,
-        playerY = this.player.style.x;
+        playerPosition = this.player.getPosition();
 
-    this.style.x = Math.cos(approachAngle) * distanceFromPlayer + playerX;
-    this.style.y = Math.sin(approachAngle) * distanceFromPlayer + playerY;
+    this.style.x = Math.cos(approachAngle) * distanceFromPlayer + playerPosition.x;
+    this.style.y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y;
 
     this.radius = radius;
   };
@@ -76,7 +75,8 @@ exports = Class(ui.ImageView, function(supr) {
     this.style.offsetY = -this.style.height / 2;
 
     var impulseForce = dt / 10000,
-        trajectory = Math.atan2(this.player.style.y - this.style.y, this.player.style.x - this.style.x);
+        playerPosition = this.player.getPosition(),
+        trajectory = Math.atan2(playerPosition.y - this.style.y, playerPosition.x - this.style.x);
 
     body.ClearForces();
     body.ApplyForce(

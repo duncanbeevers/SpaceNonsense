@@ -1,4 +1,4 @@
-import src.views.AsteroidView as AsteroidView;
+import src.models.Asteroid as Asteroid;
 
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -21,8 +21,6 @@ exports = Class(function(supr) {
   };
 
   this.spawnAsteroid = function() {
-    var asteroid = new AsteroidView(this.player, this.world, {
-      superview: this.superview
-    });
+    var asteroid = new Asteroid(this.player, this.world, this.superview);
   };
 });
