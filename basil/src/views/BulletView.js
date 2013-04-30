@@ -19,6 +19,18 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.world = world;
     this.setupPhysics();
+
+
+    // Apply initial impulse to get the bullet going in the right direction
+    var body = this.fixture.GetBody(),
+        position = body.GetPosition(),
+        impulseForce = 1, // Math.random() * 5 + 30;
+        trajectory = this.trajectory;
+    body.ApplyImpulse(
+      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
+      new Box2D.Common.Math.b2Vec2(position.x, position.y)
+    );
+
   };
 
   this.setupPhysics = function() {
@@ -49,14 +61,14 @@ exports = Class(ui.ImageView, function(supr) {
         position = body.GetPosition();
 
 
-    // Apply initial impulse to get the bullet going in the right direction
-    var impulseForce = 1, // Math.random() * 5 + 30;
-        trajectory = this.trajectory;
-    body.ClearForces();
-    body.ApplyForce(
-      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(position.x, position.y)
-    );
+    // // Apply initial impulse to get the bullet going in the right direction
+    // var impulseForce = 1, // Math.random() * 5 + 30;
+    //     trajectory = this.trajectory;
+    // body.ClearForces();
+    // body.ApplyForce(
+    //   new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
+    //   new Box2D.Common.Math.b2Vec2(position.x, position.y)
+    // );
 
     this.style.x = position.x;
     this.style.y = position.y;

@@ -136,7 +136,7 @@ exports = Class(ui.View, function(supr) {
       this.player.shoot();
     }
 
-    this.world.Step(20, 10, 10);
+    this.world.Step(0.1, 10, 10);
   };
 
 });

@@ -57,6 +57,7 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
+    bodyDef.angularDamping = 0.01;
 
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.fixture.SetUserData(this);
@@ -73,15 +74,17 @@ exports = Class(ui.ImageView, function(supr) {
     this.style.y = position.y;
     this.style.offsetX = -this.style.width / 2;
     this.style.offsetY = -this.style.height / 2;
+    this.style.r = body.GetAngle();
 
-    var impulseForce = dt / 10000,
-        playerPosition = this.player.getPosition(),
+    var playerPosition = this.player.getPosition(),
+        playerDistance = FW.Math.distance(playerPosition.x, playerPosition.y, this.style.x, this.style.y),
+        impulseForce = dt / 2000 / Math.min(1, playerDistance),
         trajectory = Math.atan2(playerPosition.y - this.style.y, playerPosition.x - this.style.x);
 
     body.ClearForces();
     body.ApplyForce(
       new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(this.style.x, this.style.y)
+      new Box2D.Common.Math.b2Vec2(position.x, position.y)
     );
   };
 });
