@@ -23,7 +23,7 @@ exports = Class(ui.ImageView, function(supr) {
 
   this.setupPhysics = function() {
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
-    fixtureDef.density = 50;
+    fixtureDef.density = 5;
     fixtureDef.friction = 0.6;
     fixtureDef.restitution = 0.1;
 
@@ -33,6 +33,7 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
     bodyDef.linearDamping = 0.1;
+    bodyDef.angularDamping = 1;
     this.fixture = this.world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.fixture.SetUserData(this);
   };
