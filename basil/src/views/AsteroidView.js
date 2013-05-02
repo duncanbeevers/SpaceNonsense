@@ -80,7 +80,7 @@ exports = Class(ui.ImageView, function(supr) {
 
     var playerPosition = this.player.getPosition(),
         playerDistance = FW.Math.distance(playerPosition.x, playerPosition.y, this.style.x, this.style.y),
-        impulseForce = dt / 2000 / Math.min(1, playerDistance),
+        impulseForce = 100 / Math.min(1, Math.sqrt(playerDistance)),
         trajectory = Math.atan2(playerPosition.y - this.style.y, playerPosition.x - this.style.x);
 
     body.ClearForces();
