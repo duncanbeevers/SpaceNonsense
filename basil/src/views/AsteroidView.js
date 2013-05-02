@@ -50,7 +50,7 @@ exports = Class(ui.ImageView, function(supr) {
         radius = this.radius;
 
     var fixtureDef = new Box2D.Dynamics.b2FixtureDef();
-    fixtureDef.density = 1
+    fixtureDef.density = 1;
     fixtureDef.friction = 0.2;
     fixtureDef.restitution = 1;
 
