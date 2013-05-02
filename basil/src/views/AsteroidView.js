@@ -19,16 +19,6 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.setupAsteroid();
     this.setupPhysics();
-
-    // Apply initial impulse to get the asteroid moving
-    var trajectory = FW.Math.random(FW.Math.TWO_PI),
-        impulseForce = 10; // Math.random() * 5 + 30;
-    var body = this.fixture.GetBody();
-
-    this.fixture.GetBody().ApplyImpulse(
-      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(0, 0)
-    );
   };
 
   this.setupAsteroid = function() {
@@ -63,6 +53,18 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.fixture.SetUserData(this);
+
+    // Apply initial impulse to get the asteroid moving
+    var body = this.fixture.GetBody(),
+        position = body.GetPosition(),
+        playerPosition = this.player.getPosition(),
+        trajectory = Math.atan2(position.x - playerPosition.x, position.y - playerPosition.y),
+        impulseForce = 1000; // Math.random() * 5 + 30;
+
+    this.fixture.GetBody().ApplyImpulse(
+      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
+      new Box2D.Common.Math.b2Vec2(position.x, position.y)
+    );
 
   };
 
