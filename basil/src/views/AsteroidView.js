@@ -39,6 +39,8 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.style.x = Math.cos(approachAngle) * distanceFromPlayer + playerPosition.x;
     this.style.y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y;
+    this.style.width = radius * 2;
+    this.style.height = radius * 2;
 
     this.radius = radius;
   };
@@ -62,8 +64,6 @@ exports = Class(ui.ImageView, function(supr) {
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.fixture.SetUserData(this);
 
-    this.style.width = radius * 2;
-    this.style.height = radius * 2;
   };
 
   this.tick = function(dt) {
