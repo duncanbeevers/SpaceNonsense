@@ -6,6 +6,7 @@ import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player as Player;
 import src.AsteroidGenerator as AsteroidGenerator;
 
+import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -125,11 +126,14 @@ exports = Class(ui.View, function(supr) {
     this.player.processTime(dt);
     this.asteroidGenerator.processTime(dt);
 
-    var playerPosition = this.player.getPosition();
+    var playerPosition = this.player.getPosition(),
+        furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
+        playfieldScale = FW.GameClosureDevice.getMinDimension() / 2 / furthestAsteroidDistance;
 
     this.playfield.style.update({
-      x: this.style.width / 2 - playerPosition.x * this.playfield.style.scale,
-      y: this.style.height / 2 - playerPosition.y * this.playfield.style.scale
+      scale: playfieldScale,
+      x: this.style.width / 2 - playerPosition.x * playfieldScale,
+      y: this.style.height / 2 - playerPosition.y * playfieldScale
     });
 
     if (this.playerShooting) {
