@@ -18,4 +18,8 @@ exports = Class(function(supr) {
     this.asteroidFilter = asteroidFilter;
     asteroidView.addFilter(asteroidFilter);
   };
+
+  this.getPosition = function() {
+    return { x: this.asteroidView.style.x, y: this.asteroidView.style.y };
+  };
 });
