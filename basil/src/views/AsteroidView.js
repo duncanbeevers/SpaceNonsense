@@ -50,6 +50,7 @@ exports = Class(ui.ImageView, function(supr) {
     bodyDef.position.x = this.style.x;
     bodyDef.position.y = this.style.y;
     bodyDef.angularDamping = 0.01;
+    bodyDef.linearDamping = 0.01;
 
     this.fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     this.fixture.SetUserData(this);
