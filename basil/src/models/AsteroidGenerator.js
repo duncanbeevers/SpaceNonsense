@@ -1,4 +1,4 @@
-import src.models.Asteroid as Asteroid;
+import src.models.Asteroid.Asteroid as Asteroid;
 
 import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
