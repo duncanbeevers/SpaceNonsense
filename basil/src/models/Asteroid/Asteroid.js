@@ -1,6 +1,6 @@
 from ui.filter import MultiplyFilter;
 
-import src.views.AsteroidView as AsteroidView;
+import src.models.Asteroid.AsteroidView as AsteroidView;
 
 exports = Class(function(supr) {
   this.init = function(player, world, superview) {
