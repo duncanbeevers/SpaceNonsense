@@ -141,7 +141,7 @@ exports = Class(ui.View, function(supr) {
   this.setupPlayer = function() {
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
-    var player = new Player(this.world, this.playfield);
+    var player = new Player(this.dispatcher, this.world, this.playfield);
 
     this.player = player;
 

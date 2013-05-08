@@ -3,7 +3,7 @@ import src.models.Player.PlayerView as PlayerView;
 exports = Class(function(supr) {
   this.name = "Player";
 
-  this.init = function(world, superview) {
+  this.init = function(dispatcher, world, superview) {
     this.weapons = [
       { image: 'bullet001',
         cooldown: 200
@@ -12,6 +12,7 @@ exports = Class(function(supr) {
     this.currentWeaponIndex = 0;
 
     // this.playerPhysics = new PlayerPhysics(world);
+    this.dispatcher = dispatcher;
     this.playerView = new PlayerView(world, { superview: superview });
   };
 
