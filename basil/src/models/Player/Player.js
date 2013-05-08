@@ -1,6 +1,8 @@
 import src.views.PlayerView as PlayerView;
 
 exports = Class(function(supr) {
+  this.name = "Player";
+
   this.init = function(world, superview) {
     this.weapons = [
       { image: 'bullet001',
@@ -9,9 +11,8 @@ exports = Class(function(supr) {
     ];
     this.currentWeaponIndex = 0;
 
-    this.playerView = new PlayerView(world, {
-      superview: superview
-    });
+    // this.playerPhysics = new PlayerPhysics(world);
+    this.playerView = new PlayerView(world, { superview: superview });
   };
 
   this.processTime = function(dt) {

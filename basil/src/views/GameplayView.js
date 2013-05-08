@@ -4,7 +4,7 @@ import ui.resource.Image;
 import ui.View;
 
 import src.views.FillScreenImageView as FillScreenImageView;
-import src.models.Player as Player;
+import src.models.Player.Player as Player;
 import src.AsteroidGenerator as AsteroidGenerator;
 
 import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;

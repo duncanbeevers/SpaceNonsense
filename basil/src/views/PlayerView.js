@@ -14,8 +14,6 @@ exports = Class(ui.ImageView, function(supr) {
 
     supr(this, "init", [opts]);
 
-    this.name = "Player";
-
     this.radius = 2; // meters radius
     this.world = world;
     this.setupPhysics();
