@@ -1,4 +1,4 @@
-import src.views.PlayerView as PlayerView;
+import src.models.Player.PlayerView as PlayerView;
 
 exports = Class(function(supr) {
   this.name = "Player";
