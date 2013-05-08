@@ -37,7 +37,7 @@ exports = Class(GC.Application, function () {
     // Create the root view
 		rootView = new ui.StackView({
 			superview       : this,
-      backgroundColor : '#37B34A'
+      backgroundColor : '#3B007E'
  		});
 
     // Subscribe to size/orientation changes

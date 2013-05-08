@@ -1,4 +1,5 @@
 import ui.ImageView;
+import ui.SpriteView;
 import ui.resource.Image;
 import ui.View;
 
@@ -8,6 +9,7 @@ import src.AsteroidGenerator as AsteroidGenerator;
 
 import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
+// import src.lib.FW_CleanupAccumulator as FW.CleanupAccumulator;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.View, function(supr) {
@@ -56,11 +58,66 @@ exports = Class(ui.View, function(supr) {
 
     world.SetContactListener(contactListener);
 
+    // We need this playfield reference only for adding explosions,
+    // TODO: Remove when we move the explosion drawing stuff out
+    var playfield = this.playfield;
+    var gameplayView = this;
     contactListener.registerContactListener(
       "bullet001", "Asteroid",
-      function(impact, bulletFixture, asteroidFixture) {
-        // Handle impact
-      });
+      function() {}, // beginContactListener
+      function() {}, // endContactListener
+      function() {}, // preSolveListener
+      function(contact, manifold) { // postSolveListener
+        // console.log("contact: %o, manifold: %o", contact, manifold);
+
+        // Determine collision location and strength
+        var collisionStrength = manifold.normalImpulses[0],
+            collisionLocation,
+            worldManifold = new Box2D.Collision.b2WorldManifold();
+        // Populate world manifold structure and extract collision location
+        contact.GetWorldManifold(worldManifold);
+        collisionLocation = worldManifold.m_points[0];
+
+        // onBulletAsteroidCollision(collisionStrength, collisionLocation);
+        // console.log("strength: %o", strength);
+
+        // debugger;
+        // var bullet = bulletFixture.GetUserData();
+        // var asteroid = asteroidFixture.GetUserData();
+
+        // var strength = impact.GetManifold().m_points[0].m_normalImpulse;
+
+        // console.log("impact: %o, bullet: %o, asteroid: %o", impact, bullet, asteroid);
+        // console.log("strength: %o", strength);
+
+        var explosionView = new ui.SpriteView({
+          url: "resources/images/animations/explosions",
+          defaultAnimation: "explode",
+          superview: playfield,
+          x: collisionLocation.x,
+          y: collisionLocation.y,
+          frameRate: 30,
+          autoStart: true,
+          loop: false,
+
+          autoSize: true,
+          scale: collisionStrength / 5,
+          centerAnchor: true,
+          layout: "box"
+        });
+
+        // gameplayView.stopStepping = true;
+
+      }
+    );
+    // contactListener.registerContactListener(
+    //   "bullet001", "Asteroid",
+    //   function(impact, bulletFixture, asteroidFixture) {
+    //     var bullet = bulletFixture.GetUserData();
+    //     var asteroid = asteroidFixture.GetUserData();
+
+    //   }
+    // );
   };
 
 
@@ -140,7 +197,10 @@ exports = Class(ui.View, function(supr) {
       this.player.shoot();
     }
 
-    this.world.Step(0.1, 10, 10);
+    // Step the physics simulation, handling collions and the like
+    if (!this.stopStepping) {
+      this.world.Step(0.1, 10, 10);
+    }
   };
 
 });
