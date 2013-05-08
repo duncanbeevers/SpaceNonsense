@@ -7,6 +7,7 @@ import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player.Player as Player;
 import src.models.AsteroidGenerator as AsteroidGenerator;
 
+import src.lib.FW_Dispatcher as FW.Dispatcher;
 import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 // import src.lib.FW_CleanupAccumulator as FW.CleanupAccumulator;
@@ -31,6 +32,9 @@ exports = Class(ui.View, function(supr) {
       scale: 12
     });
 
+    // Set up the game loop event dispatcher
+    this.setupDispatcher();
+
     // Set up the world of the physics simulation
     this.setupPhysics();
 
@@ -41,9 +45,9 @@ exports = Class(ui.View, function(supr) {
     this.setupAsteroidGenerator();
   };
 
-
-
-
+  this.setupDispatcher = function() {
+    this.dispatcher = new FW.Dispatcher();
+  };
 
 
   this.setupPhysics = function() {
@@ -173,7 +177,7 @@ exports = Class(ui.View, function(supr) {
 
 
   this.setupAsteroidGenerator = function() {
-    var asteroidGenerator = new AsteroidGenerator(this.playfield, this.player, this.world);
+    var asteroidGenerator = new AsteroidGenerator(this.dispatcher, this.playfield, this.player, this.world);
     this.asteroidGenerator = asteroidGenerator;
   };
 
@@ -201,6 +205,8 @@ exports = Class(ui.View, function(supr) {
     if (!this.stopStepping) {
       this.world.Step(0.1, 10, 10);
     }
+
+    this.dispatcher.trigger("tick");
   };
 
 });

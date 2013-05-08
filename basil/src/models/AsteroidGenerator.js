@@ -4,7 +4,8 @@ import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(function(supr) {
-  this.init = function(superview, player, world) {
+  this.init = function(dispatcher, superview, player, world) {
+    this.dispatcher = dispatcher;
     this.superview = superview;
     this.player = player;
     this.world = world;
@@ -24,7 +25,14 @@ exports = Class(function(supr) {
   };
 
   this.spawnAsteroid = function() {
-    var asteroid = new Asteroid(this.player, this.world, this.superview);
+    var distanceFromPlayer = FW.Math.random(10, 20),
+        approachAngle = FW.Math.random(FW.Math.TWO_PI),
+        playerPosition = this.player.getPosition(),
+        x = Math.cos(approachAngle) * distanceFromPlayer + playerPosition.x,
+        y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y,
+        radius = FW.Math.random(3, 5);
+
+    var asteroid = new Asteroid(this.dispatcher, x, y, radius, this.player, this.world, this.superview);
     this.asteroids.push(asteroid);
   };
 
