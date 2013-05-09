@@ -1,9 +1,13 @@
 import src.models.Player.PlayerView as PlayerView;
+import src.models.Player.PlayerPhysics as PlayerPhysics;
+import src.models.Bullet as Bullet;
 
 exports = Class(function(supr) {
   this.name = "Player";
 
   this.init = function(dispatcher, world, superview) {
+    this.radius = 2;
+
     this.weapons = [
       { image: 'bullet001',
         cooldown: 200
@@ -13,7 +17,12 @@ exports = Class(function(supr) {
 
     // this.playerPhysics = new PlayerPhysics(world);
     this.dispatcher = dispatcher;
-    this.playerView = new PlayerView(world, { superview: superview });
+    this.playerView = new PlayerView({ superview: superview });
+    this.playerPhysics = new PlayerPhysics(this, 0, 0, this.radius, world);
+
+    var player = this;
+    this._tick = function() { player.tick(); };
+    dispatcher.on("tick", this._tick);
   };
 
   this.processTime = function(dt) {
@@ -29,7 +38,18 @@ exports = Class(function(supr) {
     if (!weapon.cooldownRemaining) {
       weapon.cooldownRemaining = weapon.cooldown;
 
-      this.playerView.shoot(weapon);
+      // this.playerView.shoot(weapon);
+
+      var playerViewStyle = this.playerView.style,
+          trajectory = playerViewStyle.r,
+          bulletDistance = this.radius * 1.1;
+
+      // TODO: Recycle Bullet objects
+      new Bullet(weapon.image, trajectory, this.playerPhysics.world, this.playerView.getSuperview(),
+        playerViewStyle.x + Math.cos(trajectory) * bulletDistance,
+        playerViewStyle.y + Math.sin(trajectory) * bulletDistance
+      );
+
     }
   };
 
@@ -45,6 +65,22 @@ exports = Class(function(supr) {
 
   this.pointAt = function(angle) {
     this.playerView.style.r = angle;
+  };
+
+  this.slaveViewToPhysics = function() {
+    var viewStyle = this.playerView.style,
+        physicsPosition = this.playerPhysics.getPosition();
+
+    viewStyle.x = physicsPosition.x;
+    viewStyle.y = physicsPosition.y;
+    viewStyle.width = this.radius * 2;
+    viewStyle.height = this.radius * 2;
+    viewStyle.offsetX = -this.radius;
+    viewStyle.offsetY = -this.radius;
+  };
+
+  this.tick = function() {
+    this.slaveViewToPhysics();
   };
 
 });
