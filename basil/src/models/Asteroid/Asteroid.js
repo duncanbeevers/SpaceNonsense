@@ -29,10 +29,11 @@ exports = Class(function(supr) {
   };
 
   this.approachPlayer = function() {
-    this.asteroidPhysics.approachPlayer(player);
+    this.asteroidPhysics.approachPlayer(this.player);
   };
 
   this.tick = function() {
     this.slaveViewToPhysics();
+    this.approachPlayer();
   };
 });
