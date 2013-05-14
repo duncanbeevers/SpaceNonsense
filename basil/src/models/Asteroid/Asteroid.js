@@ -8,9 +8,7 @@ exports = Class(function(supr) {
     this.asteroidView = new AsteroidView(radius, player, { superview: superview });
     this.asteroidPhysics = new AsteroidPhysics(this, x, y, radius, player, world);
 
-    var asteroid = this;
-    this._tick = function() { asteroid.tick(); };
-    dispatcher.on("tick", this._tick);
+    dispatcher.on("tick", function() { this.tick(); }, this);
   };
 
   this.slaveViewToPhysics = function() {
