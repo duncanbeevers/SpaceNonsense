@@ -59,5 +59,11 @@ exports = Class(function(supr) {
     this.view.style.r = angle;
   };
 
+  this.getPosition = function() {
+    var position = this.physics.getPosition();
+    position.r = this.view.style.r;
+    return position;
+  };
+
   FW.GameClosureExtend(this, FW.GameClosurePhysicsViewSyncMixin);
 });
