@@ -20,9 +20,7 @@ exports = Class(function(supr) {
     this.playerView = new PlayerView(this.radius, { superview: superview });
     this.playerPhysics = new PlayerPhysics(this, 0, 0, this.radius, world);
 
-    var player = this;
-    this._tick = function() { player.tick(); };
-    dispatcher.on("tick", this._tick);
+    dispatcher.on("tick", function() { this.tick(); }, this);
   };
 
   this.processTime = function(dt) {
