@@ -14,10 +14,6 @@ exports = Class(function(supr) {
     dispatcher.on("tick", function() { this.tick(); }, this);
   };
 
-  this.getPosition = function() {
-    return this.physics.getPosition();
-  };
-
   this.approachPlayer = function() {
     this.physics.approachPlayer(this.player);
   };
