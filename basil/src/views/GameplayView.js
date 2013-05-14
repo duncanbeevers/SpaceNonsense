@@ -206,7 +206,7 @@ exports = Class(ui.View, function(supr) {
       this.world.Step(0.1, 10, 10);
     }
 
-    this.dispatcher.trigger("tick");
+    this.dispatcher.trigger("tick", dt);
   };
 
 });
