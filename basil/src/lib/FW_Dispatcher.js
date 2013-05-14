@@ -4,28 +4,29 @@ var Dispatcher = function() {
 };
 
 Dispatcher.prototype = {
-  on: function(eventName, fn) {
+  on: function(eventName, fn, bindTarget) {
     var map = this._work || (this._work = {}),
         list = map[eventName] || (map[eventName] = []);
 
-    list.push(fn);
+    list.push([ fn, bindTarget ]);
   },
   trigger: function(eventName) {
     var list = (this._work || {})[eventName],
         i;
     if (list) {
       for (i = list.length - 1; i >= 0; i--) {
-        list[i]();
+        list[i][0].call(list[i][1]);
       }
     }
   },
-  off: function(eventName, fn) {
+  off: function(eventName, fn, bindTarget) {
     var list = (this._work || {})[eventName],
-        i, fn2;
+        i, fn2, bindTarget2;
     if (list) {
       for (i = list.length - 1; i >= 0; i--) {
-        fn2 = list[i];
-        if (fn2 === fn) {
+        fn2 = list[i][0];
+        bindTarget2 = list[i][1];
+        if (fn2 === fn && bindTarget === bindTarget2) {
           break;
         }
       }
