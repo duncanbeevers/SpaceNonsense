@@ -12,10 +12,10 @@ Dispatcher.prototype = {
   },
   trigger: function(eventName) {
     var list = (this._work || {})[eventName],
-        i;
+        i, args = Array.prototype.slice.call(arguments, 1);
     if (list) {
       for (i = list.length - 1; i >= 0; i--) {
-        list[i][0].call(list[i][1]);
+        list[i][0].apply(list[i][1], args);
       }
     }
   },
