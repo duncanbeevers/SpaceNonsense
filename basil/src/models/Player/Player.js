@@ -27,10 +27,6 @@ exports = Class(function(supr) {
     this.cooldownWeapons(dt);
   };
 
-  this.getPosition = function() {
-    return this.physics.getPosition();
-  };
-
   this.shoot = function(dt) {
     var weapon = this.weapons[this.currentWeaponIndex];
     if (!weapon.cooldownRemaining) {

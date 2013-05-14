@@ -6,10 +6,13 @@ exports = {
   },
   slaveViewToPhysics: function() {
     var viewStyle = this.view.style,
-        physicsPosition = this.physics.getPosition();
+        position = this.getPosition();
 
-    viewStyle.x = physicsPosition.x;
-    viewStyle.y = physicsPosition.y;
-    viewStyle.r = physicsPosition.r;
+    viewStyle.x = position.x;
+    viewStyle.y = position.y;
+    viewStyle.r = position.r;
+  },
+  getPosition: function() {
+    return this.physics.getPosition();
   }
 };
