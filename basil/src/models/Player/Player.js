@@ -6,7 +6,7 @@ exports = Class(function(supr) {
   this.name = "Player";
 
   this.init = function(dispatcher, world, superview) {
-    this.radius = 2;
+    this.radius = 12;
 
     this.weapons = [
       { image: 'bullet001',
@@ -17,7 +17,7 @@ exports = Class(function(supr) {
 
     // this.playerPhysics = new PlayerPhysics(world);
     this.dispatcher = dispatcher;
-    this.playerView = new PlayerView({ superview: superview });
+    this.playerView = new PlayerView(this.radius, { superview: superview });
     this.playerPhysics = new PlayerPhysics(this, 0, 0, this.radius, world);
 
     var player = this;

@@ -5,7 +5,7 @@ exports = Class(function(supr) {
   this.init = function(dispatcher, x, y, radius, player, world, superview) {
     this.player = player;
 
-    this.asteroidView = new AsteroidView(player, { superview: superview });
+    this.asteroidView = new AsteroidView(radius, player, { superview: superview });
     this.asteroidPhysics = new AsteroidPhysics(this, x, y, radius, player, world);
 
     var asteroid = this;
@@ -25,7 +25,7 @@ exports = Class(function(supr) {
   };
 
   this.getPosition = function() {
-    return { x: this.asteroidView.style.x, y: this.asteroidView.style.y };
+    return this.asteroidPhysics.getPosition();
   };
 
   this.approachPlayer = function() {
