@@ -2,6 +2,9 @@ import src.models.Player.PlayerView as PlayerView;
 import src.models.Player.PlayerPhysics as PlayerPhysics;
 import src.models.Bullet as Bullet;
 
+import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
+import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSyncMixin;
+
 exports = Class(function(supr) {
   this.name = "Player";
 
@@ -15,12 +18,9 @@ exports = Class(function(supr) {
     ];
     this.currentWeaponIndex = 0;
 
-    // this.playerPhysics = new PlayerPhysics(world);
     this.dispatcher = dispatcher;
-    this.playerView = new PlayerView(this.radius, { superview: superview });
-    this.playerPhysics = new PlayerPhysics(this, 0, 0, this.radius, world);
-
-    dispatcher.on("tick", function() { this.tick(); }, this);
+    this.view = new PlayerView(this.radius, { superview: superview });
+    this.physics = new PlayerPhysics(this, 0, 0, this.radius, world);
   };
 
   this.processTime = function(dt) {
@@ -28,7 +28,7 @@ exports = Class(function(supr) {
   };
 
   this.getPosition = function() {
-    return { x: this.playerView.style.x, y: this.playerView.style.y };
+    return this.physics.getPosition();
   };
 
   this.shoot = function(dt) {
@@ -38,12 +38,12 @@ exports = Class(function(supr) {
 
       // this.playerView.shoot(weapon);
 
-      var playerViewStyle = this.playerView.style,
+      var playerViewStyle = this.view.style,
           trajectory = playerViewStyle.r,
           bulletDistance = this.radius * 1.1;
 
       // TODO: Recycle Bullet objects
-      new Bullet(weapon.image, trajectory, this.playerPhysics.world, this.playerView.getSuperview(),
+      new Bullet(weapon.image, trajectory, this.physics.world, this.view.getSuperview(),
         playerViewStyle.x + Math.cos(trajectory) * bulletDistance,
         playerViewStyle.y + Math.sin(trajectory) * bulletDistance
       );
@@ -62,23 +62,8 @@ exports = Class(function(supr) {
   };
 
   this.pointAt = function(angle) {
-    this.playerView.style.r = angle;
+    this.view.style.r = angle;
   };
 
-  this.slaveViewToPhysics = function() {
-    var viewStyle = this.playerView.style,
-        physicsPosition = this.playerPhysics.getPosition();
-
-    viewStyle.x = physicsPosition.x;
-    viewStyle.y = physicsPosition.y;
-    viewStyle.width = this.radius * 2;
-    viewStyle.height = this.radius * 2;
-    viewStyle.offsetX = -this.radius;
-    viewStyle.offsetY = -this.radius;
-  };
-
-  this.tick = function() {
-    this.slaveViewToPhysics();
-  };
-
+  FW.GameClosureExtend(this, FW.GameClosurePhysicsViewSyncMixin);
 });

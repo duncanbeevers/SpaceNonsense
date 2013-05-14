@@ -9,7 +9,8 @@ exports = Class(ui.ImageView, function(supr) {
     this.radius = radius;
 
     opts = merge(opts, {
-      image: "resources/images/reference_25x25_compass.png"
+      image: "resources/images/reference_25x25_compass.png",
+      autoSize: true
     });
 
     supr(this, "init", [opts]);
