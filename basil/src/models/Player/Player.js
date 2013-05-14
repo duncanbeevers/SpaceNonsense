@@ -21,10 +21,8 @@ exports = Class(function(supr) {
     this.dispatcher = dispatcher;
     this.view = new PlayerView(this.radius, { superview: superview });
     this.physics = new PlayerPhysics(this, 0, 0, this.radius, world);
-  };
 
-  this.processTime = function(dt) {
-    this.cooldownWeapons(dt);
+    dispatcher.on("tick", function(dt) { this.cooldownWeapons(dt); }, this);
   };
 
   this.shoot = function(dt) {

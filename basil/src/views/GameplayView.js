@@ -184,9 +184,6 @@ exports = Class(ui.View, function(supr) {
 
 
   this.tick = function(dt) {
-    this.player.processTime(dt);
-    this.asteroidGenerator.processTime(dt);
-
     var playerPosition = this.player.getPosition(),
         furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
         playfieldScale = FW.GameClosureDevice.getMinDimension() / 2 / furthestAsteroidDistance;

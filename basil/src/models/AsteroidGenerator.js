@@ -14,9 +14,11 @@ exports = Class(function(supr) {
     this.nextAsteroidIn = 0; // ms
 
     this.asteroids = [];
+
+    dispatcher.on("tick", function(dt) { this.countdownToAsteroid(dt); }, this);
   };
 
-  this.processTime = function(dt) {
+  this.countdownToAsteroid = function(dt) {
     this.nextAsteroidIn -= dt;
     if (this.nextAsteroidIn <= 0) {
       this.nextAsteroidIn = 5000; // ms
