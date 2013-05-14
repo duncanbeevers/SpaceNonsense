@@ -1,30 +1,32 @@
 import ui.ImageView;
 
+import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
+import src.lib.FW_GameClosureCenteredViewMixin as FW.GameClosureCenteredViewMixin;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.ImageView, function(supr) {
   this.init = function(bullet, trajectory, world, opts) {
-    opts = merge(opts, {
-      image: "resources/images/" + bullet.name + ".png",
-      centerAnchor: true,
-      layout: "box"
-    });
-
-    supr(this, "init", [opts]);
-
     this.name = bullet.name;
     this.radius = 0.6;
     this.trajectory = trajectory;
 
     this.world = world;
-    this.setupPhysics();
 
+    opts = merge(opts, {
+      image: "resources/images/" + bullet.name + ".png",
+      autoSize: true
+    });
+
+    supr(this, "init", [opts]);
+
+    this.setupPhysics();
 
     // Apply initial impulse to get the bullet going in the right direction
     var body = this.fixture.GetBody(),
         position = body.GetPosition(),
         impulseForce = 1, // Math.random() * 5 + 30;
         trajectory = this.trajectory;
+
     body.ApplyImpulse(
       new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
       new Box2D.Common.Math.b2Vec2(position.x, position.y)
@@ -60,8 +62,6 @@ exports = Class(ui.ImageView, function(supr) {
 
     this.style.x = position.x;
     this.style.y = position.y;
-    this.style.width = this.radius * 2;
-    this.style.height = this.radius * 2;
     this.style.offsetX = -this.radius;
     this.style.offsetY = -this.radius;
   };
@@ -70,4 +70,6 @@ exports = Class(ui.ImageView, function(supr) {
     this.removeFromPhysics();
     this.removeFromSuperview();
   };
+
+  FW.GameClosureExtend(this, FW.GameClosureCenteredViewMixin);
 });

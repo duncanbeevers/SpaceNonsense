@@ -1,12 +1,15 @@
 import ui.ImageView;
 from ui.filter import MultiplyFilter;
 
+import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosureCenteredViewMixin as FW.GameClosureCenteredViewMixin;
 import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.ImageView, function(supr) {
   this.init = function(radius, player, opts) {
+    this.radius = radius;
+
     opts = merge(opts, {
       image: "resources/images/asteroid001.png"
     });
@@ -14,8 +17,6 @@ exports = Class(ui.ImageView, function(supr) {
     supr(this, "init", [opts]);
 
     this.setupFilter();
-    this.scaleToRadius(radius);
-    this.centerAnchorToImage();
   };
 
   this.setupFilter = function() {
@@ -28,6 +29,6 @@ exports = Class(ui.ImageView, function(supr) {
     this.asteroidFilter = asteroidFilter;
     this.addFilter(asteroidFilter);
   };
-});
 
-merge(exports.prototype, FW.GameClosureCenteredViewMixin);
+  FW.GameClosureExtend(this, FW.GameClosureCenteredViewMixin);
+});
