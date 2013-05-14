@@ -1,8 +1,8 @@
 var FW = this.FW || (this.FW = {});
 
 exports = {
-  tick: function() {
-    this.slaveViewToPhysics();
+  init: function(dispatcher) {
+    dispatcher.on("tick", function() { this.slaveViewToPhysics(); }, this);
   },
   slaveViewToPhysics: function() {
     var viewStyle = this.view.style,
