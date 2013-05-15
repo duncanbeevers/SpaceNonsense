@@ -27,12 +27,13 @@ exports = Class(function(supr) {
   };
 
   this.spawnAsteroid = function() {
-    var distanceFromPlayer = FW.Math.random(10, 20),
+    var player = this.player,
+        radius = FW.Math.random(3, 5),
+        distanceFromPlayer = FW.Math.random(10, 20) + radius + player.getRadius(),
         approachAngle = FW.Math.random(FW.Math.TWO_PI),
         playerPosition = this.player.getPosition(),
         x = Math.cos(approachAngle) * distanceFromPlayer + playerPosition.x,
-        y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y,
-        radius = FW.Math.random(3, 5);
+        y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y;
 
     var asteroid = new Asteroid(this.dispatcher, x, y, radius, this.player, this.world, this.superview);
     this.asteroids.push(asteroid);
