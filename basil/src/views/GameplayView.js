@@ -202,6 +202,7 @@ exports = Class(ui.View, function(supr) {
     }
 
     this.dispatcher.trigger("tick", dt);
+    this.dispatcher.trigger("PhysicsViewSync");
   };
 
 });
