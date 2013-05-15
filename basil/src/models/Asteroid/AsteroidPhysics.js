@@ -19,6 +19,8 @@ exports = Class(function(supr) {
     fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
     var bodyDef = new Box2D.Dynamics.b2BodyDef();
     bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
+    bodyDef.position.x = x;
+    bodyDef.position.y = y;
     bodyDef.angularDamping = 0.01;
     bodyDef.linearDamping = 0.01;
 
