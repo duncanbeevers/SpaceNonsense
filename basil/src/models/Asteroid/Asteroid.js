@@ -5,6 +5,8 @@ import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSyncMixin;
 
 exports = Class(function(supr) {
+  this.name = "Asteroid";
+
   this.init = function(dispatcher, x, y, radius, player, world, superview) {
     this.player = player;
 
