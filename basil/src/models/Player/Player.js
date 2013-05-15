@@ -1,6 +1,6 @@
 import src.models.Player.PlayerView as PlayerView;
 import src.models.Player.PlayerPhysics as PlayerPhysics;
-import src.models.Bullet as Bullet;
+import src.models.Bullet.Bullet as Bullet;
 
 import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSyncMixin;
