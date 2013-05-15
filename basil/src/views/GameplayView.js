@@ -92,7 +92,8 @@ exports = Class(ui.View, function(supr) {
         // console.log("impact: %o, bullet: %o, asteroid: %o", impact, bullet, asteroid);
         // console.log("strength: %o", strength);
 
-        var explosionView = new ui.SpriteView({
+        var size = collisionStrength / 5,
+            explosionView = new ui.SpriteView({
           url: "resources/images/animations/explosions",
           defaultAnimation: "explode",
           superview: playfield,
@@ -102,8 +103,10 @@ exports = Class(ui.View, function(supr) {
           autoStart: true,
           loop: false,
 
-          width: collisionStrength / 5,
-          height: collisionStrength / 5
+          width: size,
+          height: size,
+          offsetX: -size / 2,
+          offsetY: -size / 2
         });
 
         // gameplayView.stopStepping = true;
@@ -182,7 +185,7 @@ exports = Class(ui.View, function(supr) {
   this.tick = function(dt) {
     var playerPosition = this.player.getPosition(),
         furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
-        playfieldScale = FW.GameClosureDevice.getMinDimension() / 2 / furthestAsteroidDistance;
+        playfieldScale = FW.GameClosureDevice.getMinDimension() / 1.3 / furthestAsteroidDistance;
 
     this.playfield.style.update({
       scale: playfieldScale,
