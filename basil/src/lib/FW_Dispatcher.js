@@ -34,6 +34,19 @@ Dispatcher.prototype = {
         list.splice(i, 1);
       }
     }
+  },
+  offByBindTarget: function(eventName, bindTarget) {
+    var list = (this._work || {})[eventName],
+        i, bindTarget2;
+
+    if (list) {
+      for (i = list.length - 1; i >= 0; i--) {
+        bindTarget2 = list[i][1];
+        if (bindTarget === bindTarget2) {
+          list.splice(i, 1);
+        }
+      }
+    }
   }
 };
 
