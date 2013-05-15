@@ -2,6 +2,9 @@ import src.lib.FW_Math as FW.Math;
 import src.lib.FW_GameClosurePhysicsMixin as FW.GameClosurePhysicsMixin;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
+var vec1 = new Box2D.Common.Math.b2Vec2(0, 0),
+    vec2 = new Box2D.Common.Math.b2Vec2(0, 0);
+
 exports = Class(function(supr) {
   this.init = function(asteroid, x, y, radius, player, world) {
     this.asteroid = asteroid;
@@ -18,10 +21,9 @@ exports = Class(function(supr) {
         trajectory = Math.atan2(position.x - playerPosition.x, position.y - playerPosition.y),
         impulseForce = 1000; // Math.random() * 5 + 30;
 
-    body.ApplyImpulse(
-      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(position.x, position.y)
-    );
+    vec1.Set(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce);
+    vec2.Set(position.x, position.y);
+    body.ApplyImpulse(vec1, vec2);
   };
 
   this.approachPlayer = function(player) {
@@ -33,10 +35,9 @@ exports = Class(function(supr) {
         trajectory = Math.atan2(playerPosition.y - position.y, playerPosition.x - position.x);
 
     body.ClearForces();
-    body.ApplyForce(
-      new Box2D.Common.Math.b2Vec2(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce),
-      new Box2D.Common.Math.b2Vec2(position.x, position.y)
-    );
+    vec1.Set(Math.cos(trajectory) * impulseForce, Math.sin(trajectory) * impulseForce);
+    vec2.Set(position.x, position.y);
+    body.ApplyForce(vec1, vec2);
   };
 
   merge(this, FW.GameClosurePhysicsMixin);
