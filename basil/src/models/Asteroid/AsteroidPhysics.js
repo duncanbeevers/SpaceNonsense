@@ -9,7 +9,6 @@ var vec1 = new Box2D.Common.Math.b2Vec2(0, 0),
 exports = Class(function(supr) {
   this.init = function(asteroid, x, y, radius, player, world) {
     this.asteroid = asteroid;
-    this.world = world;
     this.setupCirclePhysics(x, y, radius, player, world);
     this.applyOrbitalImpulse(player);
   };
