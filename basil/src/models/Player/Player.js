@@ -35,7 +35,7 @@ exports = Class(function(supr) {
           bulletDistance = this.radius * 1.1;
 
       // TODO: Recycle Bullet objects
-      new Bullet(weapon.image, trajectory, this.physics.world, this.view.getSuperview(),
+      new Bullet(this.dispatcher, weapon.image, trajectory, this.physics.world, this.view.getSuperview(),
         playerViewStyle.x + Math.cos(trajectory) * bulletDistance,
         playerViewStyle.y + Math.sin(trajectory) * bulletDistance
       );
