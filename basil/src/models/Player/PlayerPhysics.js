@@ -1,3 +1,4 @@
+import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosurePhysicsMixin as FW.GameClosurePhysicsMixin;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -12,5 +13,5 @@ exports = Class(function(supr) {
     });
   };
 
-  merge(this, FW.GameClosurePhysicsMixin);
+  FW.GameClosureExtend(this, FW.GameClosurePhysicsMixin);
 });
