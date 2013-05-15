@@ -102,10 +102,8 @@ exports = Class(ui.View, function(supr) {
           autoStart: true,
           loop: false,
 
-          autoSize: true,
-          scale: collisionStrength / 5,
-          centerAnchor: true,
-          layout: "box"
+          width: collisionStrength / 5,
+          height: collisionStrength / 5
         });
 
         // gameplayView.stopStepping = true;
