@@ -188,8 +188,8 @@ exports = Class(ui.View, function(supr) {
 
     this.playfield.style.update({
       scale: playfieldScale,
-      x: this.style.width / 2 - playerPosition.x * playfieldScale,
-      y: this.style.height / 2 - playerPosition.y * playfieldScale
+      x: FW.GameClosureDevice.getWidth() / 2 - playerPosition.x * playfieldScale,
+      y: FW.GameClosureDevice.getHeight() / 2 - playerPosition.y * playfieldScale
     });
 
     if (this.playerShooting) {
