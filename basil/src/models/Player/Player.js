@@ -9,7 +9,7 @@ exports = Class(function(supr) {
   this.name = "Player";
 
   this.init = function(dispatcher, world, superview) {
-    this.radius = 12;
+    this.radius = 1;
 
     this.weapons = [
       { image: 'bullet001',
