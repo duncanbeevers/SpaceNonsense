@@ -1,4 +1,4 @@
-import src.views.BulletView as BulletView;
+import src.models.Bullet.BulletView as BulletView;
 
 exports = Class(function(supr) {
   this.init = function(bulletName, trajectory, world, superview, x, y) {
