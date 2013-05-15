@@ -36,5 +36,13 @@ exports = {
 
     // TODO: Does it makes sense to return this instead of mutating the instance?
     this.fixture = fixture;
+  },
+  removeFromPhysics: function() {
+    var body = this.fixture.GetBody();
+    body.GetWorld().DestroyBody(body);
+  },
+  getWorld: function() {
+    var body = this.fixture.GetBody();
+    return body.GetWorld();
   }
 };
