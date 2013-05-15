@@ -5,15 +5,18 @@ import src.lib.FW_GameClosureCenteredViewMixin as FW.GameClosureCenteredViewMixi
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.ImageView, function(supr) {
-  this.init = function(radius, opts) {
-    this.radius = radius;
+  this.init = function(player, opts) {
+    this.player = player;
 
     opts = merge(opts, {
-      image: "resources/images/reference_25x25_compass.png",
-      autoSize: true
+      image: "resources/images/reference_25x25_compass.png"
     });
 
     supr(this, "init", [opts]);
+  };
+
+  this.getRadius = function() {
+    return this.player.getRadius();
   };
 
   FW.GameClosureExtend(this, FW.GameClosureCenteredViewMixin);

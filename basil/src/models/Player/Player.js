@@ -19,7 +19,7 @@ exports = Class(function(supr) {
     this.currentWeaponIndex = 0;
 
     this.dispatcher = dispatcher;
-    this.view = new PlayerView(this.radius, { superview: superview });
+    this.view = new PlayerView(this, { superview: superview });
     this.physics = new PlayerPhysics(this, 0, 0, this.radius, world);
 
     dispatcher.on("tick", function(dt) { this.cooldownWeapons(dt); }, this);
@@ -29,8 +29,6 @@ exports = Class(function(supr) {
     var weapon = this.weapons[this.currentWeaponIndex];
     if (!weapon.cooldownRemaining) {
       weapon.cooldownRemaining = weapon.cooldown;
-
-      // this.playerView.shoot(weapon);
 
       var playerViewStyle = this.view.style,
           trajectory = playerViewStyle.r,
@@ -63,6 +61,10 @@ exports = Class(function(supr) {
     var position = this.physics.getPosition();
     position.r = this.view.style.r;
     return position;
+  };
+
+  this.getRadius = function() {
+    return this.radius;
   };
 
   FW.GameClosureExtend(this, FW.GameClosurePhysicsViewSyncMixin);
