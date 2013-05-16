@@ -76,6 +76,7 @@ exports = Class(ui.View, function(supr) {
         frameRate: 30,
         autoStart: true,
         loop: false,
+        callback: function() { explosionView.removeFromSuperview(); },
 
         width: size,
         height: size,
