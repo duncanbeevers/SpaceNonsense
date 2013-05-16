@@ -64,63 +64,25 @@ exports = Class(ui.View, function(supr) {
     // TODO: Remove when we move the explosion drawing stuff out
     var playfield = this.playfield;
     var gameplayView = this;
-    contactListener.registerContactListener(
-      "bullet001", "Asteroid",
-      function() {}, // beginContactListener
-      function() {}, // endContactListener
-      function() {}, // preSolveListener
-      function(contact, manifold) { // postSolveListener
-        // console.log("contact: %o, manifold: %o", contact, manifold);
 
-        // Determine collision location and strength
-        var collisionStrength = manifold.normalImpulses[0],
-            collisionLocation,
-            worldManifold = new Box2D.Collision.b2WorldManifold();
-        // Populate world manifold structure and extract collision location
-        contact.GetWorldManifold(worldManifold);
-        collisionLocation = worldManifold.m_points[0];
+    contactListener.registerImpactListener("bullet001", "Asteroid", function(bullet, asteroid, strength, location) {
+      var size = strength / 5;
+      var explosionView = new ui.SpriteView({
+        url: "resources/images/animations/explosions",
+        defaultAnimation: "explode",
+        superview: playfield,
+        x: location.x,
+        y: location.y,
+        frameRate: 30,
+        autoStart: true,
+        loop: false,
 
-        // onBulletAsteroidCollision(collisionStrength, collisionLocation);
-        // console.log("strength: %o", strength);
-
-        // debugger;
-        // var bullet = bulletFixture.GetUserData();
-        // var asteroid = asteroidFixture.GetUserData();
-
-        // var strength = impact.GetManifold().m_points[0].m_normalImpulse;
-
-        // console.log("impact: %o, bullet: %o, asteroid: %o", impact, bullet, asteroid);
-        // console.log("strength: %o", strength);
-
-        var size = collisionStrength / 5,
-            explosionView = new ui.SpriteView({
-          url: "resources/images/animations/explosions",
-          defaultAnimation: "explode",
-          superview: playfield,
-          x: collisionLocation.x,
-          y: collisionLocation.y,
-          frameRate: 30,
-          autoStart: true,
-          loop: false,
-
-          width: size,
-          height: size,
-          offsetX: -size / 2,
-          offsetY: -size / 2
-        });
-
-        // gameplayView.stopStepping = true;
-
-      }
-    );
-    // contactListener.registerContactListener(
-    //   "bullet001", "Asteroid",
-    //   function(impact, bulletFixture, asteroidFixture) {
-    //     var bullet = bulletFixture.GetUserData();
-    //     var asteroid = asteroidFixture.GetUserData();
-
-    //   }
-    // );
+        width: size,
+        height: size,
+        offsetX: -size / 2,
+        offsetY: -size / 2
+      });
+    });
   };
 
 
