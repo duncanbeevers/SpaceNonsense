@@ -81,14 +81,14 @@ FW.NamedContactListener = (function() {
     var captureAndDispatchImpactData = function(userDataA, userDataB) {
       var impactStrength, impactLocation;
 
-      var noopBeginContact = function() {};
+      var noop = function() {};
 
-      var onImpactComplete = function(impactCompleteUserDataA, impactCompleteUserDataB) {
-        if (userDataA == impactCompleteUserDataA && userDataB == impactCompleteUserDataB) {
-          contactListener.removeContactListener(nameA, nameB, noopBeginContact);
-          fn(userDataA, userDataB, impactStrength, impactLocation);
-        }
+      var onImpactComplete = function(contact, manifold) {
+        memoizeImpactData(contact, manifold);
+        contactListener.removeContactListener(nameA, nameB, noop);
+        fn(userDataA, userDataB, impactStrength, impactLocation);
       };
+
       var memoizeImpactData = function(contact, manifold) {
         contact.GetWorldManifold(worldManifold);
         if (manifold.normalImpulses) {
@@ -97,7 +97,7 @@ FW.NamedContactListener = (function() {
         impactLocation = worldManifold.m_points[0];
       };
 
-      contactListener.registerContactListener(nameA, nameB, noopBeginContact, onImpactComplete, memoizeImpactData, memoizeImpactData);
+      contactListener.registerContactListener(nameA, nameB, noop, noop, memoizeImpactData, onImpactComplete);
     };
 
     contactListener.registerContactListener(nameA, nameB, captureAndDispatchImpactData);
