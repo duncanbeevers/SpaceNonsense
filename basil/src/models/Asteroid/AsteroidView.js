@@ -27,7 +27,7 @@ exports = Class(ui.ImageView, function(supr) {
       a: 1
     });
     this.asteroidFilter = asteroidFilter;
-    this.addFilter(asteroidFilter);
+    this.setFilter(asteroidFilter);
   };
 
   FW.GameClosureExtend(this, FW.GameClosureCenteredViewMixin);
