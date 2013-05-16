@@ -37,6 +37,19 @@ FW.NamedContactListener = (function() {
     });
   };
 
+  NamedContactListener.prototype.removeContactListener = function(nameA, nameB, beginContactListener) {
+    var keyName = [nameA, nameB].join("/"),
+        _base = this._contactListeners[keyName];
+
+    if (!_base) { return; }
+
+    for (var i = _base.length - 1; i >= 0; i--) {
+      if (_base[i].begin === beginContactListener) {
+        _base.splice(i, 1);
+      }
+    }
+  };
+
   NamedContactListener.prototype.registerContinuousContactListener = function(nameA, nameB, duringContact) {
     var disableNotifyInContact, enableNotifyInContact, ticker, tickerContact, tickerFixtureA, tickerFixtureB;
     tickerContact = void 0;
@@ -51,12 +64,29 @@ FW.NamedContactListener = (function() {
       tickerContact = contact;
       tickerFixtureA = fixtureA;
       tickerFixtureB = fixtureB;
-      return createjs.Ticker.addListener(ticker);
+      // return createjs.Ticker.addListener(ticker);
     };
     disableNotifyInContact = function(contact, fixtureA, fixtureB) {
-      return createjs.Ticker.removeListener(ticker);
+      // return createjs.Ticker.removeListener(ticker);
     };
     return this.registerContactListener(nameA, nameB, enableNotifyInContact, disableNotifyInContact);
+  };
+
+  NamedContactListener.prototype.registerImpactListener = function(nameA, nameB, onImpactComplete) {
+    var contactListener = this;
+    var impactData;
+    var captureImpactData = function(userDataA, userDataB) {
+      impactData = { a: userDataA, b: userDataB };
+    };
+    var onImpactComplete = function(userDataA, userDataB) {
+      impactData = undefined;
+    };
+    var noop = function() {};
+    var memoizeImpactData = function(contact, manifold) {
+      impactData.contact = contact;
+    };
+
+    this.registerContactListener(nameA, nameB, captureImpactData, dispatchImpactData);
   };
 
   return NamedContactListener;
