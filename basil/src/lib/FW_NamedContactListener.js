@@ -1,3 +1,5 @@
+import src.lib.Box2dWeb_2_1_a_3 as Box2D;
+
 // Programmatically converted to JavaScript by js2coffee
 var FW, handleContact;
 
@@ -72,21 +74,33 @@ FW.NamedContactListener = (function() {
     return this.registerContactListener(nameA, nameB, enableNotifyInContact, disableNotifyInContact);
   };
 
-  NamedContactListener.prototype.registerImpactListener = function(nameA, nameB, onImpactComplete) {
+  var worldManifold = new Box2D.Collision.b2WorldManifold();
+  NamedContactListener.prototype.registerImpactListener = function(nameA, nameB, fn) {
     var contactListener = this;
-    var impactData;
-    var captureImpactData = function(userDataA, userDataB) {
-      impactData = { a: userDataA, b: userDataB };
-    };
-    var onImpactComplete = function(userDataA, userDataB) {
-      impactData = undefined;
-    };
-    var noop = function() {};
-    var memoizeImpactData = function(contact, manifold) {
-      impactData.contact = contact;
+
+    var captureAndDispatchImpactData = function(userDataA, userDataB) {
+      var impactStrength, impactLocation;
+
+      var noopBeginContact = function() {};
+
+      var onImpactComplete = function(impactCompleteUserDataA, impactCompleteUserDataB) {
+        if (userDataA == impactCompleteUserDataA && userDataB == impactCompleteUserDataB) {
+          contactListener.removeContactListener(nameA, nameB, noopBeginContact);
+          fn(userDataA, userDataB, impactStrength, impactLocation);
+        }
+      };
+      var memoizeImpactData = function(contact, manifold) {
+        contact.GetWorldManifold(worldManifold);
+        if (manifold.normalImpulses) {
+          impactStrength = impactStrength || manifold.normalImpulses[0];
+        }
+        impactLocation = worldManifold.m_points[0];
+      };
+
+      contactListener.registerContactListener(nameA, nameB, noopBeginContact, onImpactComplete, memoizeImpactData, memoizeImpactData);
     };
 
-    this.registerContactListener(nameA, nameB, captureImpactData, dispatchImpactData);
+    contactListener.registerContactListener(nameA, nameB, captureAndDispatchImpactData);
   };
 
   return NamedContactListener;
@@ -118,7 +132,7 @@ handleContact = function(key, contactListeners, contact, impulse) {
           _results1 = [];
           for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
             listenerMap = _ref1[_j];
-            if (!listenerMap[key]) {
+            if (!(listenerMap && listenerMap[key])) {
               continue;
             }
             if (pairNameA === nameA) {
