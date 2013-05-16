@@ -81,7 +81,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
-    chef.add_recipe "meteor"
     chef.add_recipe "custom"
     chef.add_recipe "java"
   end
