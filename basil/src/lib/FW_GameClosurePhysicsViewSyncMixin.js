@@ -12,5 +12,9 @@ exports = {
   },
   getPosition: function() {
     return this.physics.getPosition();
+  },
+  die: function() {
+    this.view.removeFromSuperview();
+    this.physics.removeFromPhysics();
   }
 };

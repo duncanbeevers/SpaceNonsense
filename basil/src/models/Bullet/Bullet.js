@@ -28,8 +28,6 @@ exports = Class(function(supr) {
   };
 
   this.die = function() {
-    this.view.removeFromSuperview();
-    this.physics.removeFromPhysics()
     this.dispatcher.offByBindTarget("tick", this);
   };
 
