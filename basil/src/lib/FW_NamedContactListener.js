@@ -78,8 +78,10 @@ FW.NamedContactListener = (function() {
   NamedContactListener.prototype.registerImpactListener = function(nameA, nameB, fn) {
     var contactListener = this;
 
-    var captureAndDispatchImpactData = function(userDataA, userDataB) {
+    var captureAndDispatchImpactData = function(contact, fixtureA, fixtureB) {
       var impactStrength, impactLocation;
+      var userDataA = fixtureA.GetUserData(),
+          userDataB = fixtureB.GetUserData();
 
       var noop = function() {};
 
