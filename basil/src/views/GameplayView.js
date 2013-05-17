@@ -2,6 +2,7 @@ import ui.ImageView;
 import ui.SpriteView;
 import ui.resource.Image;
 import ui.View;
+import ui.ViewPool;
 
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player.Player as Player;
@@ -10,7 +11,6 @@ import src.models.AsteroidGenerator as AsteroidGenerator;
 import src.lib.FW_Dispatcher as FW.Dispatcher;
 import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
-// import src.lib.FW_CleanupAccumulator as FW.CleanupAccumulator;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(ui.View, function(supr) {
@@ -65,24 +65,37 @@ exports = Class(ui.View, function(supr) {
     var playfield = this.playfield;
     var gameplayView = this;
 
+    var viewPool = new ui.ViewPool({
+      ctor: ui.SpriteView,
+      initCount: 10,
+      initOpts: {
+        url: "resources/images/animations/explosions",
+        frameRate: 30,
+        autoStart: false,
+        loop: false
+      }
+    });
+
     contactListener.registerImpactListener("bullet001", "Asteroid", function(bullet, asteroid, strength, location) {
       var size = strength / 5;
-      var explosionView = new ui.SpriteView({
-        url: "resources/images/animations/explosions",
-        defaultAnimation: "explode",
+
+      var explosionView = viewPool.obtainView({
         superview: playfield,
         x: location.x,
         y: location.y,
-        frameRate: 30,
-        autoStart: true,
-        loop: false,
-        callback: function() { explosionView.removeFromSuperview(); },
-
         width: size,
         height: size,
         offsetX: -size / 2,
         offsetY: -size / 2
       });
+
+      explosionView.startAnimation("explode", { callback: function() {
+          viewPool.releaseView(explosionView);
+          explosionView.removeFromSuperview();
+        }
+      });
+
+      asteroid.damage(strength / 5);
     });
   };
 
