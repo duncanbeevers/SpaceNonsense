@@ -20,14 +20,22 @@ exports = Class(ui.ImageView, function(supr) {
   };
 
   this.setupFilter = function() {
-    var asteroidFilter = new MultiplyFilter({
-      r: 128,
+    var filter = new MultiplyFilter({
+      r: 255,
       g: 255,
-      b: 128,
+      b: 255,
       a: 1
     });
-    this.asteroidFilter = asteroidFilter;
-    this.setFilter(asteroidFilter);
+    this.filter = filter;
+    this.setFilter(filter);
+  };
+
+  this.colorToHealthPercent = function(percent) {
+    this.filter.update({
+      r: 255,
+      g: 255 * percent,
+      b: 255 * percent
+    });
   };
 
   FW.GameClosureExtend(this, FW.GameClosureCenteredViewMixin);

@@ -13,6 +13,9 @@ exports = Class(function(supr) {
     this.view = new AsteroidView(radius, player, { superview: superview });
     this.physics = new AsteroidPhysics(this, x, y, radius, player, world);
 
+    this.maxLife = 100;
+    this.life = this.maxLife;
+
     dispatcher.on("tick", function() { this.tick(); }, this);
   };
 
@@ -20,8 +23,13 @@ exports = Class(function(supr) {
     this.physics.approachPlayer(this.player);
   };
 
+  this.damage = function(damage) {
+    this.life = Math.max(this.life - damage, 0);
+  };
+
   this.tick = function() {
     this.approachPlayer();
+    this.view.colorToHealthPercent(this.life / this.maxLife);
   };
 
   FW.GameClosureExtend(this, FW.GameClosurePhysicsViewSyncMixin);
