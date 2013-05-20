@@ -30,7 +30,8 @@ exports = Class(ui.ImageView, function(supr) {
     this.setFilter(filter);
   };
 
-  this.colorToHealthPercent = function(percent) {
+  this.colorToHealthPercent = function(unfilteredPercent) {
+    var percent = FW.Math.clamp(unfilteredPercent, 0, 1);
     this.filter.update({
       r: 255,
       g: 255 * percent,
