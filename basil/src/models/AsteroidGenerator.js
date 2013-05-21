@@ -54,7 +54,7 @@ exports = Class(function(supr) {
         distance;
 
     // Maximize distance, memoize calculation result and element
-    for (var i = 0; i < asteroids.length; i++) {
+    for (var i = asteroids.length - 1; i >= 0; i--) {
       asteroid = asteroids[i];
       asteroidPosition = asteroid.getPosition();
       distance = FW.Math.distance(asteroidPosition.x, asteroidPosition.y, playerX, playerY);
