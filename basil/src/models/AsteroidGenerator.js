@@ -1,6 +1,5 @@
 import src.models.Asteroid.Asteroid as Asteroid;
 
-import src.lib.FW_Dispatcher as FW.Dispatcher;
 import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -17,7 +16,6 @@ exports = Class(function(supr) {
     this.asteroids = [];
 
     dispatcher.on("tick", function(dt) { this.countdownToAsteroid(dt); }, this);
-    this.dispatcher = new FW.Dispatcher();
   };
 
   this.countdownToAsteroid = function(dt) {
@@ -41,7 +39,6 @@ exports = Class(function(supr) {
 
     var asteroid = new Asteroid(this.dispatcher, x, y, radius, this.player, this.world, this.superview);
     this.asteroids.push(asteroid);
-    this.dispatcher.trigger("spawnAsteroid", asteroid);
   };
 
   this.furthestAsteroidDistance = function() {
