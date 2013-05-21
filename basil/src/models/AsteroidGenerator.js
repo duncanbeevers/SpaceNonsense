@@ -1,5 +1,6 @@
 import src.models.Asteroid.Asteroid as Asteroid;
 
+import src.lib.FW_Dispatcher as FW.Dispatcher;
 import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -16,13 +17,16 @@ exports = Class(function(supr) {
     this.asteroids = [];
 
     dispatcher.on("tick", function(dt) { this.countdownToAsteroid(dt); }, this);
+    this.dispatcher = new FW.Dispatcher();
   };
 
   this.countdownToAsteroid = function(dt) {
     this.nextAsteroidIn -= dt;
     if (this.nextAsteroidIn <= 0) {
-      this.nextAsteroidIn = 5000; // ms
-      this.spawnAsteroid();
+      this.nextAsteroidIn = 100; // ms
+      if (this.asteroids.length < 10) {
+        this.spawnAsteroid();
+      }
     }
   };
 
@@ -37,10 +41,11 @@ exports = Class(function(supr) {
 
     var asteroid = new Asteroid(this.dispatcher, x, y, radius, this.player, this.world, this.superview);
     this.asteroids.push(asteroid);
+    this.dispatcher.trigger("spawnAsteroid", asteroid);
   };
 
   this.furthestAsteroidDistance = function() {
-    return this.furthestAsteroidAndDistance()['distance'];
+    return this.furthestAsteroidAndDistance().distance;
   };
 
   this.furthestAsteroidAndDistance = function() {
@@ -58,9 +63,9 @@ exports = Class(function(supr) {
       asteroid = asteroids[i];
       asteroidPosition = asteroid.getPosition();
       distance = FW.Math.distance(asteroidPosition.x, asteroidPosition.y, playerX, playerY);
-      if (distance > result['distance']) {
-        result['distance'] = distance;
-        result['asteroid'] = asteroid;
+      if (distance > result.distance) {
+        result.distance = distance;
+        result.asteroid = asteroid;
       }
     }
 
