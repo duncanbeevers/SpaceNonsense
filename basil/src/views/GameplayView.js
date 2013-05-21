@@ -1,9 +1,8 @@
 import ui.ImageView;
-import ui.SpriteView;
 import ui.resource.Image;
 import ui.View;
-import ui.ViewPool;
 
+import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player.Player as Player;
 import src.models.AsteroidGenerator as AsteroidGenerator;
@@ -60,48 +59,10 @@ exports = Class(ui.View, function(supr) {
 
     world.SetContactListener(contactListener);
 
-    // We need this playfield reference only for adding explosions,
-    // TODO: Remove when we move the explosion drawing stuff out
-    var playfield = this.playfield;
-    var gameplayView = this;
-
-    var viewPool = new ui.ViewPool({
-      ctor: ui.SpriteView,
-      initCount: 10,
-      initOpts: {
-        url: "resources/images/animations/explosions",
-        frameRate: 30,
-        autoStart: false,
-        loop: false
-      }
-    });
-
-    contactListener.registerImpactListener("bullet001", "Asteroid", function(bullet, asteroid, strength, location) {
-      var size = strength / 5;
-
-      var explosionView = viewPool.obtainView({
-        superview: playfield,
-        x: location.x,
-        y: location.y,
-        width: size,
-        height: size,
-        offsetX: -size / 2,
-        offsetY: -size / 2
-      });
-
-      explosionView.startAnimation("explode", { callback: function() {
-          viewPool.releaseView(explosionView);
-          explosionView.removeFromSuperview();
-        }
-      });
-
-      asteroid.damage(strength / 5);
-    });
+    // Encapsulate collision interaction in its own class
+    var bulletImpactsAsteroid = new BulletImpactsAsteroid(this.playfield);
+    bulletImpactsAsteroid.register(contactListener);
   };
-
-
-
-
 
 
 
