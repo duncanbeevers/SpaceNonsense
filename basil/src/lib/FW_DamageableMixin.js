@@ -26,12 +26,12 @@ FW.DamageableMixin = {
 
   // Register to receive damage notificaiton from this object
   onDamaged: function(fn) {
-    this.dispatcher.on(damagedEventName, fn);
+    this.dispatcher.on(damagedEventName, fn, this);
   },
 
   // Register to receive death notification from this object
   onDied: function(fn) {
-    this.dispatcher.on(diedEventName, fn);
+    this.dispatcher.on(diedEventName, fn, this);
   }
 };
 
