@@ -67,8 +67,8 @@ exports = Class(ui.View, function(supr) {
     world.SetContactListener(contactListener);
 
     // Encapsulate collision interaction in its own class
-    var bulletImpactsAsteroid = new BulletImpactsAsteroid(this.playfield);
-    bulletImpactsAsteroid.register(contactListener, this.audioManager);
+    var bulletImpactsAsteroid = new BulletImpactsAsteroid();
+    bulletImpactsAsteroid.register(this.playfield, contactListener, this.audioManager);
   };
 
 

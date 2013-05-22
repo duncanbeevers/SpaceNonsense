@@ -14,7 +14,7 @@ exports = Class(function(supr) {
     this.view = new AsteroidView(radius, player, { superview: superview });
     this.physics = new AsteroidPhysics(this, x, y, radius, player, world);
 
-    this.maxLife = 100;
+    this.maxLife = 500;
     this.life = this.maxLife;
 
     // Register tick function with the application dispatcher

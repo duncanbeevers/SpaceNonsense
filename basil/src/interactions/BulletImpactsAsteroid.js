@@ -4,9 +4,7 @@ import ui.SpriteView;
 import src.lib.FW_Math as FW.Math;
 
 exports = Class(function(supr) {
-  this.init = function(playfield) {
-    this.playfield = playfield;
-
+  this.init = function() {
     this.viewPool = new ui.ViewPool({
       ctor: ui.SpriteView,
       initCount: 10,
@@ -19,23 +17,20 @@ exports = Class(function(supr) {
     });
   };
 
-  this.register = function(contactListener, audioManager) {
-    audioManager.addSound("BulletAsteroidHit", {
-      volume: 0.8
-    });
+  this.register = function(superview, contactListener, audioManager) {
+    audioManager.addSound("BulletAsteroidHit", { volume: 0.8 });
 
-    contactListener.registerImpactListener("bullet001", "Asteroid", this.getListener(audioManager));
+    contactListener.registerImpactListener("bullet001", "Asteroid", this.getListener(superview, audioManager));
   };
 
-  this.getListener = function(audioManager) {
-    var viewPool = this.viewPool,
-        playfield = this.playfield;
+  this.getListener = function(superview, audioManager) {
+    var viewPool = this.viewPool;
 
     return function(bullet, asteroid, strength, location) {
       var size = strength / 5;
 
       var explosionView = viewPool.obtainView({
-        superview: playfield,
+        superview: superview,
         x: location.x,
         y: location.y,
         width: size,
@@ -55,7 +50,8 @@ exports = Class(function(supr) {
       audioManager.setVolume(soundName, soundVolume);
       audioManager.play(soundName);
 
-      asteroid.damage(strength / 5);
+      // Apply the damage to the Asteroid
+      asteroid.damage(strength);
     };
 
   };
