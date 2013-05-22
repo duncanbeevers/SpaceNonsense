@@ -8,7 +8,7 @@ import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSy
 exports = Class(function(supr) {
   this.name = "Asteroid";
 
-  this.init = function(dispatcher, x, y, radius, player, world, superview) {
+  this.init = function(gameDispatcher, x, y, radius, player, world, superview) {
     this.player = player;
 
     this.view = new AsteroidView(radius, player, { superview: superview });
@@ -18,7 +18,7 @@ exports = Class(function(supr) {
     this.life = this.maxLife;
 
     // Register tick function with the application dispatcher
-    dispatcher.on("tick", function() { this.tick(); }, this);
+    gameDispatcher.on("tick", function() { this.tick(); }, this);
 
     // Set up a private dispatcher for asteroid events
     this.dispatcher = new FW.Dispatcher();
