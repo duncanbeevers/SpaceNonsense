@@ -4,8 +4,8 @@ import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(function(supr) {
-  this.init = function(dispatcher, superview, player, world) {
-    this.dispatcher = dispatcher;
+  this.init = function(gameDispatcher, superview, player, world) {
+    this.gameDispatcher = gameDispatcher;
     this.superview = superview;
     this.player = player;
     this.world = world;
@@ -15,7 +15,7 @@ exports = Class(function(supr) {
 
     this.asteroids = [];
 
-    dispatcher.on("tick", function(dt) { this.countdownToAsteroid(dt); }, this);
+    gameDispatcher.on("tick", function(dt) { this.countdownToAsteroid(dt); }, this);
   };
 
   this.countdownToAsteroid = function(dt) {
@@ -37,7 +37,7 @@ exports = Class(function(supr) {
         x = Math.cos(approachAngle) * distanceFromPlayer + playerPosition.x,
         y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y;
 
-    var asteroid = new Asteroid(this.dispatcher, x, y, radius, this.player, this.world, this.superview);
+    var asteroid = new Asteroid(this.gameDispatcher, x, y, radius, this.player, this.world, this.superview);
     this.asteroids.push(asteroid);
   };
 
