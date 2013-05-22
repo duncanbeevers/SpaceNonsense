@@ -2,7 +2,7 @@ import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 var FW = this.FW || (this.FW = {});
 
-exports = {
+FW.PhysicsMixin = {
   getPosition: function() {
     var body = this.fixture.GetBody(),
         position = body.GetPosition();
@@ -46,3 +46,5 @@ exports = {
     return body.GetWorld();
   }
 };
+
+exports = FW.PhysicsMixin;

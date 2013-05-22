@@ -1,5 +1,5 @@
 import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
-import src.lib.FW_GameClosurePhysicsMixin as FW.GameClosurePhysicsMixin;
+import src.lib.FW_PhysicsMixin as FW.PhysicsMixin;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 var vec1 = new Box2D.Common.Math.b2Vec2(0, 0),
@@ -26,5 +26,5 @@ exports = Class(function(supr) {
     body.ApplyImpulse(vec1, vec2);
   };
 
-  FW.GameClosureExtend(this, FW.GameClosurePhysicsMixin);
+  FW.GameClosureExtend(this, FW.PhysicsMixin);
 });
