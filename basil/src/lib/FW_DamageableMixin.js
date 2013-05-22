@@ -3,6 +3,11 @@ var FW = this.FW || (this.FW = {});
 var damagedEventName = 'damaged',
     diedEventName = 'died';
 
+// Allows for damageable entities
+// Expectations:
+//   Object has a `dispatcher` property used to dispatch events from that object
+//   Object has a `maxLife` property used to set the initial life of the object
+
 FW.DamageableMixin = {
   init: function() {
     this.life = this.maxLife;
