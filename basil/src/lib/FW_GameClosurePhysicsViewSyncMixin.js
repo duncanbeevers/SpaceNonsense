@@ -1,6 +1,7 @@
 var FW = this.FW || (this.FW = {});
 
-exports = {
+
+FW.GameClosurePhysicsViewSyncMixin = {
   init: function(dispatcher) {
     dispatcher.on("PhysicsViewSync", function() { this.slaveViewToPhysics(); }, this);
   },
@@ -18,3 +19,5 @@ exports = {
     this.physics.removeFromPhysics();
   }
 };
+
+exports = FW.GameClosurePhysicsViewSyncMixin;
