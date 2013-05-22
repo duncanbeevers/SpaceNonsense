@@ -1,6 +1,7 @@
 import ui.ImageView;
 import ui.resource.Image;
 import ui.View;
+import AudioManager;
 
 import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
 import src.views.FillScreenImageView as FillScreenImageView;
@@ -32,6 +33,9 @@ exports = Class(ui.View, function(supr) {
     // Set up the game loop event dispatcher
     this.setupDispatcher();
 
+    // Set up the audio manager
+    this.setupAudioManager();
+
     // Set up the world of the physics simulation
     this.setupPhysics();
 
@@ -46,6 +50,9 @@ exports = Class(ui.View, function(supr) {
     this.dispatcher = new FW.Dispatcher();
   };
 
+  this.setupAudioManager = function() {
+    this.audioManager = new AudioManager({ path: "resources/sounds" });
+  };
 
   this.setupPhysics = function() {
     var contactListener = new FW.NamedContactListener();
@@ -61,7 +68,7 @@ exports = Class(ui.View, function(supr) {
 
     // Encapsulate collision interaction in its own class
     var bulletImpactsAsteroid = new BulletImpactsAsteroid(this.playfield);
-    bulletImpactsAsteroid.register(contactListener);
+    bulletImpactsAsteroid.register(contactListener, this.audioManager);
   };
 
 
