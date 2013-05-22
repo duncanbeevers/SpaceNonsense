@@ -1,7 +1,7 @@
 import ui.ViewPool;
 import ui.SpriteView;
 
-import AudioManager;
+import src.lib.FW_Math as FW.Math;
 
 exports = Class(function(supr) {
   this.init = function(playfield) {
@@ -23,8 +23,6 @@ exports = Class(function(supr) {
     audioManager.addSound("BulletAsteroidHit", {
       volume: 0.8
     });
-    var oam = new AudioManager({ path: "resources/sounds" });
-    oam.addSound("BulletAsteroidHit", { volume: 0.8 });
 
     contactListener.registerImpactListener("bullet001", "Asteroid", this.getListener(audioManager));
   };
@@ -51,7 +49,11 @@ exports = Class(function(supr) {
           explosionView.removeFromSuperview();
         }
       });
-      audioManager.play("BulletAsteroidHit");
+
+      var soundName = "BulletAsteroidHit",
+          soundVolume = FW.Math.clamp(strength / 50, 0.2, 1);
+      audioManager.setVolume(soundName, soundVolume);
+      audioManager.play(soundName);
 
       asteroid.damage(strength / 5);
     };
