@@ -4,6 +4,7 @@ import src.models.Asteroid.AsteroidPhysics as AsteroidPhysics;
 import src.lib.FW_Dispatcher as FW.Dispatcher;
 import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSyncMixin;
+import src.lib.FW_DamageableMixin as FW.DamageableMixin;
 
 exports = Class(function(supr) {
   this.name = "Asteroid";
@@ -15,7 +16,6 @@ exports = Class(function(supr) {
     this.physics = new AsteroidPhysics(this, x, y, radius, player, world);
 
     this.maxLife = 500;
-    this.life = this.maxLife;
 
     // Register tick function with the application dispatcher
     gameDispatcher.on("tick", function() { this.tick(); }, this);
@@ -28,23 +28,11 @@ exports = Class(function(supr) {
     this.physics.approachPlayer(this.player);
   };
 
-  this.damage = function(damage) {
-    this.life = this.life - damage;
-
-    if (this.life - damage <= 0) {
-    } else {
-      this.dispatcher.trigger('died');
-    }
-  };
-
-  this.onDied = function(fn) {
-    this.dispatcher.on('died', fn);
-  };
-
   this.tick = function() {
     this.approachPlayer();
     this.view.colorToHealthPercent(this.life / this.maxLife);
   };
 
+  FW.GameClosureExtend(this, FW.DamageableMixin);
   FW.GameClosureExtend(this, FW.GameClosurePhysicsViewSyncMixin);
 });
