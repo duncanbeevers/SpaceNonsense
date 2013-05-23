@@ -52,6 +52,9 @@ exports = Class(function(supr) {
 
       // Apply the damage to the Asteroid
       asteroid.damage(strength);
+
+      // Deduct the damage from bullet
+      bullet.damage(strength);
     };
 
   };
