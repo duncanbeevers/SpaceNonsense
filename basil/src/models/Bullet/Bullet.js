@@ -5,7 +5,7 @@ import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSyncMixin;
 
 exports = Class(function(supr) {
-  this.init = function(dispatcher, bulletName, trajectory, world, superview, x, y) {
+  this.init = function(gameDispatcher, bulletName, trajectory, world, superview, x, y) {
     this.name = bulletName;
     this.lifespan = 10000;
 
@@ -16,8 +16,11 @@ exports = Class(function(supr) {
     this.view = new BulletView(this, radius, { superview: superview });
     this.physics = new BulletPhysics(this, x, y, radius, trajectory, world);
 
-    this.dispatcher = dispatcher;
-    dispatcher.on("tick", function(dt) { this.countdownLifespan(dt); }, this);
+    this.gameDispatcher = gameDispatcher;
+    gameDispatcher.on("tick", function(dt) {
+      this.countdownLifespan(dt);
+    }, this);
+
   };
 
   this.countdownLifespan = function(dt) {
@@ -28,7 +31,7 @@ exports = Class(function(supr) {
   };
 
   this.die = function() {
-    this.dispatcher.offByBindTarget("tick", this);
+    this.gameDispatcher.offByBindTarget("tick", this);
   };
 
   FW.GameClosureExtend(this, FW.GameClosurePhysicsViewSyncMixin);
