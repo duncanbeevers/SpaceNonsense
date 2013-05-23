@@ -18,9 +18,9 @@ FW.DamageableMixin = {
     this.life = this.life - damage;
 
     if (this.life - damage <= 0) {
-      this.dispatcher.trigger(damagedEventName, damage);
-    } else {
       this.dispatcher.trigger(diedEventName);
+    } else {
+      this.dispatcher.trigger(damagedEventName, damage);
     }
   },
 
