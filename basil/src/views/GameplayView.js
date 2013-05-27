@@ -42,10 +42,14 @@ exports = Class(ui.View, function(supr) {
 
     // Make the Asteroid Generator
     this.setupAsteroidGenerator();
+
+    this.gameDispatcher.on("tick", this.reframeCamera, this);
+    this.gameDispatcher.on("tick", this.attemptShoot, this);
+    this.gameDispatcher.on("tick", this.stepPhysics, this);
   };
 
   this.setupDispatcher = function() {
-    this.dispatcher = new FW.Dispatcher();
+    this.gameDispatcher = new FW.Dispatcher();
   };
 
   this.setupAudioManager = function() {
@@ -82,7 +86,7 @@ exports = Class(ui.View, function(supr) {
   this.setupPlayer = function() {
     // Create a placeholder for the player data
     // TODO: Move all this functionality into a Player class
-    var player = new Player(this.dispatcher, this.world, this.playfield);
+    var player = new Player(this.gameDispatcher, this.world, this.playfield);
 
     this.player = player;
 
@@ -118,13 +122,18 @@ exports = Class(ui.View, function(supr) {
 
 
   this.setupAsteroidGenerator = function() {
-    var asteroidGenerator = new AsteroidGenerator(this.dispatcher, this.playfield, this.player, this.world);
+    var asteroidGenerator = new AsteroidGenerator(this.gameDispatcher, this.playfield, this.player, this.world);
     this.asteroidGenerator = asteroidGenerator;
   };
 
 
 
   this.tick = function(dt) {
+    this.gameDispatcher.trigger("tick", dt);
+    this.gameDispatcher.trigger("PhysicsViewSync", dt);
+  };
+
+  this.reframeCamera = function() {
     var playerPosition = this.player.getPosition(),
         furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
         playfieldScale = FW.GameClosureDevice.getMinDimension() / 1.3 / furthestAsteroidDistance;
@@ -134,18 +143,20 @@ exports = Class(ui.View, function(supr) {
       x: FW.GameClosureDevice.getWidth() / 2 - playerPosition.x * playfieldScale,
       y: FW.GameClosureDevice.getHeight() / 2 - playerPosition.y * playfieldScale
     });
+  };
 
+  this.attemptShoot = function() {
     if (this.playerShooting) {
       this.player.shoot();
     }
+  };
 
+  this.stepPhysics = function() {
     // Step the physics simulation, handling collions and the like
     if (!this.stopStepping) {
       this.world.Step(0.1, 10, 10);
     }
 
-    this.dispatcher.trigger("tick", dt);
-    this.dispatcher.trigger("PhysicsViewSync");
   };
 
 });
