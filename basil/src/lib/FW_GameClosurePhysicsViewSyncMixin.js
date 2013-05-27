@@ -1,5 +1,6 @@
 var FW = this.FW || (this.FW = {});
 
+var RemovedEventName = "Removed";
 
 FW.GameClosurePhysicsViewSyncMixin = {
   init: function(dispatcher) {
@@ -14,9 +15,13 @@ FW.GameClosurePhysicsViewSyncMixin = {
   getPosition: function() {
     return this.physics.getPosition();
   },
-  die: function() {
+  remove: function() {
     this.view.removeFromSuperview();
     this.physics.removeFromPhysics();
+    this.dispatcher.trigger(RemovedEventName, this);
+  },
+  onRemoved: function(fn) {
+    this.dispatcher.on(RemovedEventName, fn, this);
   }
 };
 

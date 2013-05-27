@@ -28,9 +28,8 @@ exports = Class(function(supr) {
 
     this.dispatcher = dispatcher;
 
-    // Bullets "take damage" when they bump into Asteroids
-    // When enough damage is taken, the bullet expires immediately
-    this.onDied(this.die);
+    // When the bullet dies, remove it from the simulation
+    this.onDied(this.remove);
   };
 
   this.countdownLifespan = function(dt) {

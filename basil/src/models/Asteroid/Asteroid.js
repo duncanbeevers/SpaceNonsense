@@ -22,6 +22,9 @@ exports = Class(function(supr) {
 
     // Set up a private dispatcher for asteroid events
     this.dispatcher = new FW.Dispatcher();
+
+    // When the asteroid dies, remove it from the simulation
+    this.onDied(this.remove);
   };
 
   this.approachPlayer = function() {
