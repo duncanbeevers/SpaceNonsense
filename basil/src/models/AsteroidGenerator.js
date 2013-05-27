@@ -37,8 +37,19 @@ exports = Class(function(supr) {
         x = Math.cos(approachAngle) * distanceFromPlayer + playerPosition.x,
         y = Math.sin(approachAngle) * distanceFromPlayer + playerPosition.y;
 
+    var generatedAsteroids = this.asteroids;
+
     var asteroid = new Asteroid(this.gameDispatcher, x, y, radius, this.player, this.world, this.superview);
-    this.asteroids.push(asteroid);
+    asteroid.onRemoved(function() {
+      var asteroid, i;
+      for (i = generatedAsteroids.length - 1; i >= 0; i--) {
+        asteroid = generatedAsteroids[i];
+        if (asteroid === this) {
+          generatedAsteroids.splice(i, 1);
+        }
+      }
+    });
+    generatedAsteroids.push(asteroid);
   };
 
   this.furthestAsteroidDistance = function() {
