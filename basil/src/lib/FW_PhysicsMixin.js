@@ -38,8 +38,13 @@ FW.PhysicsMixin = {
     this.fixture = fixture;
   },
   removeFromPhysics: function() {
-    var body = this.fixture.GetBody();
-    body.GetWorld().DestroyBody(body);
+    var fixture = this.fixture,
+        body = fixture.GetBody();
+
+    setTimeout(function() {
+      body.GetWorld().DestroyBody(body);
+      fixture.Destroy();
+    });
   },
   getWorld: function() {
     var body = this.fixture.GetBody();
