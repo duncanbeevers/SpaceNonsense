@@ -17,7 +17,7 @@ FW.DamageableMixin = {
     this.life = this.life - damage;
 
     if (this.life - damage <= 0) {
-      this.dispatcher.trigger(DiedEventName);
+      this.die();
     } else {
       this.dispatcher.trigger(DamagedEventName, damage);
     }
@@ -26,6 +26,10 @@ FW.DamageableMixin = {
   // Register to receive damage notificaiton from this object
   onDamaged: function(fn) {
     this.dispatcher.on(DamagedEventName, fn, this);
+  },
+
+  die: function() {
+    this.dispatcher.trigger(DiedEventName);
   },
 
   // Register to receive death notification from this object
