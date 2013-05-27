@@ -1,12 +1,11 @@
 var FW = this.FW || (this.FW = {});
 
-var damagedEventName = 'damaged',
-    diedEventName = 'died';
+var DamagedEventName = "damaged",
+    DiedEventName = "died";
 
 // Allows for damageable entities
 // Expectations:
 //   Object has a `dispatcher` property used to dispatch events from that object
-//   Object has a `maxLife` property used to set the initial life of the object
 
 FW.DamageableMixin = {
   init: function() {
@@ -18,20 +17,20 @@ FW.DamageableMixin = {
     this.life = this.life - damage;
 
     if (this.life - damage <= 0) {
-      this.dispatcher.trigger(diedEventName);
+      this.dispatcher.trigger(DiedEventName);
     } else {
-      this.dispatcher.trigger(damagedEventName, damage);
+      this.dispatcher.trigger(DamagedEventName, damage);
     }
   },
 
   // Register to receive damage notificaiton from this object
   onDamaged: function(fn) {
-    this.dispatcher.on(damagedEventName, fn, this);
+    this.dispatcher.on(DamagedEventName, fn, this);
   },
 
   // Register to receive death notification from this object
   onDied: function(fn) {
-    this.dispatcher.on(diedEventName, fn, this);
+    this.dispatcher.on(DiedEventName, fn, this);
   }
 };
 
