@@ -26,9 +26,7 @@ exports = Class(ui.View, function(supr) {
     this.setupBackground();
 
     // Panning surface for graphics
-    this.playfield = new ui.View({
-      superview: this
-    });
+    this.playfield = new ui.View({ superview: this });
 
     // Set up the game loop event dispatcher
     this.setupDispatcher();
