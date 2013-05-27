@@ -8,7 +8,7 @@ import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSy
 exports = Class(function(supr) {
   this.name = "Player";
 
-  this.init = function(dispatcher, world, superview) {
+  this.init = function(gameDispatcher, world, superview) {
     this.radius = 1;
 
     this.weapons = [
@@ -18,11 +18,11 @@ exports = Class(function(supr) {
     ];
     this.currentWeaponIndex = 0;
 
-    this.dispatcher = dispatcher;
+    this.gameDispatcher = gameDispatcher;
     this.view = new PlayerView(this, { superview: superview });
     this.physics = new PlayerPhysics(this, 0, 0, this.radius, world);
 
-    dispatcher.on("tick", function(dt) { this.cooldownWeapons(dt); }, this);
+    gameDispatcher.on("tick", this.cooldownWeapons, this);
   };
 
   this.shoot = function(dt) {
@@ -35,7 +35,7 @@ exports = Class(function(supr) {
           bulletDistance = this.radius * 1.1;
 
       // TODO: Recycle Bullet objects
-      new Bullet(this.dispatcher, weapon.image, trajectory, this.physics.getWorld(), this.view.getSuperview(),
+      new Bullet(this.gameDispatcher, weapon.image, trajectory, this.physics.getWorld(), this.view.getSuperview(),
         playerViewStyle.x + Math.cos(trajectory) * bulletDistance,
         playerViewStyle.y + Math.sin(trajectory) * bulletDistance
       );
