@@ -22,7 +22,7 @@ exports = Class(function(supr) {
     this.view = new PlayerView(this, { superview: superview });
     this.physics = new PlayerPhysics(this, 0, 0, this.radius, world);
 
-    gameDispatcher.on("tick", this.cooldownWeapons, this);
+    gameDispatcher.onTick(this.cooldownWeapons, this);
   };
 
   this.shoot = function(dt) {

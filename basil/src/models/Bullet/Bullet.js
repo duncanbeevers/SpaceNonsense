@@ -19,28 +19,22 @@ exports = Class(function(supr) {
     this.view = new BulletView(this, radius, { superview: superview });
     this.physics = new BulletPhysics(this, x, y, radius, trajectory, world);
 
-    this.gameDispatcher = gameDispatcher;
-    gameDispatcher.on("tick", function(dt) {
-      this.countdownLifespan(dt);
-    }, this);
-
     var dispatcher = new FW.Dispatcher();
-
     this.dispatcher = dispatcher;
 
     // When the bullet dies, remove it from the simulation
     this.onDied(this.remove);
+
+    // Once removed from the simulation, stop counting down lifespan
+    gameDispatcher.onTick(this.countdownLifespan, this);
+    this.onRemoved(function() { gameDispatcher.offTick(this); });
   };
 
   this.countdownLifespan = function(dt) {
     this.lifespan -= dt;
 
-    // Remove self when lifespan is up,
-    if (this.lifespan <= 0) { this.die(); }
-  };
-
-  this.die = function() {
-    this.gameDispatcher.offByBindTarget("tick", this);
+    // Remove bullet when lifespan is up
+    if (this.lifespan <= 0) { this.remove(); }
   };
 
   FW.GameClosureExtend(this, FW.DamageableMixin);

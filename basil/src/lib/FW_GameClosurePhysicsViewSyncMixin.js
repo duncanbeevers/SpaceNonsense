@@ -1,10 +1,11 @@
 var FW = this.FW || (this.FW = {});
 
 var RemovedEventName = "Removed";
+var PhysicsViewSyncEventName = "PhysicsViewSync";
 
 FW.GameClosurePhysicsViewSyncMixin = {
-  init: function(dispatcher) {
-    dispatcher.on("PhysicsViewSync", function() { this.slaveViewToPhysics(); }, this);
+  init: function(gameDispatcher) {
+    gameDispatcher.onPhysicsViewSync(this.slaveViewToPhysics, this);
   },
   slaveViewToPhysics: function() {
     var viewStyle = this.view.style,

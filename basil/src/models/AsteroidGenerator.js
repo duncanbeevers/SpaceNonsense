@@ -15,7 +15,7 @@ exports = Class(function(supr) {
 
     this.asteroids = [];
 
-    gameDispatcher.on("tick", function(dt) { this.countdownToAsteroid(dt); }, this);
+    gameDispatcher.onTick(this.countdownToAsteroid, this);
   };
 
   this.countdownToAsteroid = function(dt) {

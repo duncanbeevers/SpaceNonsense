@@ -7,8 +7,8 @@ import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player.Player as Player;
 import src.models.AsteroidGenerator as AsteroidGenerator;
+import src.models.GameDispatcher as GameDispatcher;
 
-import src.lib.FW_Dispatcher as FW.Dispatcher;
 import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
@@ -43,13 +43,13 @@ exports = Class(ui.View, function(supr) {
     // Make the Asteroid Generator
     this.setupAsteroidGenerator();
 
-    this.gameDispatcher.on("tick", this.reframeCamera, this);
-    this.gameDispatcher.on("tick", this.attemptShoot, this);
-    this.gameDispatcher.on("tick", this.stepPhysics, this);
+    this.gameDispatcher.onTick(this.reframeCamera, this);
+    this.gameDispatcher.onTick(this.attemptShoot, this);
+    this.gameDispatcher.onTick(this.stepPhysics, this);
   };
 
   this.setupDispatcher = function() {
-    this.gameDispatcher = new FW.Dispatcher();
+    this.gameDispatcher = new GameDispatcher();
   };
 
   this.setupAudioManager = function() {
@@ -120,17 +120,14 @@ exports = Class(ui.View, function(supr) {
   };
 
 
-
   this.setupAsteroidGenerator = function() {
     var asteroidGenerator = new AsteroidGenerator(this.gameDispatcher, this.playfield, this.player, this.world);
     this.asteroidGenerator = asteroidGenerator;
   };
 
-
-
+  // Hook into GameClosure tick function, forward to GameDispatcher
   this.tick = function(dt) {
-    this.gameDispatcher.trigger("tick", dt);
-    this.gameDispatcher.trigger("PhysicsViewSync", dt);
+    this.gameDispatcher.tick(dt);
   };
 
   this.reframeCamera = function() {

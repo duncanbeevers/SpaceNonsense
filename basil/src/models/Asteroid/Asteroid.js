@@ -17,11 +17,12 @@ exports = Class(function(supr) {
 
     this.maxLife = 500;
 
-    // Register tick function with the application dispatcher
-    gameDispatcher.on("tick", function() { this.tick(); }, this);
-
     // Set up a private dispatcher for asteroid events
     this.dispatcher = new FW.Dispatcher();
+
+    // Register tick function with the application dispatcher
+    gameDispatcher.onTick(this.tick, this);
+    this.onRemoved(function() { gameDispatcher.offTick(this); });
 
     // When the asteroid dies, remove it from the simulation
     this.onDied(this.remove);
