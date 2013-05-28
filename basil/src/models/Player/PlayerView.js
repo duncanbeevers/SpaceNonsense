@@ -9,7 +9,7 @@ exports = Class(ui.ImageView, function(supr) {
     this.player = player;
 
     opts = merge(opts, {
-      image: "resources/images/reference_25x25_compass.png"
+      image: "resources/images/reference_128x128_compass.png"
     });
 
     supr(this, "init", [opts]);
