@@ -74,6 +74,41 @@ exports = Class(ui.View, function(supr) {
     bulletImpactsAsteroid.register(this.playfield, contactListener, this.audioManager);
     var bulletImpactsBullet = new BulletImpactsBullet();
     bulletImpactsBullet.register(this.playfield, contactListener, this.audioManager);
+
+
+    // Set up debugDraw for box2d
+    var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
+    var gameClosureCanvas = document.querySelectorAll("canvas")[1];
+    var debugCanvas = document.createElement("canvas");
+    debugCanvas.setAttribute("width", gameClosureCanvas.getAttribute("width"));
+    debugCanvas.setAttribute("height", gameClosureCanvas.getAttribute("height"));
+    debugCanvas.style.display = "block";
+    gameClosureCanvas.style.display  = "block";
+    gameClosureCanvas.style.position = "absolute";
+    gameClosureCanvas.style.top      = "0";
+    gameClosureCanvas.style.left     = "0";
+    gameClosureCanvas.style.opacity  = "0.5";
+    gameClosureCanvas.parentNode.appendChild(debugCanvas);
+
+    var debugContext = debugCanvas.getContext("2d");
+    var debugDraw = new b2DebugDraw();
+
+    debugDraw.SetSprite(debugContext);
+    debugDraw.SetFillAlpha(1);
+    debugDraw.SetLineThickness(1.0);
+    debugDraw.SetFlags(
+      b2DebugDraw.e_shapeBit        |
+      // b2DebugDraw.e_jointBit        |
+      // b2DebugDraw.e_aabbBit         |
+      b2DebugDraw.e_centerOfMassBit |
+      // b2DebugDraw.e_coreShapeBit    |
+      // b2DebugDraw.e_jointBit        |
+      // b2DebugDraw.e_obbBit          |
+      // b2DebugDraw.e_pairBit         |
+      0
+    );
+    world.SetDebugDraw(debugDraw);
+    this.debugDraw = debugDraw;
   };
 
 
@@ -136,13 +171,19 @@ exports = Class(ui.View, function(supr) {
   this.reframeCamera = function() {
     var playerPosition = this.player.getPosition(),
         furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
-        playfieldScale = FW.GameClosureDevice.getMinDimension() / 1.3 / furthestAsteroidDistance;
+        playfieldScale = FW.GameClosureDevice.getMinDimension() / 1.3 / furthestAsteroidDistance,
+        x = FW.GameClosureDevice.getWidth() / 2 - playerPosition.x * playfieldScale,
+        y = FW.GameClosureDevice.getHeight() / 2 - playerPosition.y * playfieldScale;
 
-    this.playfield.style.update({
-      scale: playfieldScale,
-      x: FW.GameClosureDevice.getWidth() / 2 - playerPosition.x * playfieldScale,
-      y: FW.GameClosureDevice.getHeight() / 2 - playerPosition.y * playfieldScale
-    });
+    this.playfield.style.update({ scale: playfieldScale, x: x, y: y });
+
+    if (this.debugDraw) {
+      this.debugDraw.SetDrawScale(playfieldScale);
+      this.debugDraw.SetDrawTranslate(new Box2D.Common.Math.b2Vec2(
+        -playerPosition.x + FW.GameClosureDevice.getWidth() / 2 / playfieldScale,
+        -playerPosition.y + FW.GameClosureDevice.getHeight() / 2 / playfieldScale
+      ));
+    }
   };
 
   this.attemptShoot = function() {
@@ -155,6 +196,9 @@ exports = Class(ui.View, function(supr) {
     // Step the physics simulation, handling collions and the like
     if (!this.stopStepping) {
       this.world.Step(0.1, 10, 10);
+      if (this.debugDraw) {
+        this.world.DrawDebugData();
+      }
     }
 
   };
