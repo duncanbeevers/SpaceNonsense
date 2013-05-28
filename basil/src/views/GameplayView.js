@@ -14,6 +14,8 @@ import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
+var DEBUG = false;
+
 exports = Class(ui.View, function(supr) {
   this.init = function(opts) {
     opts = merge(opts, {
@@ -75,40 +77,41 @@ exports = Class(ui.View, function(supr) {
     var bulletImpactsBullet = new BulletImpactsBullet();
     bulletImpactsBullet.register(this.playfield, contactListener, this.audioManager);
 
+    if (DEBUG) {
+      // Set up debugDraw for box2d
+      var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
+      var gameClosureCanvas = document.querySelectorAll("canvas")[1];
+      var debugCanvas = document.createElement("canvas");
+      debugCanvas.setAttribute("width", gameClosureCanvas.getAttribute("width"));
+      debugCanvas.setAttribute("height", gameClosureCanvas.getAttribute("height"));
+      debugCanvas.style.display = "block";
+      gameClosureCanvas.style.display  = "block";
+      gameClosureCanvas.style.position = "absolute";
+      gameClosureCanvas.style.top      = "0";
+      gameClosureCanvas.style.left     = "0";
+      gameClosureCanvas.style.opacity  = "0.5";
+      gameClosureCanvas.parentNode.appendChild(debugCanvas);
 
-    // Set up debugDraw for box2d
-    var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
-    var gameClosureCanvas = document.querySelectorAll("canvas")[1];
-    var debugCanvas = document.createElement("canvas");
-    debugCanvas.setAttribute("width", gameClosureCanvas.getAttribute("width"));
-    debugCanvas.setAttribute("height", gameClosureCanvas.getAttribute("height"));
-    debugCanvas.style.display = "block";
-    gameClosureCanvas.style.display  = "block";
-    gameClosureCanvas.style.position = "absolute";
-    gameClosureCanvas.style.top      = "0";
-    gameClosureCanvas.style.left     = "0";
-    gameClosureCanvas.style.opacity  = "0.5";
-    gameClosureCanvas.parentNode.appendChild(debugCanvas);
+      var debugContext = debugCanvas.getContext("2d");
+      var debugDraw = new b2DebugDraw();
 
-    var debugContext = debugCanvas.getContext("2d");
-    var debugDraw = new b2DebugDraw();
-
-    debugDraw.SetSprite(debugContext);
-    debugDraw.SetFillAlpha(1);
-    debugDraw.SetLineThickness(1.0);
-    debugDraw.SetFlags(
-      b2DebugDraw.e_shapeBit        |
-      // b2DebugDraw.e_jointBit        |
-      // b2DebugDraw.e_aabbBit         |
-      b2DebugDraw.e_centerOfMassBit |
-      // b2DebugDraw.e_coreShapeBit    |
-      // b2DebugDraw.e_jointBit        |
-      // b2DebugDraw.e_obbBit          |
-      // b2DebugDraw.e_pairBit         |
-      0
-    );
-    world.SetDebugDraw(debugDraw);
-    this.debugDraw = debugDraw;
+      debugDraw.SetSprite(debugContext);
+      debugDraw.SetFillAlpha(1);
+      debugDraw.SetLineThickness(1.0);
+      debugDraw.SetFlags(
+        b2DebugDraw.e_shapeBit        |
+        // b2DebugDraw.e_jointBit        |
+        // b2DebugDraw.e_aabbBit         |
+        b2DebugDraw.e_centerOfMassBit |
+        // b2DebugDraw.e_coreShapeBit    |
+        // b2DebugDraw.e_jointBit        |
+        // b2DebugDraw.e_obbBit          |
+        // b2DebugDraw.e_pairBit         |
+        0
+      );
+      world.SetDebugDraw(debugDraw);
+      this.debugDraw = debugDraw;
+    }
   };
 
 

@@ -10,12 +10,13 @@ exports = Class(function(supr) {
   this.name = "Asteroid";
 
   this.init = function(gameDispatcher, audioManager, x, y, radius, player, world, superview) {
+    this.radius = radius;
     this.player = player;
 
     this.view = new AsteroidView(radius, player, { superview: superview });
     this.physics = new AsteroidPhysics(this, x, y, radius, player, world);
 
-    this.maxLife = 500;
+    this.maxLife = 50;
 
     // Set up a private dispatcher for asteroid events
     this.dispatcher = new FW.Dispatcher();

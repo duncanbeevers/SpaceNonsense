@@ -7,13 +7,11 @@ import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSyncMixin;
 
 exports = Class(function(supr) {
-  this.init = function(gameDispatcher, bulletName, trajectory, world, superview, x, y) {
+  this.init = function(gameDispatcher, radius, bulletName, trajectory, world, superview, x, y) {
     this.name = bulletName;
     this.lifespan = 10000;
     this.maxLife = 500;
 
-    // TODO: Look up bullet size?
-    var radius = 0.6;
     this.radius = radius;
 
     this.view = new BulletView(this, radius, { superview: superview });

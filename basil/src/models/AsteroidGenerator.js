@@ -33,7 +33,7 @@ exports = Class(function(supr) {
 
   this.spawnAsteroid = function() {
     var player = this.player,
-        radius = FW.Math.random(3, 5),
+        radius = FW.Math.random(3, 15),
         distanceFromPlayer = FW.Math.random(10, 20) + radius + player.getRadius(),
         approachAngle = FW.Math.random(FW.Math.TWO_PI),
         playerPosition = this.player.getPosition(),
@@ -53,6 +53,8 @@ exports = Class(function(supr) {
         }
       }
     });
+
+    asteroid.onDied(function() { player.reward(0.1); });
     generatedAsteroids.push(asteroid);
   };
 

@@ -4,7 +4,7 @@ var FW = this.FW || (this.FW = {});
 
 function delay(fn) {
   setTimeout(fn);
-};
+}
 
 FW.PhysicsMixin = {
   getPosition: function() {
@@ -35,10 +35,14 @@ FW.PhysicsMixin = {
     bodyDef.linearDamping = props.linearDamping || 0;
     bodyDef.angularDamping = props.angularDamping || 0;
 
+    this._fixtureDef = fixtureDef;
+    this._bodyDef = bodyDef;
+
+    this._setFixtureInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
+  },
+  _setFixtureInWorldFromBodyDefAndFixtureDef: function(world, bodyDef, fixtureDef, userData) {
     var fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     fixture.SetUserData(userData);
-
-    // TODO: Does it makes sense to return this instead of mutating the instance?
     this.fixture = fixture;
   },
   removeFromPhysics: function() {
@@ -46,18 +50,38 @@ FW.PhysicsMixin = {
     delay(function() { instance._removeFromPhysics(); });
   },
   _removeFromPhysics: function() {
-    var fixture = this.fixture,
-        body = fixture.GetBody(),
-        userData = fixture.GetUserData();
-
+    var body = this.fixture.GetBody();
     body.GetWorld().DestroyBody(body);
-    fixture.Destroy();
-
-    return userData;
   },
   getWorld: function() {
     var body = this.fixture.GetBody();
     return body.GetWorld();
+  },
+  setRadius: function(radius) {
+    var instance = this;
+    delay(function() {
+      var bodyDef = instance._bodyDef,
+          fixtureDef = instance._fixtureDef;
+
+      var originalFixture = instance.fixture,
+          body = originalFixture.GetBody(),
+          world = body.GetWorld(),
+          position = body.GetPosition(),
+          userData = originalFixture.GetUserData();
+
+      // Copy the old body's position to the new body def
+      bodyDef.position.x = position.x;
+      bodyDef.position.y = position.y;
+
+      // Apply the new bigger shape to the fixture def
+      fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
+
+      // Remove the original body from the world
+      instance._removeFromPhysics();
+
+      // Re-add to physics with the updated defs
+      instance._setFixtureInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
+    });
   }
 };
 
