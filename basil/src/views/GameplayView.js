@@ -121,7 +121,7 @@ exports = Class(ui.View, function(supr) {
 
 
   this.setupAsteroidGenerator = function() {
-    var asteroidGenerator = new AsteroidGenerator(this.gameDispatcher, this.playfield, this.player, this.world);
+    var asteroidGenerator = new AsteroidGenerator(this.gameDispatcher, this.audioManager, this.playfield, this.player, this.world);
     this.asteroidGenerator = asteroidGenerator;
   };
 

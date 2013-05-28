@@ -4,8 +4,9 @@ import src.lib.FW_Math as FW.Math;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 exports = Class(function(supr) {
-  this.init = function(gameDispatcher, superview, player, world) {
+  this.init = function(gameDispatcher, audioManager, superview, player, world) {
     this.gameDispatcher = gameDispatcher;
+    this.audioManager = audioManager;
     this.superview = superview;
     this.player = player;
     this.world = world;
@@ -16,6 +17,8 @@ exports = Class(function(supr) {
     this.asteroids = [];
 
     gameDispatcher.onTick(this.countdownToAsteroid, this);
+
+    audioManager.addSound("AsteroidDestroyed");
   };
 
   this.countdownToAsteroid = function(dt) {
@@ -39,7 +42,7 @@ exports = Class(function(supr) {
 
     var generatedAsteroids = this.asteroids;
 
-    var asteroid = new Asteroid(this.gameDispatcher, x, y, radius, this.player, this.world, this.superview);
+    var asteroid = new Asteroid(this.gameDispatcher, this.audioManager, x, y, radius, this.player, this.world, this.superview);
     asteroid.onRemoved(function() {
       var asteroid, i;
       for (i = generatedAsteroids.length - 1; i >= 0; i--) {

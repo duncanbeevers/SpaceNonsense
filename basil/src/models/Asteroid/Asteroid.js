@@ -9,7 +9,7 @@ import src.lib.FW_GameClosurePhysicsViewSyncMixin as FW.GameClosurePhysicsViewSy
 exports = Class(function(supr) {
   this.name = "Asteroid";
 
-  this.init = function(gameDispatcher, x, y, radius, player, world, superview) {
+  this.init = function(gameDispatcher, audioManager, x, y, radius, player, world, superview) {
     this.player = player;
 
     this.view = new AsteroidView(radius, player, { superview: superview });
@@ -25,7 +25,10 @@ exports = Class(function(supr) {
     this.onRemoved(function() { gameDispatcher.offTick(this); });
 
     // When the asteroid dies, remove it from the simulation
-    this.onDied(this.remove);
+    this.onDied(function () {
+      this.remove();
+      audioManager.play("AsteroidDestroyed");
+    });
   };
 
   this.approachPlayer = function() {
