@@ -20,7 +20,7 @@ exports = Class(function(supr) {
 
     this.gameDispatcher = gameDispatcher;
     this.view = new PlayerView(this, { superview: superview });
-    this.physics = new PlayerPhysics(this, 0, 0, this.radius, world);
+    this.physics = new PlayerPhysics(this, 0, 0, this.getRadius(), world);
 
     gameDispatcher.onTick(this.cooldownWeapons, this);
   };
@@ -32,7 +32,7 @@ exports = Class(function(supr) {
 
       var playerViewStyle = this.view.style,
           trajectory = playerViewStyle.r,
-          bulletDistance = this.radius * 1.1;
+          bulletDistance = this.getRadius() * 1.1;
 
       // TODO: Recycle Bullet objects
       new Bullet(this.gameDispatcher, weapon.image, trajectory, this.physics.getWorld(), this.view.getSuperview(),
