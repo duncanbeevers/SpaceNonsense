@@ -2,6 +2,10 @@ import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 var FW = this.FW || (this.FW = {});
 
+function delay(fn) {
+  setTimeout(fn);
+};
+
 FW.PhysicsMixin = {
   getPosition: function() {
     var body = this.fixture.GetBody(),
@@ -38,13 +42,18 @@ FW.PhysicsMixin = {
     this.fixture = fixture;
   },
   removeFromPhysics: function() {
+    var instance = this;
+    delay(function() { instance._removeFromPhysics(); });
+  },
+  _removeFromPhysics: function() {
     var fixture = this.fixture,
-        body = fixture.GetBody();
+        body = fixture.GetBody(),
+        userData = fixture.GetUserData();
 
-    setTimeout(function() {
-      body.GetWorld().DestroyBody(body);
-      fixture.Destroy();
-    });
+    body.GetWorld().DestroyBody(body);
+    fixture.Destroy();
+
+    return userData;
   },
   getWorld: function() {
     var body = this.fixture.GetBody();
