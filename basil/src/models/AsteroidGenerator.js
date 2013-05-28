@@ -43,6 +43,7 @@ exports = Class(function(supr) {
     var generatedAsteroids = this.asteroids;
 
     var asteroid = new Asteroid(this.gameDispatcher, this.audioManager, x, y, radius, this.player, this.world, this.superview);
+    // When the asteroid is removed from the simulation, remove it from the generator's cached list
     asteroid.onRemoved(function() {
       var asteroid, i;
       for (i = generatedAsteroids.length - 1; i >= 0; i--) {
