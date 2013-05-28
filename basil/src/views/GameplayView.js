@@ -4,6 +4,7 @@ import ui.View;
 import AudioManager;
 
 import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
+import src.interactions.BulletImpactsBullet as BulletImpactsBullet;
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player.Player as Player;
 import src.models.AsteroidGenerator as AsteroidGenerator;
@@ -71,6 +72,8 @@ exports = Class(ui.View, function(supr) {
     // Encapsulate collision interaction in its own class
     var bulletImpactsAsteroid = new BulletImpactsAsteroid();
     bulletImpactsAsteroid.register(this.playfield, contactListener, this.audioManager);
+    var bulletImpactsBullet = new BulletImpactsBullet();
+    bulletImpactsBullet.register(this.playfield, contactListener, this.audioManager);
   };
 
 
