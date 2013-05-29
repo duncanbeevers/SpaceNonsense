@@ -10,7 +10,6 @@ import src.models.Player.Player as Player;
 import src.models.AsteroidGenerator as AsteroidGenerator;
 import src.models.GameDispatcher as GameDispatcher;
 
-import src.lib.FW_GameClosureDevice as FW.GameClosureDevice;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
@@ -174,17 +173,31 @@ exports = Class(ui.View, function(supr) {
   this.reframeCamera = function() {
     var playerPosition = this.player.getPosition(),
         furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
-        playfieldScale = FW.GameClosureDevice.getMinDimension() / 1.3 / furthestAsteroidDistance,
-        x = FW.GameClosureDevice.getWidth() / 2 - playerPosition.x * playfieldScale,
-        y = FW.GameClosureDevice.getHeight() / 2 - playerPosition.y * playfieldScale;
+        superview = this.getSuperview(),
+        superviewStyle = superview.style,
+        styleWidth = superviewStyle.width,
+        styleHeight = superviewStyle.height,
+        styleScale = superviewStyle.scale,
+        minDimension = Math.min(styleWidth, styleHeight),
+        playfieldScale = minDimension / 2 / furthestAsteroidDistance,
+        x = playerPosition.x,
+        y = playerPosition.y;
 
-    this.playfield.style.update({ scale: playfieldScale, x: x, y: y });
+    this.playfield.style.update({
+      x: styleWidth / 2,
+      y: styleHeight / 2,
+      offsetX: -x,
+      offsetY: -y,
+      anchorX: x,
+      anchorY: y,
+      scale: playfieldScale
+    });
 
     if (this.debugDraw) {
-      this.debugDraw.SetDrawScale(playfieldScale);
+      this.debugDraw.SetDrawScale(playfieldScale * styleScale);
       this.debugDraw.SetDrawTranslate(new Box2D.Common.Math.b2Vec2(
-        -playerPosition.x + FW.GameClosureDevice.getWidth() / 2 / playfieldScale,
-        -playerPosition.y + FW.GameClosureDevice.getHeight() / 2 / playfieldScale
+        -playerPosition.x + styleWidth / 2 / playfieldScale,
+        -playerPosition.y + styleHeight / 2 / playfieldScale
       ));
     }
   };
