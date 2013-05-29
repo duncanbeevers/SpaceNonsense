@@ -171,17 +171,18 @@ exports = Class(ui.View, function(supr) {
   };
 
   this.reframeCamera = function() {
-    var playerPosition = this.player.getPosition(),
-        furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
-        superview = this.getSuperview(),
+    var superview = this.getSuperview(),
         superviewStyle = superview.style,
         styleWidth = superviewStyle.width,
         styleHeight = superviewStyle.height,
-        styleScale = superviewStyle.scale,
-        minDimension = Math.min(styleWidth, styleHeight),
-        playfieldScale = minDimension / 2 / furthestAsteroidDistance,
+        styleScale = superviewStyle.scale;
+
+    var playerPosition = this.player.getPosition(),
         x = playerPosition.x,
-        y = playerPosition.y;
+        y = playerPosition.y,
+        furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
+        minDimension = Math.min(styleWidth, styleHeight),
+        playfieldScale = minDimension / 2 / furthestAsteroidDistance;
 
     this.playfield.style.update({
       x: styleWidth / 2,
