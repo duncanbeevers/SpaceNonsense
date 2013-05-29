@@ -3,11 +3,8 @@ import ui.resource.Image;
 import ui.View;
 import AudioManager;
 
-import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
-import src.interactions.BulletImpactsBullet as BulletImpactsBullet;
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.models.Player.Player as Player;
-import src.models.AsteroidGenerator as AsteroidGenerator;
 import src.models.GameDispatcher as GameDispatcher;
 
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
@@ -42,9 +39,6 @@ exports = Class(ui.View, function(supr) {
     // Add the player to the scene graph and physics simulation
     this.setupPlayer();
 
-    // Make the Asteroid Generator
-    this.setupAsteroidGenerator();
-
     this.gameDispatcher.onTick(this.reframeCamera, this);
     this.gameDispatcher.onTick(this.attemptShoot, this);
     this.gameDispatcher.onTick(this.stepPhysics, this);
@@ -60,6 +54,7 @@ exports = Class(ui.View, function(supr) {
 
   this.setupPhysics = function() {
     var contactListener = new FW.NamedContactListener();
+    this.contactListener = contactListener;
 
     var world = new Box2D.Dynamics.b2World(
       new Box2D.Common.Math.b2Vec2(0, 0), // no gravity
@@ -69,12 +64,6 @@ exports = Class(ui.View, function(supr) {
     this.world = world;
 
     world.SetContactListener(contactListener);
-
-    // Encapsulate collision interaction in its own class
-    var bulletImpactsAsteroid = new BulletImpactsAsteroid();
-    bulletImpactsAsteroid.register(this.playfield, contactListener, this.audioManager);
-    var bulletImpactsBullet = new BulletImpactsBullet();
-    bulletImpactsBullet.register(this.playfield, contactListener, this.audioManager);
 
     if (DEBUG) {
       // Set up debugDraw for box2d
@@ -159,11 +148,6 @@ exports = Class(ui.View, function(supr) {
 
   };
 
-
-  this.setupAsteroidGenerator = function() {
-    var asteroidGenerator = new AsteroidGenerator(this.gameDispatcher, this.audioManager, this.playfield, this.player, this.world);
-    this.asteroidGenerator = asteroidGenerator;
-  };
 
   // Hook into GameClosure tick function, forward to GameDispatcher
   this.tick = function(dt) {

@@ -3,20 +3,27 @@ import menus.views.MenuView;
 // TODO: Generate the list of scenarios automatically
 import src.scenarios.IceCream.Scenario as IceCreamScenario;
 import src.scenarios.Tennis.Scenario as TennisScenario;
+import src.scenarios.Asteroids.Scenario as AsteroidsScenario;
 var Scenarios = {
   "IceCream": IceCreamScenario,
-  "Tennis": TennisScenario
+  "Tennis": TennisScenario,
+  "Asteroids": AsteroidsScenario
 };
 
 exports = Class(menus.views.MenuView, function(supr) {
   this.init = function(opts) {
+    var items = [], scenarioName;
+    for (scenarioName in Scenarios) {
+      items.unshift({
+        item: scenarioName,
+        action: bind(this, "beginScenario", scenarioName)
+      });
+    }
+
     opts = merge(opts, {
       title: "Space Nonsense",
       transition: '',
-      items: [
-        { item: "Ice Cream", action: bind(this, "beginScenario", "IceCream") },
-        { item: "Tennis", action: bind(this, "beginScenario", "Tennis") }
-      ]
+      items: items
     });
 
     supr(this, "init", [opts]);
