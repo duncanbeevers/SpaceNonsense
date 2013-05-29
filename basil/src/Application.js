@@ -5,6 +5,9 @@ import device;
 
 import src.views.GameplayView as GameplayView;
 
+var BOUNDS_WIDTH = 576,
+    BOUNDS_HEIGHT = 1024;
+
 // Application descends from GC.Application
 exports = Class(GC.Application, function () {
 
@@ -15,7 +18,7 @@ exports = Class(GC.Application, function () {
 
 	this.setupViews = function() {
     // Declare root view local for closure visibility
-    var rootView, gameplayView;
+    var rootView = this.view;
 
     // Resize function is called initially,
     // and whenever device is rotated, or browser is resized
@@ -23,33 +26,29 @@ exports = Class(GC.Application, function () {
       var w = device.width,
           h = device.height;
 
-      rootView.style.update({
-        width: w,
-        height: h
-      });
-
-      gameplayView.style.update({
-        width: w,
-        height: h
-      });
+      if (w < h) {
+        rootView.style.update({
+          width: BOUNDS_WIDTH,
+          height: BOUNDS_HEIGHT,
+          scale: w / BOUNDS_WIDTH
+        });
+      } else {
+        rootView.style.update({
+          width: BOUNDS_HEIGHT,
+          height: BOUNDS_WIDTH,
+          scale: h / BOUNDS_HEIGHT
+        });
+      }
     }
-
-    // Create the root view
-		rootView = new ui.StackView({
-			superview       : this,
-      backgroundColor : '#3B007E'
- 		});
 
     // Subscribe to size/orientation changes
     device.screen.subscribe("Resize", rescaleRootView);
 
- 		// Planet Scene
- 		gameplayView = new GameplayView();
-
- 		rootView.push(gameplayView);
-
     // Manually trigger the first resize
     rescaleRootView();
+
+    // Planet Scene
+    // var gameplayView = new GameplayView();
 	};
 
 	this.launchUI = function () {};
