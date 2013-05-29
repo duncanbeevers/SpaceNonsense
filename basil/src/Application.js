@@ -3,7 +3,7 @@ import ui.TextView;
 
 import device;
 
-import src.views.GameplayView as GameplayView;
+import src.views.MainMenuView as MainMenuView;
 
 var BOUNDS_WIDTH = 576,
     BOUNDS_HEIGHT = 1024;
@@ -47,8 +47,13 @@ exports = Class(GC.Application, function () {
     // Manually trigger the first resize
     rescaleRootView();
 
-    // Planet Scene
-    // var gameplayView = new GameplayView();
+    var mainMenuView = new MainMenuView({
+      superview: rootView,
+      width: rootView.style.width,
+      height: rootView.style.height
+    });
+
+    mainMenuView.show();
 	};
 
 	this.launchUI = function () {};
