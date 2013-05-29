@@ -1,0 +1,111 @@
+<exporter>
+	<name>GameClosure-json</name>
+	<displayName>GameClosure (JSON)</displayName>
+    <description>Exporter for GameClosure+Box2dweb, JSON</description>
+	<version>1.0</version>
+	<yAxisDirection>up</yAxisDirection>
+	<physicsEngine>box2d</physicsEngine>
+	<template>GameClosure.json.js</template>
+	<fileExtension>js</fileExtension>
+	<anchorPoint>
+		<enabled>yes</enabled>
+        <relX>0.5</relX>
+        <relY>0.5</relY>
+	</anchorPoint>
+	<origin>
+        <type>anchorPoint</type>
+    </origin>
+
+    <!-- custom global parameters -->
+    <global>
+        <parameter>
+            <name>ptm_ratio</name>
+            <displayName>PTM-Ratio</displayName>
+            <description>PTM ratio of the sprites. Must be multiplied by 2 when working with hd (retina display) sprites</description>
+            <shortDescription>PTM ratio of the sprites. Must be multiplied by 2 when working with hd (retina display) sprites.</shortDescription>
+            <type>float</type>
+            <default>32.0</default>
+        </parameter>
+    </global>
+
+	<body>
+	</body>
+
+    <!-- custom fixture parameters -->
+    <fixture>
+        <parameter>
+            <name>density</name>
+            <displayName>Density</displayName>
+            <description>Density of the shape. Used for calculating the mass.</description>
+            <shortDescription>Density of the shape. Used for calculating the mass.</shortDescription>
+            <type>float</type>
+            <default>2.0</default>
+        </parameter>
+        <parameter>
+            <name>restitution</name>
+            <displayName>Restitution</displayName>
+            <description>Restitution defines how much a shape bounces.</description>
+            <shortDescription>Density of the shape. Used for calculating the mass.</shortDescription>
+            <min>0.0</min>
+            <min>1.0</min>
+            <type>float</type>
+            <default>0.0</default>
+        </parameter>
+        <parameter>
+            <name>friction</name>
+            <description>Fricion.</description>
+            <shortDescription>Friction.</shortDescription>
+            <displayName>Friction</displayName>
+            <type>float</type>
+            <default>0.0</default>
+        </parameter>
+                <parameter>
+                        <name>isSensor</name>
+                        <displayName>Is Sensor</displayName>
+                        <description>If set the physial </description>
+                        <type>bool</type>
+                        <default>false</default>
+                </parameter>
+                <parameter>
+                        <name>id</name>
+                        <displayName>Id</displayName>
+                        <description>Identifies the fixture withing the body</description>
+                        <type>string</type>
+                </parameter>
+        <parameter>
+            <name>filter_groupIndex</name>
+            <displayName>Group</displayName>
+            <description>Collision group.</description>
+            <shortDescription></shortDescription>
+            <type>int</type>
+            <default>0</default>
+        </parameter>
+
+        <parameter>
+            <name>filter_bitfield</name>
+            <type>bitfield</type>
+            <size>16</size>
+        </parameter>
+
+        <parameter>
+            <name>filter_categoryBits</name>
+            <displayName>Cat.</displayName>
+            <description>Collision category</description>
+            <shortDescription>Collision category</shortDescription>
+            <type>uint16</type>
+            <default>1</default>
+            <bitfield>yes</bitfield>
+        </parameter>
+        <parameter>
+            <name>filter_maskBits</name>
+            <displayName>Mask</displayName>
+            <description>Collision mask</description>
+            <shortDescription>Collision mask</shortDescription>
+            <type>uint16</type>
+            <default>65535</default>
+            <bitfield>yes</bitfield>
+        </parameter>
+    </fixture>
+
+</exporter>
+
