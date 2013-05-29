@@ -1,6 +1,12 @@
 import menus.views.MenuView;
 
-import src.views.GameplayView as GameplayView;
+// TODO: Generate the list of scenarios automatically
+import src.scenarios.IceCream.Scenario as IceCreamScenario;
+import src.scenarios.Tennis.Scenario as TennisScenario;
+var Scenarios = {
+  "IceCream": IceCreamScenario,
+  "Tennis": TennisScenario
+};
 
 exports = Class(menus.views.MenuView, function(supr) {
   this.init = function(opts) {
@@ -8,7 +14,7 @@ exports = Class(menus.views.MenuView, function(supr) {
       title: "Space Nonsense",
       transition: '',
       items: [
-        { item: "Ice Cream", action: bind(this, "beginScenario", "Ice Cream") },
+        { item: "Ice Cream", action: bind(this, "beginScenario", "IceCream") },
         { item: "Tennis", action: bind(this, "beginScenario", "Tennis") }
       ]
     });
@@ -18,8 +24,9 @@ exports = Class(menus.views.MenuView, function(supr) {
 
   this.beginScenario = function(scenarioName) {
     console.log("Beginning " + scenarioName + " scenario");
-    // Planet Scene
-    var gameplayView = new GameplayView({
+
+    // Launch the Scenario
+    var scenario = new Scenarios[scenarioName]({
       superview: this.getSuperview()
     });
   };
