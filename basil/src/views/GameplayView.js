@@ -14,10 +14,12 @@ var DEBUG = false;
 
 exports = Class(ui.View, function(supr) {
   this.init = function(opts) {
-    opts = merge(opts, {
-      width: 576,
-      height: 1024
-    });
+    if (opts.superview) {
+      opts = merge(opts, {
+        width: opts.superview.style.width,
+        height: opts.superview.style.height
+      });
+    }
 
     supr(this, "init", [opts]);
 
