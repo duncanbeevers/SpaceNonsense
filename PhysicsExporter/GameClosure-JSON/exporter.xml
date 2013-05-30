@@ -3,7 +3,7 @@
 	<displayName>GameClosure (JSON)</displayName>
     <description>Exporter for GameClosure+Box2dweb, JSON</description>
 	<version>1.0</version>
-	<yAxisDirection>up</yAxisDirection>
+	<yAxisDirection>down</yAxisDirection>
 	<physicsEngine>box2d</physicsEngine>
 	<template>GameClosure.js</template>
 	<fileExtension>js</fileExtension>
