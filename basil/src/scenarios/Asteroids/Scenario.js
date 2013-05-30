@@ -1,5 +1,3 @@
-// import .Fixtures as Fixtures;
-
 import src.views.GameplayView as GameplayView;
 import src.models.AsteroidGenerator as AsteroidGenerator;
 
