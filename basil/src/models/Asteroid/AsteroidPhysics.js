@@ -15,7 +15,7 @@ exports = Class(function(supr) {
 
   this.applyOrbitalImpulse = function(player) {
     // Apply initial impulse to get the asteroid moving
-    var body = this.fixture.GetBody(),
+    var body = this.body,
         position = body.GetPosition(),
         playerPosition = player.getPosition(),
         trajectory = Math.atan2(position.x - playerPosition.x, position.y - playerPosition.y),
@@ -27,7 +27,7 @@ exports = Class(function(supr) {
   };
 
   this.approachPlayer = function(player) {
-    var body = this.fixture.GetBody(),
+    var body = this.body,
         position = body.GetPosition(),
         playerPosition = player.getPosition(),
         playerDistance = FW.Math.distance(playerPosition.x, playerPosition.y, position.x, position.y),

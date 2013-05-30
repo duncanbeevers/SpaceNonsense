@@ -8,7 +8,7 @@ function delay(fn) {
 
 FW.PhysicsMixin = {
   getPosition: function() {
-    var body = this.fixture.GetBody(),
+    var body = this.body,
         position = body.GetPosition();
 
     return {
@@ -38,24 +38,23 @@ FW.PhysicsMixin = {
     this._fixtureDef = fixtureDef;
     this._bodyDef = bodyDef;
 
-    this._setFixtureInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
+    this._setBodyInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
   },
-  _setFixtureInWorldFromBodyDefAndFixtureDef: function(world, bodyDef, fixtureDef, userData) {
-    var fixture = world.CreateBody(bodyDef).CreateFixture(fixtureDef);
+  _setBodyInWorldFromBodyDefAndFixtureDef: function(world, bodyDef, fixtureDef, userData) {
+    var body = world.CreateBody(bodyDef),
+        fixture = body.CreateFixture(fixtureDef);
     fixture.SetUserData(userData);
-    this.fixture = fixture;
+    this.body = body;
   },
   removeFromPhysics: function() {
     var instance = this;
     delay(function() { instance._removeFromPhysics(); });
   },
   _removeFromPhysics: function() {
-    var body = this.fixture.GetBody();
-    body.GetWorld().DestroyBody(body);
+    this.body.GetWorld().DestroyBody(this.body);
   },
   getWorld: function() {
-    var body = this.fixture.GetBody();
-    return body.GetWorld();
+    return this.body.GetWorld();
   },
   setRadius: function(radius) {
     var instance = this;
@@ -63,11 +62,10 @@ FW.PhysicsMixin = {
       var bodyDef = instance._bodyDef,
           fixtureDef = instance._fixtureDef;
 
-      var originalFixture = instance.fixture,
-          body = originalFixture.GetBody(),
+      var body = instance.body,
           world = body.GetWorld(),
           position = body.GetPosition(),
-          userData = originalFixture.GetUserData();
+          userData = body.GetFixtureList().GetUserData();
 
       // Copy the old body's position to the new body def
       bodyDef.position.x = position.x;
@@ -80,7 +78,7 @@ FW.PhysicsMixin = {
       instance._removeFromPhysics();
 
       // Re-add to physics with the updated defs
-      instance._setFixtureInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
+      instance._setBodyInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
     });
   }
 };

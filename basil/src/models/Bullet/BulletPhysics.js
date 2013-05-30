@@ -14,14 +14,14 @@ exports = Class(function(supr) {
       friction: 0.6,
       restitution: 0.1
     });
-    var mass = this.fixture.GetBody().GetMass();
+    var mass = this.body.GetMass();
     var impulseStrength = mass * mass * mass;
     this.applyOutwardImpulse(trajectory, impulseStrength);
   };
 
   this.applyOutwardImpulse = function(trajectory, impulseStrength) {
     // Apply initial impulse to get the bullet going in the right direction
-    var body = this.fixture.GetBody(),
+    var body = this.body,
         position = body.GetPosition();
 
     vec1.Set(Math.cos(trajectory) * impulseStrength, Math.sin(trajectory) * impulseStrength);
