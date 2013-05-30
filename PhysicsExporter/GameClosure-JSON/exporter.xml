@@ -5,7 +5,7 @@
 	<version>1.0</version>
 	<yAxisDirection>up</yAxisDirection>
 	<physicsEngine>box2d</physicsEngine>
-	<template>GameClosure.json.js</template>
+	<template>GameClosure.js</template>
 	<fileExtension>js</fileExtension>
 	<anchorPoint>
 		<enabled>yes</enabled>
