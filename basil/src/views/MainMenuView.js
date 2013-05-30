@@ -14,7 +14,7 @@ exports = Class(menus.views.MenuView, function(supr) {
   this.init = function(opts) {
     var items = [], scenarioName;
     for (scenarioName in Scenarios) {
-      items.unshift({
+      items.push({
         item: scenarioName,
         action: bind(this, "beginScenario", scenarioName)
       });
