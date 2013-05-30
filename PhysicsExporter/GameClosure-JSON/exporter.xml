@@ -5,8 +5,8 @@
 	<version>1.0</version>
 	<yAxisDirection>down</yAxisDirection>
 	<physicsEngine>box2d</physicsEngine>
-	<template>GameClosure.js</template>
-	<fileExtension>js</fileExtension>
+	<template>GameClosure.json</template>
+	<fileExtension>json</fileExtension>
 	<anchorPoint>
 		<enabled>yes</enabled>
         <relX>0.5</relX>
