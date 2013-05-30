@@ -166,9 +166,9 @@ exports = Class(ui.View, function(supr) {
     var playerPosition = this.player.getPosition(),
         x = playerPosition.x,
         y = playerPosition.y,
-        furthestAsteroidDistance = this.asteroidGenerator.furthestAsteroidDistance(),
+        zoomRadius = this.zoomRadius(),
         minDimension = Math.min(styleWidth, styleHeight),
-        playfieldScale = minDimension / 2 / furthestAsteroidDistance;
+        playfieldScale = minDimension / 2 / zoomRadius;
 
     this.playfield.style.update({
       x: styleWidth / 2,
@@ -204,6 +204,11 @@ exports = Class(ui.View, function(supr) {
       }
     }
 
+  };
+
+  // This is meant to be overridden on a per-Scenario basis
+  this.zoomRadius = function() {
+    return 1;
   };
 
 });

@@ -29,4 +29,7 @@ exports = Class(GameplayView, function(supr) {
     bulletImpactsBullet.register(this.playfield, this.contactListener, this.audioManager);
   };
 
+  this.zoomRadius = function() {
+    return this.asteroidGenerator.furthestAsteroidDistance();
+  };
 });
