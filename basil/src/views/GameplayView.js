@@ -10,7 +10,7 @@ import src.models.GameDispatcher as GameDispatcher;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
-var DEBUG = false;
+var DEBUG = true;
 
 exports = Class(ui.View, function(supr) {
   this.init = function(opts) {
