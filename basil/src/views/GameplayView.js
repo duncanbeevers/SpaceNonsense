@@ -130,7 +130,7 @@ exports = Class(ui.View, function(supr) {
     });
 
     this.on("InputStart", function(event, point) {
-      this.playerShooting = 'bullet001';
+      this.playerShooting = "bullet001";
     });
 
     this.on("InputOver", function(event, point) {
