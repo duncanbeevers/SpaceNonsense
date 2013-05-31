@@ -7,7 +7,7 @@ exports = Class(GameplayView, function(supr) {
   this.init = function(opts) {
     supr(this, "init", [opts]);
 
-    var importer = new PhysicsEditorImporter(JSON.parse(CACHE["resources/physics/IceCream.json"]));
+    var importer = new PhysicsEditorImporter(JSON.parse(CACHE["resources/scenarios/IceCream/Bodies.json"]));
     this.importer = importer;
 
     this.setupPie();
