@@ -7,13 +7,18 @@ exports = Class(GameplayView, function(supr) {
   this.init = function(opts) {
     supr(this, "init", [opts]);
 
-    var importer = new PhysicsEditorImporter(JSON.parse(CACHE["resources/scenarios/IceCream/Bodies.json"]));
+    var scenarioName = "IceCream";
+    var importer = new PhysicsEditorImporter(scenarioName);
     this.importer = importer;
 
     this.setupPie();
   };
 
   this.setupPie = function() {
-    this.pie = new Pie(this.gameDispatcher, this.world, this.importer, 10, 10);
+    this.pie = new Pie(this.gameDispatcher, this.world, this.playfield, this.importer, 0, 5);
+  };
+
+  this.zoomRadius = function() {
+    return 10;
   };
 });
