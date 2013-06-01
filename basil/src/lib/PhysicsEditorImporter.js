@@ -1,12 +1,23 @@
+import ui.ImageView;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
+import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
+import src.lib.FW_PhysicsMixin as FW.PhysicsMixin;
+
+// Use FW.PhysicsMixin as prototype, no special behavior
+function Physics(body) {
+  this.body = body;
+}
+Physics.prototype = FW.PhysicsMixin;
 
 // Define data keys used to peer into JSON payload
-var PixelsToMetersRatioDataKey = "ptm_ratio",
-    BodiesDataKey              = "bodies",
-    PolygonShapeDataKey        = "polygon",
-    CircleShapeDataKey         = "circle",
-    RadiusDataKey              = "radius",
-    PositionDataKey            = "position";
+var PixelsPerMeterDataKey = "pixelsPerMeter",
+    AnchorDataKey         = "anchor",
+    BodiesDataKey         = "bodies",
+    FixturesDataKey       = "fixtures",
+    PolygonShapeDataKey   = "polygon",
+    CircleShapeDataKey    = "circle",
+    RadiusDataKey         = "radius",
+    PositionDataKey       = "position";
 
 
 // Re-usable data structures, no need to allocate new ones every time
@@ -15,15 +26,16 @@ var polygonShape = new Box2D.Collision.Shapes.b2PolygonShape(),
     bodyDef      = new Box2D.Dynamics.b2BodyDef(),
     fixtureDef   = new Box2D.Dynamics.b2FixtureDef();
 
-var PhysicsEditorBuilder = function(data) {
-  this.data = data;
-  this.ptmRatio = data[PixelsToMetersRatioDataKey];
+var PhysicsEditorBuilder = function(scenarioName) {
+  this.scenarioName = scenarioName;
+  this.data = JSON.parse(CACHE["resources/scenarios/" + scenarioName + "/Bodies.json"]);
 };
 
 PhysicsEditorBuilder.prototype = {
   getPhysics: function(bodyName, world, x, y, userData) {
-    var bodyData = this.data[BodiesDataKey][bodyName], fixtureData, shapeData, positionData,
-        body, fixture, vertices, tmpX, tmpY,
+    var bodyData = this.data[BodiesDataKey][bodyName],
+        fixturesData, fixtureData, shapeData, positionData,
+        body, fixture, scalar, vertices, tmpX, tmpY,
         i, k;
 
     bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
@@ -33,9 +45,11 @@ PhysicsEditorBuilder.prototype = {
     // bodyDef.linearDamping = props.linearDamping || 0;
     // bodyDef.angularDamping = props.angularDamping || 0;
     body = world.CreateBody(bodyDef);
+    fixturesData = bodyData[FixturesDataKey];
+    scalar = 1 / bodyData[PixelsPerMeterDataKey];
 
-    for (i = bodyData.length - 1; i >= 0; i--) {
-      fixtureData = bodyData[i];
+    for (i = fixturesData.length - 1; i >= 0; i--) {
+      fixtureData = fixturesData[i];
       fixtureDef.density = fixtureData.density;
       fixtureDef.friction = fixtureData.friction;
       fixtureDef.restitution = fixtureData.restitution;
@@ -44,9 +58,11 @@ PhysicsEditorBuilder.prototype = {
         // If polygon
         shapeData = fixtureData[PolygonShapeDataKey];
         vertices = [];
+
+        // Map the coordinates to Box2d vectors
         for (k = shapeData.length - 1; k >= 0; k -= 2) {
-          tmpX = shapeData[k - 1];
-          tmpY = shapeData[k];
+          tmpX = shapeData[k - 1] * scalar;
+          tmpY = shapeData[k] * scalar;
           vertices.unshift(new Box2D.Common.Math.b2Vec2(tmpX, tmpY));
         }
         polygonShape.SetAsArray(vertices, vertices.length);
@@ -67,7 +83,27 @@ PhysicsEditorBuilder.prototype = {
       fixture.SetUserData(userData);
     }
 
-    return body;
+    return new Physics(body);
+  },
+  getView: function(bodyName, opts) {
+    var imageName = "resources/scenarios/" + this.scenarioName + "/" + bodyName + ".png";
+
+    var bodyData = this.data[BodiesDataKey][bodyName],
+        anchorData = bodyData[AnchorDataKey],
+        scalar = bodyData[PixelsPerMeterDataKey];
+
+    opts = merge(opts, {
+      image: imageName,
+      anchorX: anchorData[0],
+      anchorY: anchorData[1],
+      offsetX: -anchorData[0],
+      offsetY: -anchorData[1],
+      autoSize: true,
+      scale: 1 / scalar
+    });
+
+    var view = new ui.ImageView(opts);
+    return view;
   }
 };
 
