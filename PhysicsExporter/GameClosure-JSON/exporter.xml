@@ -18,17 +18,17 @@
 
     <!-- custom global parameters -->
     <global>
-        <parameter>
-            <name>ptm_ratio</name>
-            <displayName>PTM-Ratio</displayName>
-            <description>PTM ratio of the sprites. Must be multiplied by 2 when working with hd (retina display) sprites</description>
-            <shortDescription>PTM ratio of the sprites. Must be multiplied by 2 when working with hd (retina display) sprites.</shortDescription>
-            <type>float</type>
-            <default>32.0</default>
-        </parameter>
     </global>
 
 	<body>
+        <parameter>
+            <name>pixels_per_meter</name>
+            <displayName>Pixels per Meter</displayName>
+            <description>Pixels per meter ratio.</description>
+            <shortDescription>Ratio of pixels to meters. Example, an image 64 pixels across with a Pixels-per-meter of 32 will generate a shape 2 meters across.</shortDescription>
+            <type>float</type>
+            <default>64.0</default>
+        </parameter>
 	</body>
 
     <!-- custom fixture parameters -->
