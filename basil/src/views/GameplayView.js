@@ -9,6 +9,7 @@ import src.models.GameDispatcher as GameDispatcher;
 
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
+import src.lib.FW_Math as FW.Math;
 
 var DEBUG = true;
 
@@ -137,12 +138,16 @@ exports = Class(ui.View, function(supr) {
 
     this.on("InputMove", function(event, point) {
       var playerPosition = this.player.getPosition(),
-          angle = Math.atan2(
-        point.y - playerPosition.y * this.playfield.style.scale - this.playfield.style.y,
-        point.x - playerPosition.x * this.playfield.style.scale - this.playfield.style.x
-      );
+          playfieldStyle = this.playfield.style,
+          scale = playfieldStyle.scale,
+          x1 = playerPosition.x * scale,
+          y1 = playerPosition.y * scale,
+          x2 = point.x - playfieldStyle.x,
+          y2 = point.y - playfieldStyle.y,
+          angle = Math.atan2(y2 - y1, x2 - x1),
+          distance = FW.Math.distance(x1, y1, x2, y2);
 
-      this.player.pointAt(angle);
+      this.player.pointAt(angle, distance);
     });
 
 
