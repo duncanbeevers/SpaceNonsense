@@ -10,6 +10,7 @@ exports = Class(function(supr) {
   this.init = function(asteroid, x, y, radius, player, world) {
     this.asteroid = asteroid;
     this.setupCirclePhysics(x, y, radius, asteroid, world);
+    this.body.SetAngle(FW.Math.random(FW.Math.TWO_PI));
     this.applyOrbitalImpulse(player);
   };
 

@@ -10,8 +10,10 @@ exports = Class(ui.ImageView, function(supr) {
   this.init = function(radius, player, opts) {
     this.radius = radius;
 
+    var asteroids = [ "001", "002", "003" ];
+
     opts = merge(opts, {
-      image: "resources/scenarios/Asteroids/Asteroid001.png"
+      image: "resources/scenarios/Asteroids/Asteroid" + FW.Math.sample(asteroids) + ".png"
     });
 
     supr(this, "init", [opts]);
