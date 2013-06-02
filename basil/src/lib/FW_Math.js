@@ -128,19 +128,19 @@ magnitude = function(x, y) {
 
 snap = function(x, precision) {
   var newX, roundDown, roundDownDelta, roundUp, roundUpDelta, scaleUp;
-  scaleUp = x * precision;
+  scaleUp = x / precision;
   roundDown = Math.floor(scaleUp);
   roundUp = Math.ceil(scaleUp);
   roundDownDelta = Math.abs(scaleUp - roundDown);
   roundUpDelta = Math.abs(scaleUp - roundUp);
-  if (roundDownDelta < 1) {
+
+  if (roundUpDelta > roundDownDelta) {
     newX = roundDown;
-  } else if (roundUpDelta < 1) {
-    newX = roundUp;
   } else {
-    newX = scaleUp;
+    newX = roundUp;
   }
-  return newX / precision;
+
+  return newX * precision;
 };
 
 FW.Math = {
