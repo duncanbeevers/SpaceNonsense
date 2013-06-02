@@ -12,7 +12,7 @@ exports = Class(function(supr) {
     this.radius = 1;
 
     this.weapons = [
-      { image: 'bullet001',
+      { image: "Bullet001",
         cooldown: 200
       }
     ];

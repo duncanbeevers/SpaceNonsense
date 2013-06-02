@@ -20,7 +20,7 @@ exports = Class(function(supr) {
   this.register = function(superview, contactListener, audioManager) {
     audioManager.addSound("BulletAsteroidHit", { volume: 0.8 });
 
-    contactListener.registerImpactListener("bullet001", "Asteroid", this.getListener(superview, audioManager));
+    contactListener.registerImpactListener("Bullet001", "Asteroid", this.getListener(superview, audioManager));
   };
 
   this.getListener = function(superview, audioManager) {

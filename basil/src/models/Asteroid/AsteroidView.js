@@ -11,7 +11,7 @@ exports = Class(ui.ImageView, function(supr) {
     this.radius = radius;
 
     opts = merge(opts, {
-      image: "resources/images/asteroid001.png"
+      image: "resources/scenarios/Asteroids/Asteroid001.png"
     });
 
     supr(this, "init", [opts]);
