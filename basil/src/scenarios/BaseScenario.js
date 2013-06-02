@@ -8,6 +8,7 @@ import src.views.PlayfieldView as PlayfieldView;
 import src.models.Player.Player as Player;
 import src.models.GameDispatcher as GameDispatcher;
 
+import src.lib.PhysicsEditorImporter as PhysicsEditorImporter;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 import src.lib.FW_Math as FW.Math;
@@ -18,17 +19,16 @@ exports = Class(function(supr) {
   this.init = function(name, superview) {
     this.name = name;
 
-    // Set up the game loop event dispatcher
+    // Setup common utility components
     this.setupDispatcher();
+    this.setupImporter(name);
+    this.setupAudioManager();
 
     // Pretty background, TODO: Change this, parallax or something
     this.setupBackground(superview);
 
     // Panning surface for graphics
     this.setupPlayfield(superview);
-
-    // Set up the audio manager
-    this.setupAudioManager();
 
     // Set up the world of the physics simulation
     this.setupPhysics();
@@ -38,6 +38,10 @@ exports = Class(function(supr) {
 
     // Observe and dispatch input events in relation to player position
     this.setupPlayerInputHandlers();
+  };
+
+  this.setupImporter = function(name) {
+    this.importer = new PhysicsEditorImporter(name);
   };
 
   this.setupPlayfield = function(superview) {

@@ -26,12 +26,17 @@ var polygonShape = new Box2D.Collision.Shapes.b2PolygonShape(),
     bodyDef      = new Box2D.Dynamics.b2BodyDef(),
     fixtureDef   = new Box2D.Dynamics.b2FixtureDef();
 
-var PhysicsEditorBuilder = function(scenarioName) {
+var PhysicsEditorImporter = function(scenarioName) {
   this.scenarioName = scenarioName;
-  this.data = JSON.parse(CACHE["resources/scenarios/" + scenarioName + "/Bodies.json"]);
+  var source = CACHE["resources/scenarios/" + scenarioName + "/Bodies.json"];
+  if (source) {
+    this.data = JSON.parse(source);
+  } else {
+    this.data = {};
+  }
 };
 
-PhysicsEditorBuilder.prototype = {
+PhysicsEditorImporter.prototype = {
   getPhysics: function(bodyName, world, x, y, userData) {
     var bodyData = this.data[BodiesDataKey][bodyName],
         fixturesData, fixtureData, shapeData, positionData,
@@ -107,4 +112,4 @@ PhysicsEditorBuilder.prototype = {
   }
 };
 
-exports = PhysicsEditorBuilder;
+exports = PhysicsEditorImporter;
