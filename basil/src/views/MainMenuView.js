@@ -33,8 +33,6 @@ exports = Class(menus.views.MenuView, function(supr) {
     console.log("Beginning " + scenarioName + " scenario");
 
     // Launch the Scenario
-    var scenario = new Scenarios[scenarioName]({
-      superview: this.getSuperview()
-    });
+    var scenario = new Scenarios[scenarioName](this.getSuperview());
   };
 });

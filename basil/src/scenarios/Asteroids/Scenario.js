@@ -1,12 +1,12 @@
-import src.views.GameplayView as GameplayView;
+import ..BaseScenario as BaseScenario;
 import src.models.AsteroidGenerator as AsteroidGenerator;
 
 import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
 import src.interactions.BulletImpactsBullet as BulletImpactsBullet;
 
-exports = Class(GameplayView, function(supr) {
-  this.init = function(opts) {
-    supr(this, "init", [opts]);
+exports = Class(BaseScenario, function(supr) {
+  this.init = function(superview) {
+    supr(this, "init", [superview]);
 
     // Make the Asteroid Generator
     this.setupAsteroidGenerator();

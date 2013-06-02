@@ -1,9 +1,10 @@
+import ui.View;
 import ui.ImageView;
 import ui.resource.Image;
-import ui.View;
 import AudioManager;
 
 import src.views.FillScreenImageView as FillScreenImageView;
+import src.views.PlayfieldView as PlayfieldView;
 import src.models.Player.Player as Player;
 import src.models.GameDispatcher as GameDispatcher;
 
@@ -13,25 +14,16 @@ import src.lib.FW_Math as FW.Math;
 
 var DEBUG = true;
 
-exports = Class(ui.View, function(supr) {
-  this.init = function(opts) {
-    if (opts.superview) {
-      opts = merge(opts, {
-        width: opts.superview.style.width,
-        height: opts.superview.style.height
-      });
-    }
-
-    supr(this, "init", [opts]);
-
-    // Pretty background, TODO: Change this, parallax or something
-    this.setupBackground();
-
-    // Panning surface for graphics
-    this.playfield = new ui.View({ superview: this });
-
+exports = Class(function(supr) {
+  this.init = function(superview) {
     // Set up the game loop event dispatcher
     this.setupDispatcher();
+
+    // Pretty background, TODO: Change this, parallax or something
+    this.setupBackground(superview);
+
+    // Panning surface for graphics
+    this.setupPlayfield(superview);
 
     // Set up the audio manager
     this.setupAudioManager();
@@ -41,16 +33,29 @@ exports = Class(ui.View, function(supr) {
 
     // Add the player to the scene graph and physics simulation
     this.setupPlayer();
+
     // Observe and dispatch input events in relation to player position
     this.setupPlayerInputHandlers();
+  };
 
-    this.gameDispatcher.onTick(this.reframeCamera, this);
-    this.gameDispatcher.onTick(this.attemptShoot, this);
-    this.gameDispatcher.onTick(this.stepPhysics, this);
+  this.setupPlayfield = function(superview) {
+    var playfield = new PlayfieldView(this.gameDispatcher, {
+      superview: superview
+      // width: opts.superview.style.width,
+      // height: opts.superview.style.height
+    });
+
+    this.playfield = playfield;
+    this.overlay = new ui.View({ superview: superview, });
   };
 
   this.setupDispatcher = function() {
-    this.gameDispatcher = new GameDispatcher();
+    var gameDispatcher = new GameDispatcher();
+    this.gameDispatcher = gameDispatcher;
+
+    gameDispatcher.onTick(this.reframeCamera, this);
+    gameDispatcher.onTick(this.attemptShoot, this);
+    gameDispatcher.onTick(this.stepPhysics, this);
   };
 
   this.setupAudioManager = function() {
@@ -110,9 +115,9 @@ exports = Class(ui.View, function(supr) {
 
 
 
-  this.setupBackground = function() {
+  this.setupBackground = function(superview) {
     new FillScreenImageView({
-      superview: this,
+      superview: superview,
       image: "resources/images/bg001.png"
     });
   };
@@ -124,40 +129,36 @@ exports = Class(ui.View, function(supr) {
   };
 
   this.setupPlayerInputHandlers = function() {
-    this.on("InputSelect", function() {
-      this.playerShooting = false;
+    var scenario  = this,
+        overlay   = this.overlay,
+        playfield = this.playfield,
+        player    = this.player;
+
+    overlay.on("InputStart", function(event, point) {
+      scenario.playerShooting = true;
     });
 
-    this.on("DragStop", function() {
-      this.playerShooting = false;
+    overlay.on("InputSelect", function() {
+      scenario.playerShooting = false;
     });
 
-    this.on("InputStart", function(event, point) {
-      this.playerShooting = true;
+    overlay.on("DragStop", function() {
+      scenario.playerShooting = false;
     });
 
-    this.on("InputOver", function(event, point) {
-      this.playerShooting = false;
-    });
-
-    this.on("InputMove", function(event, point) {
-      this.playfield.localizePoint(point);
-      var pp = this.player.getPosition(),
+    overlay.on("InputMove", function(event, point) {
+      playfield.localizePoint(point);
+      var pp = player.getPosition(),
           angle = Math.atan2(point.y - pp.y, point.x - pp.x),
           distance = FW.Math.distance(pp.x, pp.y, point.x, point.y);
 
-      this.player.pointAt(angle, distance);
+      player.pointAt(angle, distance);
     });
   };
 
 
-  // Hook into GameClosure tick function, forward to GameDispatcher
-  this.tick = function(dt) {
-    this.gameDispatcher.tick(dt);
-  };
-
   this.reframeCamera = function() {
-    var superview = this.getSuperview(),
+    var superview = this.playfield.getSuperview(),
         superviewStyle = superview.style,
         styleWidth = superviewStyle.width,
         styleHeight = superviewStyle.height,
@@ -177,7 +178,9 @@ exports = Class(ui.View, function(supr) {
       offsetY: -y,
       anchorX: x,
       anchorY: y,
-      scale: playfieldScale
+      scale: playfieldScale,
+      width: 10,
+      height: 10
     });
 
     if (this.debugDraw) {
@@ -187,6 +190,10 @@ exports = Class(ui.View, function(supr) {
         -playerPosition.y + styleHeight / 2 / playfieldScale
       ));
     }
+
+    var overlay = this.overlay;
+    overlay.style.width = superviewStyle.width;
+    overlay.style.height = superviewStyle.height;
   };
 
   this.attemptShoot = function() {

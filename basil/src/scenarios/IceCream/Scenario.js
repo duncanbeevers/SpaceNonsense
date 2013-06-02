@@ -1,13 +1,16 @@
 import .Pie as Pie;
 
-import src.views.GameplayView as GameplayView;
+import ..BaseScenario as BaseScenario;
 import src.lib.PhysicsEditorImporter as PhysicsEditorImporter;
+import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 
-exports = Class(GameplayView, function(supr) {
-  this.init = function(opts) {
-    supr(this, "init", [opts]);
+exports = Class(BaseScenario, function(supr) {
+  // this.init = function(opts) {
+  this.init = function(superview) {
+    supr(this, "init", [superview]);
 
     var scenarioName = "IceCream";
+
     var importer = new PhysicsEditorImporter(scenarioName);
     this.importer = importer;
 

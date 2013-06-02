@@ -1,8 +1,8 @@
-import src.views.GameplayView as GameplayView;
+import ..BaseScenario as BaseScenario;
 
-exports = Class(GameplayView, function(supr) {
-  this.init = function(opts) {
-    supr(this, "init", [opts]);
+exports = Class(BaseScenario, function(supr) {
+  this.init = function(superview) {
+    supr(this, "init", [superview]);
 
     console.log("Nothing to say, I have no fixtures yet");
   };
