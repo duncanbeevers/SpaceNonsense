@@ -6,8 +6,8 @@ import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 
 exports = Class(BaseScenario, function(supr) {
   // this.init = function(opts) {
-  this.init = function(superview) {
-    supr(this, "init", [superview]);
+  this.init = function(name, superview) {
+    supr(this, "init", arguments);
 
     var scenarioName = "IceCream";
 

@@ -5,8 +5,8 @@ import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
 import src.interactions.BulletImpactsBullet as BulletImpactsBullet;
 
 exports = Class(BaseScenario, function(supr) {
-  this.init = function(superview) {
-    supr(this, "init", [superview]);
+  this.init = function(name, superview) {
+    supr(this, "init", arguments);
 
     // Make the Asteroid Generator
     this.setupAsteroidGenerator();

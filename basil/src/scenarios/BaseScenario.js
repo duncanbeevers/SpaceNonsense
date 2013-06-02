@@ -15,7 +15,9 @@ import src.lib.FW_Math as FW.Math;
 var DEBUG = true;
 
 exports = Class(function(supr) {
-  this.init = function(superview) {
+  this.init = function(name, superview) {
+    this.name = name;
+
     // Set up the game loop event dispatcher
     this.setupDispatcher();
 
