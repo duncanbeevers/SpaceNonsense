@@ -9,12 +9,13 @@ function delay(fn) {
 FW.PhysicsMixin = {
   getPosition: function() {
     var body = this.body,
-        position = body.GetPosition();
+        position = body.GetPosition(),
+        angle = body.GetAngle();
 
     return {
       x: position.x,
       y: position.y,
-      r: body.GetAngle()
+      r: angle
     };
   },
   setupCirclePhysics: function(x, y, radius, userData, world, props) {
@@ -55,6 +56,9 @@ FW.PhysicsMixin = {
   },
   getWorld: function() {
     return this.body.GetWorld();
+  },
+  setRotation: function(angle) {
+    this.body.SetAngle(angle);
   },
   setRadius: function(radius) {
     var instance = this;
