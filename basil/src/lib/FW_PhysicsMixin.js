@@ -2,10 +2,6 @@ import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 
 var FW = this.FW || (this.FW = {});
 
-function delay(fn) {
-  setTimeout(fn);
-}
-
 FW.PhysicsMixin = {
   getPosition: function() {
     var body = this.body,
@@ -48,10 +44,6 @@ FW.PhysicsMixin = {
     this.body = body;
   },
   removeFromPhysics: function() {
-    var instance = this;
-    delay(function() { instance._removeFromPhysics(); });
-  },
-  _removeFromPhysics: function() {
     this.body.GetWorld().DestroyBody(this.body);
   },
   getWorld: function() {
@@ -61,29 +53,26 @@ FW.PhysicsMixin = {
     this.body.SetAngle(angle);
   },
   setRadius: function(radius) {
-    var instance = this;
-    delay(function() {
-      var bodyDef = instance._bodyDef,
-          fixtureDef = instance._fixtureDef;
+    var bodyDef = this._bodyDef,
+        fixtureDef = this._fixtureDef;
 
-      var body = instance.body,
-          world = body.GetWorld(),
-          position = body.GetPosition(),
-          userData = body.GetFixtureList().GetUserData();
+    var body = this.body,
+        world = body.GetWorld(),
+        position = body.GetPosition(),
+        userData = body.GetFixtureList().GetUserData();
 
-      // Copy the old body's position to the new body def
-      bodyDef.position.x = position.x;
-      bodyDef.position.y = position.y;
+    // Copy the old body's position to the new body def
+    bodyDef.position.x = position.x;
+    bodyDef.position.y = position.y;
 
-      // Apply the new bigger shape to the fixture def
-      fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
+    // Apply the new bigger shape to the fixture def
+    fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
 
-      // Remove the original body from the world
-      instance._removeFromPhysics();
+    // Remove the original body from the world
+    this.removeFromPhysics();
 
-      // Re-add to physics with the updated defs
-      instance._setBodyInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
-    });
+    // Re-add to physics with the updated defs
+    this._setBodyInWorldFromBodyDefAndFixtureDef(world, bodyDef, fixtureDef, userData);
   }
 };
 

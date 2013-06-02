@@ -26,7 +26,7 @@ exports = Class(function(supr) {
   this.getListener = function(superview, audioManager) {
     var viewPool = this.viewPool;
 
-    return function(bullet, asteroid, strength, location) {
+    var listener = function(bullet, asteroid, strength, location) {
       var size = strength / 5;
 
       var explosionView = viewPool.obtainView({
@@ -57,5 +57,16 @@ exports = Class(function(supr) {
       bullet.damage(strength);
     };
 
+    return delayOnCall(listener);
   };
 });
+
+var delayOnCall = function(fn) {
+  return function() {
+    // Preserve arguments
+    var args = arguments;
+    setTimeout(function() {
+      fn.apply(this, args);
+    });
+  };
+};
