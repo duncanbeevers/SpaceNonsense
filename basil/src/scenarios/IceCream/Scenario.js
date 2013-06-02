@@ -1,6 +1,6 @@
 import .Pie as Pie;
 
-import ..BaseScenario as BaseScenario;
+import src.models.BaseScenario as BaseScenario;
 import src.lib.FW_GameClosureExtend as FW.GameClosureExtend;
 
 exports = Class(BaseScenario, function(supr) {

@@ -1,4 +1,4 @@
-import ..BaseScenario as BaseScenario;
+import src.models.BaseScenario as BaseScenario;
 
 exports = Class(BaseScenario, function(supr) {
   this.init = function(name, superview) {

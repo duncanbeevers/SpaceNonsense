@@ -1,6 +1,6 @@
-import ..BaseScenario as BaseScenario;
+import .Player as Player;
 import src.models.AsteroidGenerator as AsteroidGenerator;
-
+import src.models.BaseScenario as BaseScenario;
 import src.interactions.BulletImpactsAsteroid as BulletImpactsAsteroid;
 import src.interactions.BulletImpactsBullet as BulletImpactsBullet;
 
@@ -12,6 +12,11 @@ exports = Class(BaseScenario, function(supr) {
     this.setupAsteroidGenerator();
 
     this.setupInteractions();
+  };
+
+  this.setupPlayer = function() {
+    var player = new Player(this.gameDispatcher, this.world, this.playfield);
+    this.player = player;
   };
 
   this.setupAsteroidGenerator = function() {

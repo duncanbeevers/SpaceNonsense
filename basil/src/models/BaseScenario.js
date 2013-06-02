@@ -5,15 +5,15 @@ import AudioManager;
 
 import src.views.FillScreenImageView as FillScreenImageView;
 import src.views.PlayfieldView as PlayfieldView;
-import src.models.Player.Player as Player;
 import src.models.GameDispatcher as GameDispatcher;
+import src.models.BasePlayer as BasePlayer;
 
 import src.lib.PhysicsEditorImporter as PhysicsEditorImporter;
 import src.lib.FW_NamedContactListener as FW.NamedContactListener;
 import src.lib.Box2dWeb_2_1_a_3 as Box2D;
 import src.lib.FW_Math as FW.Math;
 
-var DEBUG = true;
+var DEBUG = false;
 
 exports = Class(function(supr) {
   this.init = function(name, superview) {
@@ -129,8 +129,7 @@ exports = Class(function(supr) {
   };
 
   this.setupPlayer = function() {
-    var player = new Player(this.gameDispatcher, this.world, this.playfield);
-
+    var player = new BasePlayer(this.gameDispatcher, this.world, this.playfield);
     this.player = player;
   };
 
