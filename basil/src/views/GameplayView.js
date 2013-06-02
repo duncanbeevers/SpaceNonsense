@@ -41,6 +41,8 @@ exports = Class(ui.View, function(supr) {
 
     // Add the player to the scene graph and physics simulation
     this.setupPlayer();
+    // Observe and dispatch input events in relation to player position
+    this.setupPlayerInputHandlers();
 
     this.gameDispatcher.onTick(this.reframeCamera, this);
     this.gameDispatcher.onTick(this.attemptShoot, this);
@@ -119,7 +121,9 @@ exports = Class(ui.View, function(supr) {
     var player = new Player(this.gameDispatcher, this.world, this.playfield);
 
     this.player = player;
+  };
 
+  this.setupPlayerInputHandlers = function() {
     this.on("InputSelect", function() {
       this.playerShooting = false;
     });
@@ -137,20 +141,13 @@ exports = Class(ui.View, function(supr) {
     });
 
     this.on("InputMove", function(event, point) {
-      var playerPosition = this.player.getPosition(),
-          playfieldStyle = this.playfield.style,
-          scale = playfieldStyle.scale,
-          x1 = playerPosition.x * scale,
-          y1 = playerPosition.y * scale,
-          x2 = point.x - playfieldStyle.x,
-          y2 = point.y - playfieldStyle.y,
-          angle = Math.atan2(y2 - y1, x2 - x1),
-          distance = FW.Math.distance(x1, y1, x2, y2);
+      this.playfield.localizePoint(point);
+      var pp = this.player.getPosition(),
+          angle = Math.atan2(point.y - pp.y, point.x - pp.x),
+          distance = FW.Math.distance(pp.x, pp.y, point.x, point.y);
 
       this.player.pointAt(angle, distance);
     });
-
-
   };
 
 
