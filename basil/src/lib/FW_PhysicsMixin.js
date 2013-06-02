@@ -64,6 +64,7 @@ FW.PhysicsMixin = {
     // Copy the old body's position to the new body def
     bodyDef.position.x = position.x;
     bodyDef.position.y = position.y;
+    bodyDef.angle = body.GetAngle();
 
     // Apply the new bigger shape to the fixture def
     fixtureDef.shape = new Box2D.Collision.Shapes.b2CircleShape(radius);
