@@ -11,8 +11,8 @@ FW.GameClosurePhysicsViewSyncMixin = {
     var viewStyle = this.view.style,
         position = this.getPosition();
 
-    position.x = FW.Math.snap(position.x, 0.2);
-    position.y = FW.Math.snap(position.y, 0.2);
+    position.x = FW.Math.snap(position.x, 0.5);
+    position.y = FW.Math.snap(position.y, 0.5);
     position.r = FW.Math.snap(position.r, Math.PI / 32);
 
     viewStyle.update(position);
