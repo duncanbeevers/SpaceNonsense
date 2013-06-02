@@ -30,15 +30,15 @@ exports = Class(function(supr) {
     if (!weapon.cooldownRemaining) {
       weapon.cooldownRemaining = weapon.cooldown;
 
-      var playerViewStyle = this.view.style,
-          trajectory = playerViewStyle.r,
+      var playerPosition = this.getPosition(),
+          trajectory = playerPosition.r,
           bulletSize = this.getRadius() / 5,
           bulletDistance = this.getRadius() + bulletSize;
 
       // TODO: Recycle Bullet objects
       new Bullet(this.gameDispatcher, bulletSize, weapon.image, trajectory, this.physics.getWorld(), this.view.getSuperview(),
-        playerViewStyle.x + Math.cos(trajectory) * bulletDistance,
-        playerViewStyle.y + Math.sin(trajectory) * bulletDistance
+        playerPosition.x + Math.cos(trajectory) * bulletDistance,
+        playerPosition.y + Math.sin(trajectory) * bulletDistance
       );
 
     }
@@ -61,12 +61,11 @@ exports = Class(function(supr) {
   };
 
   this.pointAt = function(angle) {
-    this.view.style.r = angle;
+    this.physics.setRotation(angle);
   };
 
   this.getPosition = function() {
     var position = this.physics.getPosition();
-    position.r = this.view.style.r;
     return position;
   };
 
