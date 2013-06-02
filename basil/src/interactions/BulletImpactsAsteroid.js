@@ -33,13 +33,16 @@ exports = Class(function(supr) {
         superview: superview,
         x: location.x,
         y: location.y,
+        r: FW.Math.random(FW.Math.TWO_PI),
         width: size,
         height: size,
         offsetX: -size / 2,
-        offsetY: -size / 2
+        offsetY: -size / 2,
+        centerX: size / 2,
+        centerY: size / 2
       });
 
-      explosionView.startAnimation("explode", { callback: function() {
+      explosionView.startAnimation("spark", { callback: function() {
           viewPool.releaseView(explosionView);
           explosionView.removeFromSuperview();
         }
