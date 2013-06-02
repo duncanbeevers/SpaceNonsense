@@ -1,4 +1,4 @@
-var FW = this.FW || (this.FW = {});
+import src.lib.FW_Math as FW.Math;
 
 var RemovedEventName = "Removed";
 var PhysicsViewSyncEventName = "PhysicsViewSync";
@@ -10,6 +10,10 @@ FW.GameClosurePhysicsViewSyncMixin = {
   slaveViewToPhysics: function() {
     var viewStyle = this.view.style,
         position = this.getPosition();
+
+    position.x = FW.Math.snap(position.x, 0.2);
+    position.y = FW.Math.snap(position.y, 0.2);
+    position.r = FW.Math.snap(position.r, Math.PI / 32);
 
     viewStyle.update(position);
   },
